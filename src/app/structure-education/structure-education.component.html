@@ -1,0 +1,366 @@
+<div>
+	<div clas="row">
+		<label> Localités: </label>
+		<select #t [(ngModel)]="codeTypeRegroupement" 
+			(ngModelChange)="getChaineRegroupement($event)">
+				<option [ngValue]="null"></option>
+				<option *ngFor="let t of typeRegroupements" [ngValue]="t">
+					{{t.libelleTypeRegroupement}}
+				</option>
+		</select> &nbsp;
+		<select #r name="codeRegroupement" [(ngModel)]="codeRegroupement"
+			(ngModelChange)="getRegroupement($event)">
+				<option [ngValue]="null"></option>
+				<option *ngFor="let r of regChaines" [ngValue]="r">
+					{{r.libelleRegroupement}}
+				</option>
+		</select> &nbsp;
+		<select #rf name="codeRegroupement" [(ngModel)]="codeRegroupementA"
+		(ngModelChange)="getARegroupement($event)">
+				<option [ngValue]="null"></option>
+				<option *ngFor="let rf of regFils" [ngValue]="rf">
+					{{rf.libelleRegroupement}}
+				</option>
+		</select> &nbsp;
+		<select name="codeRegroupement" #rff [(ngModel)]="codeRegroupementUnder"
+		(ngModelChange)="getUnderRegroupement($event)">
+				<option [ngValue]="null"></option>
+				<option *ngFor="let rff of regSousFils" [ngValue]="rff">
+					{{rff.libelleRegroupement}}
+				</option>
+		</select>
+	</div>
+<!-- ********************************** Liste des structures  ****************************** -->
+	<div clas="row" *ngIf="mode === 1" >
+		<div class="box">
+			<div class="box-header">
+				<h3 class="box-title">{{title}}</h3>
+			</div>
+			<!-- /.box-header -->
+			<div class="box-body">
+				<div class="row">
+					<div class="col-sm-6 float-right">
+						<div class="dataTables_filter">
+							<button id="addToTable" class="btn btn-primary"
+								placement="bottom" (click)="createStructureEdu()">
+								<i class="fa fa-plus"></i>
+							</button>
+						</div>
+					</div>
+				</div>
+				<div class="table-responsive">
+				<table class="table table-bordered table-striped">
+					<tr>
+						<th> Libellé structure </th>
+						<th> Administration </th>
+						<th> Téléphone </th>
+						<th> Fax </th>
+						<th> Email</th>
+						<th> Bp </th>
+						<th> Adresse </th>
+						<th> Regroupement </th>
+						<th> Type </th>
+						<th> Actions </th>
+					</tr>
+					<tr *ngFor="let s of structureEdus | paginate: { itemsPerPage: 10, currentPage: p }">
+						<td>{{s.libelleStructureEdu}}</td>
+						<td>
+							<select name="codeRegroupement" [(ngModel)]="s.codeStructureEdu" disabled>
+								<option *ngFor="let a of administrations" [ngValue]="a.codeAdministration">
+									{{a.nomAdministration}}
+								</option>
+							</select>
+						</td>
+						<td>{{s.telStructureEdu}}</td>
+						<td>{{s.siteWebStructureEdu}}</td>
+						<td>{{s.emailStructureEdu}}</td>
+						<td>{{s.bpStructureEdu}}</td>
+						<td>{{s.adresseStructureEdu}}</td>
+						<td>
+							<select name="codeRegroupement" [(ngModel)]="s.codeRegroupement" disabled>
+								<option *ngFor="let r of regroupements" [ngValue]="r.codeRegroupement">
+									{{r.libelleRegroupement}}
+								</option>
+							</select>
+						</td>
+						<td>
+							<select name="codeTypeStructureEdu" [(ngModel)]="s.codeTypeStructureEdu" disabled>
+								<option [ngValue]="null"></option>
+								<option *ngFor="let ts of typeStructureEdus" [ngValue]="ts.codeTypeStructureEdu">
+									{{ts.libelleTypeStructureEdu}}
+								</option>
+						</select>
+						</td>
+						<td class="actions">
+							<!-- <a class="on-default" (click)="detailsStructureEdu(s.codeStructureEdu)"> <i class="fa fa-eye"></i></a>&nbsp; -->
+							<a class="on-default edit-row" (click)="editStructureEdu(s.codeStructureEdu)"> <i class="fa fa-pencil"></i></a>&nbsp;
+							<a [swal]="deleteAd">
+								<i class="fa fa-trash-o"></i>
+							</a>
+							<swal #deleteAd title="Supprimer {{s.libelleStructureEdu}}?" text="Confirmer la suppression de l'élément"
+								type="question" icon="warning" [showCancelButton]="true"
+								[focusCancel]="true" (confirm)="deleteStructureEdu(s.codeStructureEdu);">
+							</swal>
+						</td>
+					</tr>
+				</table>
+				</div>
+				<div class="row" *ngIf="mode === 1">
+					<div class="col-sm-7" style="text-align: center">
+						<!-- pager -->
+						<pagination-controls (pageChange)="p = $event"></pagination-controls>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+<!-- ************************************** Création *************************************************** -->
+	<div class="row" *ngIf="mode === 2 || mode === 3">
+		<div class="box">
+	
+			    <div class="box-header">
+			        <h4>{{header}} </h4>
+			        <button type="button" (click)="close()">&times;</button>
+				</div>
+				
+			    <div class="box-body" *ngIf="mode === 2">
+					<div class="col-sm-12">
+						<form *ngIf="step === 1" name="editForm" novalidate (ngSubmit)="save()" #editForm="ngForm">
+							<h4 style="text-align: center;">Structure éducative</h4>
+							<div class="col-sm-6">
+								<label>Libellé</label>
+								<input class="form-control" type="text" name="libelleStructureEdu"
+						            		[(ngModel)]="structureEdu.libelleStructureEdu" />
+							</div>
+							<div class="col-sm-6">
+								<label>Tel</label>
+								<input class="form-control" type="tel" name = "telStructureEdu"
+							                [(ngModel)]="structureEdu.telStructureEdu" />
+							</div>
+							<div class="col-sm-6">
+								<label>Fax</label>
+								<input class="form-control" type="text" name="siteWebStructureEdu"
+							                [(ngModel)]="structureEdu.siteWebStructureEdu"  />
+							</div>
+							<div class="col-sm-6">
+								<label>Email</label>
+								<input class="form-control" type="email" name="emailStructureEdu"
+							                [(ngModel)]="structureEdu.emailStructureEdu"  />
+							</div>
+							<div class="col-sm-6">
+								<label>Bp</label>
+								<input class="form-control" type="text" name="bpStructureEdu"
+							                [(ngModel)]="structureEdu.bpStructureEdu"  />
+							</div>
+							<div class="col-sm-6">
+								<label>Adresse</label>
+								<input class="form-control" type="text" name="adresseStructureEdu"
+							                [(ngModel)]="structureEdu.adresseStructureEdu"  />
+							</div>
+							<div class="col-sm-6">
+								<label>Regroupement:</label> &nbsp;
+								<select name="codeRegroupement" [(ngModel)]="regSelected" required>
+									<option [ngValue]="null"></option>
+									<option *ngFor="let r of regroupements" [ngValue]="r.codeRegroupement">
+										{{r.libelleRegroupement}}
+									</option>
+								</select>
+							</div>
+							<div class="col-sm-6">
+								<label>Type: </label> &nbsp;
+								<select name="codeTypeStructureEdu" [(ngModel)]="structureEdu.codeTypeStructureEdu" required>
+									<option [ngValue]="null"></option>
+									<option *ngFor="let ts of typeStructureEdus" [ngValue]="ts.codeTypeStructureEdu">
+										{{ts.libelleTypeStructureEdu}}
+									</option>
+								</select>
+							</div>
+							<div class="col-sm-12">
+								<button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="close()">
+						            <span class="fa fa-ban"></span>&nbsp;<span>Retour</span>
+						        </button>
+								<button type="submit" class="btn btn-primary" [disabled]="editForm.form.invalid" >
+									<span class="fa fa-save"></span>&nbsp;<span>Enregistrer</span>
+								</button>
+							</div>
+						</form>
+						<form *ngIf="step === 2" name="editForm" novalidate (ngSubmit)="saveAdministration()" #editForm="ngForm">
+							<h4 style="text-align: center;">Administration</h4>
+							<div class="col-sm-6">
+								<label>Structure éducative</label>
+								<select name="codeStructEdu" [(ngModel)]="codeStructEdu" disabled>
+									<option *ngFor="let s of structureEdus" [ngValue]="s.codeStructureEdu">
+										{{s.libelleStructureEdu}}
+									</option>
+								</select>
+							</div>
+							<div class="col-sm-6">
+								<label>Code administration pays</label>
+								<input class="form-control" type="number" name="codeAdministrationPays"
+						            		[(ngModel)]="administration.codeAdministrationPays" />
+							</div>
+							<div class="col-sm-6">
+								<label>Nom</label>
+								<input class="form-control" type="text" name = "nomAdministration"
+							                [(ngModel)]="administration.nomAdministration" />
+							</div>
+							<div class="col-sm-6">
+								<label>Téléphone</label>
+								<input class="form-control" type="text" name="telAdministration"
+							                [(ngModel)]="administration.telAdministration"  />
+							</div>
+							<div class="col-sm-6">
+								<label>Fax</label>
+								<input class="form-control" type="text" name="faxAdministration"
+							                [(ngModel)]="administration.faxAdministration"  />
+							</div>
+							<div class="col-sm-6">
+								<label>Email</label>
+								<input class="form-control" type="text" name="emailAdministration"
+							                [(ngModel)]="administration.emailAdministration"  />
+							</div>
+							<div class="col-sm-6">
+								<label>Bp</label>
+								<input class="form-control" type="text" name="bpAdministration"
+							                [(ngModel)]="administration.bpAdministration"  />
+							</div>
+							<div class="col-sm-6">
+								<label>Adresse</label>
+								<input class="form-control" type="text" name="adresseAdministration"
+							                [(ngModel)]="administration.adresseAdministration"  />
+							</div>
+							<div class="col-sm-6">
+								<label>Statut</label>
+								<select class="form-control" name="codeTypeStatutEntite" [(ngModel)]="administration.codeTypeStatutEntite" required>
+										<option [ngValue]="null"></option>
+										<option *ngFor="let t of typeStatutEntites; trackBy: trackTypeStatutEntiteById"
+											[ngValue]="t.codeTypeStatutEntite">
+											{{t.libelleTypeStatutEntite}}
+										</option>
+								</select>
+							</div>
+							<div class="col-sm-12">
+								<button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="close()">
+						            <span class="fa fa-ban"></span>&nbsp;<span>Retour</span>
+						        </button>
+								<button *ngIf="mode === 2" type="submit" class="btn btn-primary" [disabled]="editForm.form.invalid" >
+									<span class="fa fa-save"></span>&nbsp;<span>Enregistrer</span>
+								</button>
+							</div>
+						</form>
+				</div>
+			</div>
+<!--  *************************************** Edition ************************************** -->
+			<div class="box-body" *ngIf="mode === 3">
+					<div class="col-sm-12">
+						<form name="editForm" novalidate (ngSubmit)="edit()" #editForm="ngForm">
+							<h4 style="text-align: center;">Structure éducative</h4>
+							<div class="col-sm-6">
+								<label>Libellé</label>
+								<input class="form-control" type="text" name="libelleStructureEdu"
+						            		[(ngModel)]="structureEdu.libelleStructureEdu" />
+							</div>
+							<div class="col-sm-6">
+								<label>Téléphone</label>
+								<input class="form-control" type="text" name = "telStructureEdu"
+							                [(ngModel)]="structureEdu.telStructureEdu" />
+							</div>
+							<div class="col-sm-6">
+								<label>Fax</label>
+								<input class="form-control" type="text" name="siteWebStructureEdu"
+							                [(ngModel)]="structureEdu.siteWebStructureEdu"  />
+							</div>
+							<div class="col-sm-6">
+								<label>Email</label>
+								<input class="form-control" type="email" name="emailStructureEdu"
+							                [(ngModel)]="structureEdu.emailStructureEdu"  />
+							</div>
+							<div class="col-sm-6">
+								<label>Bp</label>
+								<input class="form-control" type="text" name="bpStructureEdu"
+							                [(ngModel)]="structureEdu.bpStructureEdu"  />
+							</div>
+							<div class="col-sm-6">
+								<label>Adresse</label>
+								<input class="form-control" type="text" name="adresseStructureEdu"
+							                [(ngModel)]="structureEdu.adresseStructureEdu"  />
+							</div>
+							<div class="col-sm-6">
+								<label>Regroupement:</label> &nbsp;
+								<select name="codeRegroupement" [(ngModel)]="structureEdu.codeRegroupement" required>
+									<option [ngValue]="null"></option>
+									<option *ngFor="let r of regroupements" [ngValue]="r.codeRegroupement">
+										{{r.libelleRegroupement}}
+									</option>
+								</select>
+							</div>
+							<div class="col-sm-6">
+								<label>Type: </label> &nbsp;
+								<select name="codeTypeStructureEdu" [(ngModel)]="structureEdu.codeTypeStructureEdu" required>
+									<option [ngValue]="null"></option>
+									<option *ngFor="let ts of typeStructureEdus" [ngValue]="ts.codeTypeStructureEdu">
+										{{ts.libelleTypeStructureEdu}}
+									</option>
+								</select>
+							</div>
+							<!-- <h4 style="text-align: center;">Administration</h4>
+							<div class="col-sm-6">
+								<label>Code</label>
+								<input class="form-control" type="number" name="codeAdministrationPays"
+						            		[(ngModel)]="administration.codeAdministrationPays" />
+							</div>
+							<div class="col-sm-6">
+								<label>Nom</label>
+								<input class="form-control" type="text" name = "nomAdministration"
+							                [(ngModel)]="administration.nomAdministration" />
+							</div>
+							<div class="col-sm-6">
+								<label>Téléphone</label>
+								<input class="form-control" type="text" name="telAdministration"
+							                [(ngModel)]="administration.telAdministration"  />
+							</div>
+							<div class="col-sm-6">
+								<label>Fax</label>
+								<input class="form-control" type="text" name="faxAdministration"
+							                [(ngModel)]="administration.faxAdministration"  />
+							</div>
+							<div class="col-sm-6">
+								<label>Email</label>
+								<input class="form-control" type="text" name="emailAdministration"
+							                [(ngModel)]="administration.emailAdministration"  />
+							</div>
+							<div class="col-sm-6">
+								<label>Bp</label>
+								<input class="form-control" type="text" name="bpAdministration"
+							                [(ngModel)]="administration.bpAdministration"  />
+							</div>
+							<div class="col-sm-6">
+								<label>Adresse</label>
+								<input class="form-control" type="text" name="adresseAdministration"
+							                [(ngModel)]="administration.adresseAdministration"  />
+							</div>
+							<div class="col-sm-6">
+								<label>Statut</label>
+								<select class="form-control" name="codeTypeStatutEntite" [(ngModel)]="administration.codeTypeStatutEntite" required>
+										<option [ngValue]="null"></option>
+										<option *ngFor="let t of typeStatutEntites; trackBy: trackTypeStatutEntiteById"
+											[ngValue]="t.codeTypeStatutEntite">
+											{{t.libelleTypeStatutEntite}}
+										</option>
+								</select>
+							</div> -->
+							<div class="col-sm-12">
+								<button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="close()">
+						            <span class="fa fa-ban"></span>&nbsp;<span>Retour</span>
+						        </button>
+								<button type="submit" class="btn btn-primary" [disabled]="editForm.form.invalid" >
+									<span class="fa fa-save"></span>&nbsp;<span>Enregistrer</span>
+								</button>
+							</div>
+							</form>
+					</div>
+			    </div>
+	</div>
+	
+</div>

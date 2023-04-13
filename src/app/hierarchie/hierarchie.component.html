@@ -1,0 +1,219 @@
+<!-- ******************************** Liste **************************** -->
+<div clas="row">
+	<ul class="nav nav-tabs">
+		<li class="dropdown">
+			<a class="dropdown-toggle" data-toggle="dropdown" [routerLink] = "['/regroupement']" >Localités</a>
+		</li>
+		<li class="active">
+		  	<a>Chaines</a>
+		</li>
+		<li class="dropdown">
+		  	<a class="dropdown-toggle" data-toggle="dropdown" [routerLink] = "['/liaison']">Liaisons</a>
+		</li>
+	</ul> <br>
+	<!-- <div clas="row" *ngIf="hierarchies && mode === 1" > -->
+	<div class="row" *ngIf="mode === 1" >
+		
+<!-- *********************************************************************************************** -->
+			<div class="col-md-4 left">
+				<div class="box">
+					<div class="box-header">
+						<h3 class="box-title"> Type Secteur </h3>
+					</div>
+					<div class="box-body">
+						<div class="row">
+							<div class="col-sm-6 float-right">
+								<div class="dataTables_filter">
+									<button id="addToTable" class="btn btn-primary" placement="bottom" (click)="getRouteTypeSecteur()">
+										<i class="fa fa-plus"></i>
+									</button>
+								</div>
+							</div>
+						</div>
+						<table class="table table-bordered table-striped">
+							<tr>
+								<th>Libellé</th>
+								<th>Ordre </th>
+								<th>Actions</th>
+							</tr>
+							<tr *ngFor="let t of typeSecteurs | paginate: {id:'ps', itemsPerPage: 10, currentPage: p }">
+								<td> {{t.libelleTypeSecteur}}</td>
+								<td> {{t.ordreTypeSecteur}}</td>
+								<td class="actions">
+									<a class="on-default edit-row" (click)="getEditTypeSecteur(t)"> <i class="fa fa-pencil"></i></a>&nbsp;
+									<a [swal]="deleteSwal"> <i class="fa fa-trash-o"></i> </a>
+									<swal #deleteSwal title="Supprimer?" text="Confirmer la suppression de ce type"
+											type="question" icon="warning" [showCancelButton]="true"
+											[focusCancel]="true" (confirm)="deleteTypeSecteur(t)">
+									</swal>
+								</td>
+							</tr>
+						</table>
+					</div>
+					<div class="row" style="text-align: center">
+						<pagination-controls id="ps" (pageChange)="p = $event"> </pagination-controls>
+					</div>
+				</div>
+			</div>
+<!-- *********************************************************************************************** -->
+			<div class="col-md-8 right">
+				<div class="box">
+					<div class="box-header">
+						<h3 class="box-title"> Type de chaines </h3>
+					</div>
+					<div class="box-body">
+						<div class="row">
+							<div class="col-sm-6 float-right">
+								<div class="dataTables_filter">
+									<button id="addToTable" class="btn btn-primary" placement="bottom" (click)="getRouteTypeChaineLoc()">
+										<i class="fa fa-plus"></i>
+									</button>
+								</div>
+							</div>
+						</div>
+						<table class="table table-bordered table-striped">
+							<tr>
+								<th>Libellé</th>
+								<th>Ordre </th>
+								<th> Type de secteur </th>
+								<th>Actions</th>
+							</tr>
+							<tr *ngFor="let t of typeChaineLocs | paginate: {id:'pt', itemsPerPage: 10, currentPage: p }">
+								<td> {{t.libelleTypeChaineLoc}}</td>
+								<td> {{t.ordreTypeChaineLoc}}</td>
+								<!-- <td> {{t.codeTypeSecteur}} </td> -->
+								<td> 
+									<select name="codeTypeSecteur" [(ngModel)]="t.codeTypeSecteur" disabled>
+										<option *ngFor="let ts of typeSecteurs" [ngValue]="ts.codeTypeSecteur"> {{ts.libelleTypeSecteur}} </option>
+									</select> 
+								</td>
+								<!-- <td *ngIf="typeSecteurs">{{typeSecteurs.libelleTypeSecteur}}</td> -->
+								<td class="actions">
+									<a class="on-default edit-row" (click)="getEditTypeChaineLoc(t)"> <i class="fa fa-pencil"></i></a>&nbsp;
+									<a [swal]="deleteSwal"> <i class="fa fa-trash-o"></i> </a>
+									<swal #deleteSwal title="Supprimer?" text="Confirmer la suppression de ce type"
+											type="question" icon="warning" [showCancelButton]="true"
+											[focusCancel]="true" (confirm)="deleteTypeChaineLoc(t)">
+									</swal>
+								</td>
+							</tr>
+						</table>
+					</div>
+					<div class="row" style="text-align: center">
+						<pagination-controls id="pt" (pageChange)="p = $event"> </pagination-controls>
+					</div>
+				</div>
+			</div>
+		</div>
+<!-- *********************************************************************************************** -->
+		<div class ="row"  *ngIf="mode === 1" >
+			<!-- <div class="col-sm-8"> -->
+				<div class="box">
+					<div class="box-header">
+						<h3 class="box-title"> Liste des chaines de localités </h3>
+					</div>
+					<!-- /.box-header -->
+					<div class="box-body">
+						<div class="row">
+							<div class="col-sm-6 float-right">
+								<div class="dataTables_filter">
+									<button id="addToTable" class="btn btn-primary"
+										placement="bottom" (click)="createHierarchie()">
+										<i class="fa fa-plus"></i>
+									</button>
+									&nbsp;
+									<input type="number" [(ngModel)]="hierarchieFilter.id.codeTypeChaineLoc" placeholder="numéro du type de chaine">
+								</div>
+							</div>
+						</div>
+						<table class="table table-bordered table-striped">
+							<tr>
+								<th>Chaine</th>
+								<th>Type de localité </th>
+								<th> Niveau </th>
+								<th>Actions</th>
+							</tr>
+							<tr *ngFor="let h of hierarchies | filterBy: hierarchieFilter | paginate: {id:'pc', itemsPerPage: 10, currentPage: p1 }">
+								<td> 
+									<select name="codeTypeChaineLoc" [(ngModel)]="h.id.codeTypeChaineLoc" disabled>
+										<option *ngFor="let tc of typeChaineLocs" [ngValue]="tc.codeTypeChaineLoc"> {{tc.libelleTypeChaineLoc}} </option>
+									</select> 
+								</td>
+								<td> 
+									<select name="codeTypeRegroupement" [(ngModel)]="h.id.codeTypeRegroupement" disabled>
+										<option *ngFor="let tr of typeRegroupements" [ngValue]="tr.codeTypeRegroupement"> {{tr.libelleTypeRegroupement}} </option>
+									</select> 
+								</td>
+								
+								<!-- <td *ngIf="typeChaineLocs"> {{typeChaineLocs.libelleTypeChaineLoc}}</td>
+								<td *ngIf="typeRegroupements"> {{typeRegroupements.libelleTypeRegroupement}}</td> -->
+								<td>{{h.niveauHierarchie}}</td>
+								<td class="actions">
+									<!-- <a class="on-default" (click)="detailsHierarchie(h)"> <i class="fa fa-eye"></i></a>&nbsp; -->
+									<a class="on-default edit-row" (click)="editHierarchie(h)"> <i class="fa fa-pencil"></i></a>&nbsp;
+									<a [swal]="deleteSwal"> <i class="fa fa-trash-o"></i> </a>
+										<swal #deleteSwal title="Supprimer?" text="Confirmer la suppression de ce type"
+											type="question" icon="warning" [showCancelButton]="true"
+											[focusCancel]="true" (confirm)="deleteHierarchie(h)">
+									  	</swal>
+								</td>
+							</tr>
+							<!-- <tr>
+								<td><span>Chaine</span></td>
+								<td><span>Type de localité </span></td>
+								<td><span> Niveau </span></td>
+								<td>Actions</td>
+							</tr> -->
+						</table>
+					</div>
+					<div class="row" style="text-align: center">
+						<pagination-controls id="pc" (pageChange)="p1 = $event"> </pagination-controls>
+					</div>
+				</div>
+		<!-- </div> -->
+	</div>
+	
+<!-- ************************************** Création ou modification ***************************************** -->
+	<div class="row" *ngIf="mode === 2 || mode === 3">
+		<div class="box">
+			    <div class="box-header">
+			        <h4>{{header}} </h4>
+			        <button type="button" (click)="close()">&times;</button>
+			    </div>
+			    <div class="box-body">
+			    	<div class="form-group">
+			    		<label> Type chaine </label>
+			    		<select  class="form-control" name="codeTypeChaineLoc" [(ngModel)]="hierarchie.id.codeTypeChaineLoc">
+									<option [ngValue]="null"></option>
+									<option *ngFor="let typ of typeChaineLocs" [ngValue]="typ.codeTypeChaineLoc">
+										{{typ.libelleTypeChaineLoc}}</option>
+						</select>
+			    	</div>
+			    	<div class="form-group">
+			            <label>Type de localité</label>
+			            <select  class="form-control" name="codeTypeRegroupement" [(ngModel)]="hierarchie.id.codeTypeRegroupement">
+									<option [ngValue]="null"></option>
+									<option *ngFor="let typ of typeRegroupements" [ngValue]="typ.codeTypeRegroupement">
+										{{typ.libelleTypeRegroupement}}</option>
+						</select>
+			        </div>
+			        <div class="form-group">
+			            <label> Niveau </label>
+			            <input type="number" class="form-control" name="niveauHierarchie"
+			                [(ngModel)]="hierarchie.niveauHierarchie"  />
+			        </div>
+			      </div> 
+			      <div>
+			        <button type="button" class="btn btn-secondary" (click)="close()" >
+			            <span class="fa fa-save"></span>&nbsp;<span>Retour</span>
+			        </button>
+			        <button *ngIf="mode === 2" type="button" class="btn btn-primary" (click)="save()" > 
+			            <span class="fa fa-save"></span>&nbsp;<span>Enregistrer</span>
+			        </button>
+			        <button *ngIf="mode === 3" type="button" class="btn btn-primary" (click)="edit()" > 
+			            <span class="fa fa-save"></span>&nbsp;<span>Enregistrer</span>
+			        </button>
+			    </div>
+		</div>
+	</div>
+</div>

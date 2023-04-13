@@ -1,0 +1,97 @@
+<div class="box">
+	<div class="box-header">
+		<h3 class="box-title" *ngIf="employes">Modifier le congé de l'employé
+			{{employes.nomEmploye}} {{employes.prenomEmploye}}</h3>
+	</div>
+	<!-- /.box-header -->
+	<div class="box-body">
+		<form name="editForm" novalidate (ngSubmit)="save()"
+			#editForm="ngForm" *ngIf="!success">
+
+			<div class="alert alert-danger" *ngIf="errorEmpExists">
+				<strong>Cet employé a déjà un congé enregistré à cette
+					date!</strong> Veuillez changer de date début.
+			</div>
+			<div class="modal-body">
+				<!-- <div class="form-group">
+					Employé <br> <label class="form-control-label">Nom -
+						prénom </label> <select class="form-control" name="codeEmploye"
+						#codeEmployeInput="ngModel"
+						[(ngModel)]="employeConge.id.codeEmploye" [disabled]="hide">
+						<option [ngValue]="null"></option>
+						<option
+							*ngFor="let employeOption of employes; trackBy: trackEmployeById"
+							[ngValue]="employeOption.codeEmploye">
+							{{employeOption.nomEmploye}} - {{employeOption.prenomEmploye}}</option>
+					</select>
+				</div> -->
+				<div class="form-group">
+					<label class="form-control-label">Type de congé</label> <select
+						class="form-control" name="codeTypeMotifConge"
+						[(ngModel)]="employeConge.id.codeTypeMotifConge" required>
+						<option [ngValue]="null"></option>
+						<option
+							*ngFor="let typeMotifCongeOption of typeMotifConges; trackBy: trackTypeMotifCongeById"
+							[ngValue]="typeMotifCongeOption.codeTypeMotifConge">
+							{{typeMotifCongeOption.libelleTypeMotifConge}}</option>
+					</select>
+				</div>
+				<div class="form-group">
+					<label class="form-control-label">Début de congé</label> <input
+						type="date" class="form-control" name="dateDebutConge"
+						#dateDebutCongeInput="ngModel"
+						[(ngModel)]="employeConge.id.dateDebutConge" required /> <small
+						class="alert alert-danger" *ngIf="errorDateExists"> SVP
+						choisissez une autre date. </small>
+				</div>
+				<div class="form-group">
+					<label class="form-control-label">Fin de congé</label> <input
+						type="date" class="form-control" name="dateFinConge"
+						[(ngModel)]="employeConge.dateFinConge" />
+				</div>
+				<div class="form-group">
+					<label class="form-control-label">Durée</label> <input
+						type="number" class="form-control" name="dureeConge"
+						[(ngModel)]="employeConge.dureeConge" />
+				</div>
+				<div class="form-group">
+					<label class="form-control-label">Reférence du début</label> <input
+						type="text" class="form-control" name="refDebutConge"
+						[(ngModel)]="employeConge.refDebutConge" />
+				</div>
+				<div class="form-group">
+					<label class="form-control-label">Reférence de fin</label> <input
+						type="text" class="form-control" name="refFinConge"
+						[(ngModel)]="employeConge.refFinConge" />
+				</div>
+				<div class="form-group">
+					<label class="form-control-label">Commentaire de début</label>
+					<textarea class="form-control" name="comDebutConge"
+						[(ngModel)]="employeConge.comDebutConge"> </textarea>
+					<!-- <button (click)="employeConge.comDebutConge=''">Clear</button> -->
+				</div>
+				<div class="form-group">
+					<label class="form-control-label">Commentaire de fin de
+						congé</label>
+					<textarea class="form-control" name="comFinConge"
+						[(ngModel)]="employeConge.comFinConge" rows="10"> </textarea>
+					<!-- <button (click)="employeConge.comFinConge=''">Clear</button> -->
+				</div>
+				<!-- <div *ngIf="codeEmployeInput.dirty && dateDebutCongeInput.invalid">
+								                <small class="form-text text-danger">
+								                    Ce congé existe déjà.
+								                </small>
+								        </div> -->
+			</div>
+			<div>
+				<button type="button" class="btn btn-secondary"	(click)="clear()">
+					<span class="fa fa-ban"></span>&nbsp;<span>Retour</span>
+				</button>
+				<button type="submit" class="btn btn-primary"
+					[disabled]="editForm.form.invalid">
+					<span class="fa fa-save"></span>&nbsp;<span>Enregistrer</span>
+				</button>
+			</div>
+		</form>
+	</div>
+</div>

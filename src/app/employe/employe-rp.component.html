@@ -1,0 +1,197 @@
+<div>
+	<div clas="row">
+		<div class="col-md-8 right">
+			
+			<label> Chaine: </label>
+			<select [(ngModel)]="codeTypeChaineLoc" 
+				(ngModelChange)="getChaine($event)">
+					<option [ngValue]="null"></option>
+					<option *ngFor="let t of typeChaineLocs" [ngValue]="t.codeTypeChaineLoc">
+						{{t.libelleTypeChaineLoc}}
+					</option>
+			</select> &nbsp;
+			<div id="myTreeT"  #tree style="width:400px;border: 1px solid">
+				<ejs-treeview [showCheckBox]="true" [fields]="treeF" (nodeChecked)="nodeChecked($event)"
+				(nodeSelected)="nodeSelected($event)" [allowDragAndDrop]="false" [allowEditing]="false"></ejs-treeview>
+			</div> &nbsp;
+		</div>
+		<div class="col-md-4 left" *ngIf = "searchMode === 1 || searchMode === 2" style="border: 1px solid">
+				<ul *ngIf = "searchMode === 1 && etablissements">
+					<li *ngFor="let e of etablissements">
+						<span (click)="getCodeE(e)"> {{e.nomEtablissement}} </span>
+					</li>
+				</ul>
+				<ul *ngIf = "searchMode === 2 && administrations">
+					<li *ngFor="let a of administrations">
+						<span (click)="getCodeA(a)"> {{a.nomAdministration}} </span>
+					</li>
+				</ul>
+		</div>
+	</div> <br>
+	 <div class="row">
+	 	<div class="col-md-8 right">
+			<label>Option de recherche: </label> &nbsp; <label> Année cible: </label> <input type="text" name=""> <br>
+			<label>Secteur: </label> <input type="checkbox" name=""> <label> Préscolaire </label> &nbsp;
+			<input type="checkbox" name=""> <label> Fondamental </label> &nbsp;
+			<input type="checkbox" name=""> <label> Post-Fondamental Général </label> &nbsp;
+			<input type="checkbox" name=""> <label> Post-Fondamental Technique </label> &nbsp;
+			<input type="checkbox" name=""> <label> Secondaire Technique A3/A4 </label> &nbsp;
+			<input type="checkbox" name=""> <label> Tout </label> <br>
+			<label>Etablissement: </label> &nbsp; <label> Nom établissement: </label> <input type="text" name=""> &nbsp;
+		  	 <label>Identifiant établissement: </label> <input type="text" name=""> &nbsp;
+			<label>Code administratif: </label> <input type="number" name=""> <br>
+			<label>Employé: </label> &nbsp; <label> N° Matricule: </label> <input type="text" name="matriculeEmploye" [(ngModel)]="employes.matriculeEmploye" /> &nbsp;
+	      	<label>Nom: </label> <input type="text" name="nomEmploye" [(ngModel)]="employes.nomEmploye" /> &nbsp;
+	      	<label>Date d'engagement: </label> <input type="date"  name="dateEngEmploye" [(ngModel)]="employes.dateEngEmploye" />  &nbsp;
+	      	
+	      	<label>Satut: </label> <select name="codeTypeStatut" [(ngModel)]="employeStatut.id.codeTypeStatut" >
+	                	<option [ngValue]="null"></option>
+	                	<option *ngFor="let typeOption of typeStatuts" 
+	                	[ngValue]="typeOption.codeTypeStatut" > {{typeOption.libelleTypeStatut}} </option> 
+	            	</select> <br>
+	      	<label>Pathologie: </label> <select name="codeTypePathologie" [(ngModel)]="employePathologie.id.codeTypePathologie">
+	                	<option [ngValue]="null"></option>
+	                	<option *ngFor="let typeOption of typePathologies" 
+	                	[ngValue]="typeOption.codeTypePathologie" > {{typeOption.libelleTypePathologie}} </option> 
+	            	</select> &nbsp;
+	      	<label>Etat-civil: </label> <select name="codeTypeEtatCivil" [(ngModel)]="employeEtatCivil.id.codeTypeEtatCivil">
+	                	<option [ngValue]="null"></option>
+	                	<option *ngFor="let typeOption of typeEtatCivils" 
+	                	[ngValue]="typeOption.codeTypeEtatCivil" > {{typeOption.libelleTypeEtatCivil}} </option> 
+	            	</select> &nbsp;
+	      	<label>Fonctions: </label> <select name="codeTypeFonction"[(ngModel)]="employeFonction.id.codeTypeFonction" >
+	                	<option [ngValue]="null"></option>
+	                	<option *ngFor="let typeOption of typeFonctions" 
+	                	[ngValue]="typeOption.codeTypeFonction" > {{typeOption.libelleTypeFonction}} </option> 
+	            	</select> &nbsp;
+	      	<label>Diplômes: </label> <select name="codeTypeDiplome" [(ngModel)]="employeDiplome.id.codeTypeDiplome" >
+	                	<option [ngValue]="null"></option>
+	                	<option *ngFor="let typeOption of typeDiplomes" 
+	                	[ngValue]="typeOption.codeTypeDiplome" > {{typeOption.libelleTypeDiplome}} </option> 
+	            	</select> &nbsp;
+	      	<label>Handicap: </label> <select name="codeTypeHandicap" [(ngModel)]="employeHandicap.id.codeTypeHandicap">
+	                	<option [ngValue]="null"></option>
+	                	<option *ngFor="let typeOption of typeHandicaps" 
+	                	[ngValue]="typeOption.codeTypeHandicap" > {{typeOption.libelleTypeHandicap}} </option> 
+	            	</select> <br>
+	      	<label> En poste: </label> <input type="radio" name="choice" value="poste" [(ngModel)]="choiceP"> <label>Oui</label> &nbsp;
+	      							<input type="radio" name="choice" value="noposte" [(ngModel)]="choiceP"> <label>Non</label> &nbsp;
+	      							<input type="radio" name = "choice" value ="tout" [(ngModel)]="choiceP"> <label>Tout</label> &nbsp; 
+	      	
+	   	</div>
+      	<div class="col-md-4 left">
+      		<label>Type de recherche: </label> <select name="codeTypeStatut" [(ngModel)]="employeStatut.id.codeTypeStatut" >
+                	<option [ngValue]="null"></option>
+                	<option *ngFor="let typeOption of typeStatuts" 
+                	[ngValue]="typeOption.codeTypeStatut" > {{typeOption.libelleTypeStatut}} </option> 
+            	</select> &nbsp;
+			<label>Rechercher sur: </label> &nbsp; <input type="radio" (change)="onKey($event)" name="choice" value="administration" > <label>Administrations</label> &nbsp;
+	  		<input type="radio" (change)="onKey($event)" name ="choice" value ="ecole" > <label>Ecoles</label> <br>
+			
+			<button type="reset" (click)="reset()" class="btn fa fa-refresh"></button>
+      		<button type="button" (click)= applySearch() class="btn fa fa-search"></button> 
+      	</div>
+      	
+	</div> &nbsp;
+
+
+	<!-- ******************************** Exemple avec Admin LTE data tables template ******************* -->
+	<div class="box"  *ngIf="employees">
+            <div class="box-header">
+              <h3 class="box-title">Employés</h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+            	<div class="row">
+            		<div class="col-sm-6 right">
+            			<div fxLayout fxLayoutAlign="center center">
+						  <!-- <button id="addToTable" class="btn btn-primary"  placement="bottom" [routerLink] = "['/employe-dialog']"> [ngbTooltip]="addTooltip" [routerLink]="['/', { outlets: { popup: ['employe-dialog'] } }]">
+								<i class="fa fa-plus"></i>
+							</button> -->
+							<button class="on-default" (click)="exportAsExcel()">
+								<i class="fa fa-file-excel-o" style="color:green"></i>
+							</button>
+							 <button class="on-default" (click)="exportAsPDF()">
+							 	<i class="fa fa-file-pdf-o" style="color:red"></i>
+							 </button>
+						</div>
+            		</div>
+				</div>
+              <table id="pdfTable" class="table table-bordered table-striped table-responsive">
+                <thead>
+                <tr>
+                	<th *ngIf="searchMode === 1">Etablissement</th>
+                  	<th *ngIf="searchMode === 2">Administration</th>
+                	<th>N° Matricule</th>
+                  	<th>Nom</th>
+                  	<th>Prénom(s)</th>
+                  	<th>Enseigné?</th>
+                  	<th>Confirmé?</th>
+                  	<th>Date de naissance</th>
+				  	<th>Carte d'identification nationale (CIN)</th>
+				  	<th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+	                <tr *ngFor ="let emp of employees | paginate: { itemsPerPage: 10, currentPage: p }">
+	                	<td *ngIf="searchMode === 1">
+							<select *ngIf="employeEtablissements" name="codeEmploye" [(ngModel)]="emp.codeEmploye" disabled>
+								<option *ngFor="let e of etablissements" [ngValue]="e.codeEtablissement">
+									{{e.nomEtablissement}}
+								</option>
+							</select>
+						</td>
+						<td *ngIf="searchMode === 2">
+							<select name="codeEmploye" [(ngModel)]="emp.codeEmploye" disabled>
+								<option *ngFor="let a of administrations" [ngValue]="a.codeAdministration">
+									{{a.nomAdministration}}
+								</option>
+							</select>
+						</td>
+						<td>{{emp.matriculeEmploye}}</td>
+						<td>{{emp.nomEmploye}}</td>
+						<td>{{emp.prenomEmploye}}</td>
+						<!-- Permet d'afficher oui ou non plutôt que 0 ou 1 -->
+	                    <td> <div *ngIf="emp.enseigneYN;else nonenseigneYN"> Oui </div>
+	                    	<ng-template #nonenseigneYN> Non </ng-template> 
+	                    </td>
+						<td> <div *ngIf="emp.confirmeYN;else nonconfirmeYN"> Oui </div>
+	                    	<ng-template #nonconfirmeYN> Non </ng-template>
+	                	</td>
+						<td>{{emp.dateNaissEmploye| date:'dd/MM/yyyy'}}</td>
+						<td>{{emp.cinEmploye}}</td>
+						<td class="actions">
+							<a class="on-default" [routerLink] ="['/employe-detail', emp.codeEmploye, 'rp']"><i class="fa fa-eye"></i></a> &nbsp;
+							<a class="on-default edit-row" [routerLink]="['/employe-dialog', emp]" ><i class="fa fa-pencil"></i></a> &nbsp;
+							<a [swal]="deleteAd"> <i class="fa fa-trash-o"></i> </a>
+							<swal #deleteAd title="Supprimer {{emp.nomEmploye}} {{emp.prenomEmploye}}?" text="Confirmer la suppression de l'élément"
+								type="question" icon="warning" [showCancelButton]="true"
+								[focusCancel]="true" (confirm)="deleteEmploye(emp.codeEmploye)">
+							</swal>
+						</td>
+	                </tr>
+                </tbody>
+                <tfoot>
+                <tr>
+                	<th *ngIf="searchMode === 1">Etablissement</th>
+                  	<th *ngIf="searchMode === 2">Administration</th>
+                	<th>N° Matricule</th>
+                  	<th>Nom</th>
+                  	<th>Prénom(s)</th>
+                  	<th>Enseigné?</th>
+                  	<th>Confirmé?</th>
+                  	<th>Date de naissance</th>
+				  	<th>Carte d'identification nationale (CIN)</th>
+				  	<th>Actions</th>
+                </tr>
+                </tfoot>
+              </table>
+            </div>
+		</div>
+		<div class="row"  *ngIf="employees">
+			<div class="col-sm-7" style="text-align: center">
+				<!-- pager -->
+				<pagination-controls (pageChange)="p = $event"></pagination-controls>
+			</div>
+		</div>
+</div>

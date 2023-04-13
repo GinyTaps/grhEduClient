@@ -1,0 +1,259 @@
+<div>
+	<!-- <ul class="nav nav-tabs">
+		  <li class="active">
+		  	<a>Administration</a>
+		  </li>
+		  <li class="dropdown">
+		  	<a class="dropdown-toggle" data-toggle="dropdown" [routerLink] = "['/structure-edu']">Structure éducative</a>
+		  </li>
+		</ul> <br> -->
+
+<!-- ********************************** Liste des administrations  ****************************** -->
+	<div clas="row" *ngIf="mode === 1" >
+		<div class="box">
+			<div class="box-header">
+				<h3 class="box-title">{{title}}</h3>
+			</div>
+			<!-- /.box-header -->
+			<div class="box-body">
+				<div class="row">
+					<div class="col-sm-6 float-right">
+						<div class="dataTables_filter">
+							<!-- <label>Search:<input type="search" class="form-control input-sm" placeholder="" aria-controls="example1">
+            				</label> -->
+							<button id="addToTable" class="btn btn-primary"
+								placement="bottom" (click)="createAdministration()">
+								<i class="fa fa-plus"></i>
+							</button>
+						</div>
+					</div>
+				</div>
+				<div class="table-responsive">
+				<table class="table table-bordered table-striped">
+					<tr>
+						<th> Code adminitration pays </th>
+						<th> Nom </th>
+						<th> Téléphone </th>
+						<th> Fax </th>
+						<th> Email</th>
+						<th> Bp </th>
+						<th> Adresse </th>
+						<th> Structure </th>
+						<th> Statut </th>
+						<th> Actions </th>
+					</tr>
+					<tr *ngFor="let ad of administrations | paginate: { itemsPerPage: 10, currentPage: p }">
+						<td>{{ad.codeAdministrationPays}}</td>
+						<td>{{ad.nomAdministration}}</td>
+						<td>{{ad.telAdministration}}</td>
+						<td>{{ad.faxAdministration}}</td>
+						<td>{{ad.emailAdministration}}</td>
+						<td>{{ad.bpAdministration}}</td>
+						<td>{{ad.adresseAdministration}}</td>
+						<td>
+							<select name="codeStructureEdu" [(ngModel)]="ad.codeStructureEdu" disabled>
+								<option *ngFor="let structureEduOption of structureEdus" [ngValue]="structureEduOption.codeStructureEdu">
+									{{structureEduOption.libelleStructureEdu}}
+								</option>
+							</select>
+						</td>
+						<td>
+							<select name="codeTypeStatutEntite" [(ngModel)]="ad.codeTypeStatutEntite" disabled>
+								<option [ngValue]="null"></option>
+								<option *ngFor="let typeStatutEntiteOption of typeStatutEntite trackBy: trackTypeStatutEntiteById"
+									[ngValue]="typeStatutEntiteOption.codeTypeStatutEntite">
+									{{typeStatutEntiteOption.libelleTypeStatutEntite}}
+								</option>
+						</select>
+						</td>
+						<td class="actions">
+							<!-- <a class="on-default" (click)="detailsAdministration(ad.codeAdministration)"> <i class="fa fa-eye"></i></a>&nbsp; -->
+							<a class="on-default edit-row" (click)="editAdministration(ad.codeAdministration)"> <i class="fa fa-pencil"></i></a>&nbsp;
+							<!--a class="on-default remove-row" (click)="deleteAdministration(ad.codeAdministration)"> <i class="fa fa-trash-o"></i></a-->
+							<a [swal]="deleteAd">
+								<i class="fa fa-trash-o"></i>
+							</a>
+							<swal #deleteAd title="Supprimer {{ad.nomAdministration}}?" text="Confirmer la suppression de l'élément"
+								type="question" icon="warning" [showCancelButton]="true"
+								[focusCancel]="true" (confirm)="deleteAdministration(ad.codeAdministration);">
+							</swal>
+						</td>
+					</tr>
+					<!-- <tr>
+						<td><span>Code adminitration pays</span></td>
+						<td><span>Nom </span></td>
+						<td><span>Téléphone</span></td>
+						<td><span>Fax </span></td>
+						<td><span>Email</span></td>
+						<td><span>Bp </span></td>
+						<td><span>Adresse</span></td>
+						<td><span>Structure</span></td>
+						<td><span>Statut </span></td>
+						<td>Actions</td>
+					</tr> -->
+				</table>
+				</div>
+				<div class="row" *ngIf="mode === 1" style="text-align: center">
+					<!-- pager -->
+					<pagination-controls (pageChange)="p = $event"></pagination-controls>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+<!-- ************************************** Création *************************************************** -->
+	<div class="row" *ngIf="mode === 2 || mode === 3">
+		<div class="box">
+	
+			    <div class="box-header">
+			        <h4>{{header}} </h4>
+			        <button type="button" (click)="close()">&times;</button>
+				</div>
+				
+			    <div class="box-body">
+					<div class="col-sm-12">
+						<h4 style="text-align: center;">Administration</h4>
+						<div class="col-sm-6">
+							<label>Code</label>
+							<input class="form-control" type="number" name="codeAdministrationPays"
+					            		[(ngModel)]="administration.codeAdministrationPays" />
+						</div>
+						<div class="col-sm-6">
+							<label>Nom</label>
+							<input class="form-control" type="text" name = "nomAdministration"
+						                [(ngModel)]="administration.nomAdministration" />
+						</div>
+						<div class="col-sm-6">
+							<label>Téléphone</label>
+							<input class="form-control" type="text" name="telAdministration"
+						                [(ngModel)]="administration.telAdministration"  />
+						</div>
+						<div class="col-sm-6">
+							<label>Fax</label>
+							<input class="form-control" type="number" name="faxAdministration"
+						                [(ngModel)]="administration.faxAdministration"  />
+						</div>
+						<div class="col-sm-6">
+							<label>Email</label>
+							<input class="form-control" type="text" name="emailAdministration"
+						                [(ngModel)]="administration.emailAdministration"  />
+						</div>
+						<div class="col-sm-6">
+							<label>Bp</label>
+							<input class="form-control" type="text" name="bpAdministration"
+						                [(ngModel)]="administration.bpAdministration"  />
+						</div>
+						<div class="col-sm-6">
+							<label>Adresse</label>
+							<input class="form-control" type="text" name="adresseAdministration"
+						                [(ngModel)]="administration.adresseAdministration"  />
+						</div>
+						<div class="col-sm-6">
+							<label>Structure</label>
+							<select class="form-control" name="codeStructureEdu" [(ngModel)]="administration.codeStructureEdu" required>
+									<option [ngValue]="null"></option>
+									<option *ngFor="let s of structureEdus"
+										[ngValue]="s.codeStructureEdu">
+										{{s.libelleStructureEdu}}
+									</option>
+							</select>
+						</div>
+						<div class="col-sm-6">
+							<label>Statut</label>
+							<select class="form-control" name="codeTypeStatutEntite" [(ngModel)]="administration.codeTypeStatutEntite" required>
+									<option [ngValue]="null"></option>
+									<option *ngFor="let typeStatutEntiteOption of typeStatutEntite; trackBy: trackTypeStatutEntiteById"
+										[ngValue]="typeStatutEntiteOption.codeTypeStatutEntite">
+										{{typeStatutEntiteOption.libelleTypeStatutEntite}}
+									</option>
+							</select>
+						</div>
+						<div class="col-sm-12">
+							<button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="close()">
+						    	<span class="fa fa-ban"></span>&nbsp;<span>Retour</span>
+						    </button>
+							<button *ngIf="mode === 2" type="button" class="btn btn-primary" (click)="save()" >
+								<span class="fa fa-save"></span>&nbsp;<span>Enregistrer</span>
+							</button>
+							
+							<button *ngIf="mode === 3" type="button" class="btn btn-primary" (click)="edit()" > 
+								<span class="fa fa-save"></span>&nbsp;<span>Enregistrer</span>
+							</button>
+						</div>
+					</div>
+			    	<!--div class="table-responsive">
+						<table class="table table-bordered table-striped">
+				            <tr>
+				            </tr>
+				            	<td><span>Code adminitration pays</span></td>
+								<td><span>Nom </span></td>
+								<td><span>Téléphone</span></td>
+								<td><span>Fax </span></td>
+								<td><span>Email</span></td>
+								<td><span>Bp </span></td>
+								<td><span>Adresse</span></td>
+								<td><span>Structure</span></td>
+								<td><span>Statut </span></td>
+				            <tr>
+					            <td>
+					            	<input type="number" name="codeAdministrationPays"
+					            		[(ngModel)]="administration.codeAdministrationPays" />
+					        	</td>
+						        <td class="form-group">
+						            <input type="text" name = "nomAdministration"
+						                [(ngModel)]="administration.nomAdministration" />
+						        </td>
+						        <td> 
+						        	<input type="text" name="telAdministration"
+						                [(ngModel)]="administration.telAdministration"  />
+						        </td>
+						        <td>
+						            <input type="number" name="faxAdministration"
+						                [(ngModel)]="administration.faxAdministration"  />
+						        </td>
+						        <td>
+						            <input type="text" name="emailAdministration"
+						                [(ngModel)]="administration.emailAdministration"  />
+						        </td>
+						        <td>
+						            <input type="text" name="bpAdministration"
+						                [(ngModel)]="administration.bpAdministration"  />
+						        </td>
+						        <td>
+						            <input type="text" name="adresseAdministration"
+						                [(ngModel)]="administration.adresseAdministration"  />
+						        </td>
+						        <td>
+						            <select name="codeTypeStructureEdu" [(ngModel)]="administration.codeTypeStructureEdu">
+											<option [ngValue]="null"></option>
+											<option *ngFor="let typeStructureEduOption of typeStructureEdu trackBy: trackTypeStructureEduById"
+												[ngValue]="typeStructureEduOption.codeTypeStructureEdu">
+												{{typeStructureEduOption.libelleTypeStructureEdu}}
+											</option>
+									</select>
+						        </td>
+						        <td>
+						            <select name="codeTypeStatutEntite" [(ngModel)]="administration.codeTypeStatutEntite">
+											<option [ngValue]="null"></option>
+											<option *ngFor="let typeStatutEntiteOption of typeStatutEntite; trackBy: trackTypeStatutEntiteById"
+												[ngValue]="typeStatutEntiteOption.codeTypeStatutEntite">
+												{{typeStatutEntiteOption.libelleTypeStatutEntite}}
+											</option>
+									</select>
+						        </td>
+					       </tr>
+				       </table>
+			      </div> 
+			      <div>
+			        <button *ngIf="mode === 2" type="button" class="wrapper" (click)="save()" >
+			            <span class="fa fa-save"></span>
+			        </button>
+			        
+			        <button *ngIf="mode === 3" type="button" class="wrapper" (click)="edit()" > 
+			            <span class="fa fa-save"></span>
+			        </button-->
+			    </div>
+		</div>
+	</div>
+	
+</div>

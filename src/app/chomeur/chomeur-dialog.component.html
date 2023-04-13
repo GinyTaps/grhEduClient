@@ -1,0 +1,213 @@
+<form name="editForm" novalidate (ngSubmit)="save()" #editForm="ngForm" *ngIf="mode" >
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="chomeurLabel" >Créer un chomeur</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <div class="form-group" [hidden]="!chomeur.codeChomeur">
+            <label >ID</label>
+            <input type="number" class="form-control" name="codeChomeur"
+                   [(ngModel)]="chomeur.codeChomeur" readonly />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label">Nom</label>
+            <input type="text" class="form-control" name="nomChomeur"
+                [(ngModel)]="chomeur.nomChomeur" />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" >Prénom</label>
+            <input type="text" class="form-control" name="prenomChomeur"
+                [(ngModel)]="chomeur.prenomChomeur"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label">Date naissance</label>
+            <input type="date" class="form-control" name="dateNaissChomeur"
+                [(ngModel)]="chomeur.dateNaissChomeur"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label">Année du diplôme</label>
+            <input type="number" class="form-control" name="anneeDipChomeur"
+                [(ngModel)]="chomeur.anneeDipChomeur"  />
+       	</div>
+        <div class="form-group">
+            <label class="form-control-label" >Carte d'identiification nationale</label>
+            <input type="text" class="form-control" name="cinChomeur"
+                [(ngModel)]="chomeur.cinChomeur"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" >Date de la Cin</label>
+            <input type="date" class="form-control" name="dateCinChomeur" 
+                [(ngModel)]="chomeur.dateCinChomeur"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" >Téléphone</label>
+            <input type="tel" class="form-control" name="telChomeur" 
+                [(ngModel)]="chomeur.telChomeur"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label">Email</label>
+            <input type="email" class="form-control" name="emailChomeur" placeholder="bonjour@gmail.com"
+                [(ngModel)]="chomeur.emailChomeur" #emailChomeur = "ngModel" required email />
+        </div>
+
+        <!-- Vérification de l'email valide ou pas-->
+        <div *ngIf="emailChomeur.dirty && emailChomeur.invalid">
+            <small class="form-text text-danger"> <!-- *ngIf="emailChomeur.errors.required"> -->
+                Ce champ ne doit pas être vide et l'email doit être valide </small>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" >Regroupement</label>
+           	<select class="form-control" name="codeRegroupement" [(ngModel)]="chomeur.codeRegroupement" >
+                <option [ngValue]="null"></option>
+                <option *ngFor="let regroupementOption of regroupements; trackBy: trackRegroupementById" [ngValue]="regroupementOption.codeRegroupement" > {{regroupementOption.libelleRegroupement}} </option> 
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" >Etat civil</label>
+          	<select class="form-control" name="codeTypeEtatCivil" [(ngModel)]="chomeur.codeTypeEtatCivil" >
+                <option [ngValue]="null"></option>
+                <option *ngFor="let typeEtatCivilOption of typeEtatCivils; trackBy: trackTypeEtatCivilById" [ngValue]="typeEtatCivilOption.codeTypeEtatCivil" > {{typeEtatCivilOption.libelleTypeEtatCivil}} </option> 
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" >Sexe</label>
+            <select class="form-control" name="codeTypeSexe" [(ngModel)]="chomeur.codeTypeSexe" >
+                <option [ngValue]="null"></option>
+                <option *ngFor="let typeSexeOption of typeSexes; trackBy: trackTypeSexeById" [ngValue]="typeSexeOption.codeTypeSexe" > {{typeSexeOption.libelleTypeSexe}} </option> 
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" >Nationalité</label>
+            <select class="form-control" name="codeTypeNationalite" [(ngModel)]="chomeur.codeTypeNationalite" >
+                <option [ngValue]="null"></option>
+                <option *ngFor="let typeNationaliteOption of typeNationalites; trackBy: trackTypeNationaliteById" [ngValue]="typeNationaliteOption.codeTypeNationalite" > {{typeNationaliteOption.libelleTypeNationalite}} </option>
+            </select>
+        </div>
+		<div class="form-group">
+	         <label class="form-control-label" >Diplôme</label>
+	         <select class="form-control" name="codeTypeDiplome" [(ngModel)]="chomeur.codeTypeDiplome" >
+	         	<option [ngValue]="null"></option>
+	            <option *ngFor="let t of typeDiplomes" [ngValue]="t.codeTypeDiplome" > {{t.libelleTypeDiplome}} </option>
+	         </select>
+	    </div>
+		
+      </div>
+      <div class="col-sm-12">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span>Retour</span>
+        </button>
+        <button type="submit"class="btn btn-primary" [disabled]="editForm.form.invalid" > <!-- (click)="ajouterEmp()" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary"> -->
+            <span class="fa fa-save"></span>&nbsp;<span>Enregistrer</span>
+        </button>
+    </div>
+</form>
+
+<!-- ***************************************** Formulaire d'édition ********************************* -->
+
+	<form name="editForm" novalidate (ngSubmit)="edit()" #editForm="ngForm" *ngIf="!mode" >
+
+	    <div class="modal-header">
+	        <h4 class="modal-title" id="chomeurLabel" >Modifier les informations d'un chomeur</h4>
+	        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+	                (click)="clear()">&times;</button>
+	    </div>
+	    <div class="modal-body">
+	        <div class="form-group" [hidden]="!chomeur.codeChomeur">
+	            <label >ID</label>
+	            <input type="number" class="form-control" name="codeChomeur"
+	                   [(ngModel)]="chomeur.codeChomeur" readonly />
+	        </div>
+	        <div class="form-group">
+	            <label class="form-control-label">Nom</label>
+	            <input type="text" class="form-control" name="nomChomeur"
+	                [(ngModel)]="chomeur.nomChomeur" />
+	        </div>
+	        <div class="form-group">
+	            <label class="form-control-label" >Prénom</label>
+	            <input type="text" class="form-control" name="prenomChomeur"
+	                [(ngModel)]="chomeur.prenomChomeur"  />
+	        </div>
+	        <div class="form-group">
+	            <label class="form-control-label">Date naissance</label>
+	            <input type="date" class="form-control" name="dateNaissChomeur"
+	                [(ngModel)]="chomeur.dateNaissChomeur"  />
+	        </div>
+	        <div class="form-group">
+	            <label class="form-control-label">Année du diplôme</label>
+	            <input type="number" class="form-control" name="anneeDipChomeur"
+	                [(ngModel)]="chomeur.anneeDipChomeur"  />
+	       	</div>
+	        <div class="form-group">
+	            <label class="form-control-label" >Carte d'identiification nationale</label>
+	            <input type="text" class="form-control" name="cinChomeur"
+	                [(ngModel)]="chomeur.cinChomeur"  />
+	        </div>
+	        <div class="form-group">
+	            <label class="form-control-label" >Date de la Cin</label>
+	            <input type="date" class="form-control" name="dateCinChomeur" 
+	                [(ngModel)]="chomeur.dateCinChomeur"  />
+	        </div>
+	        <div class="form-group">
+	            <label class="form-control-label" >Téléphone</label>
+	            <input type="tel" class="form-control" name="telChomeur" 
+	                [(ngModel)]="chomeur.telChomeur"  />
+	        </div>
+	        <div class="form-group">
+	            <label class="form-control-label">Email</label>
+	            <input type="email" class="form-control" name="emailChomeur" placeholder="bonjour@gmail.com"
+	                [(ngModel)]="chomeur.emailChomeur" #emailChomeur = "ngModel" required email />
+	        </div>
+	
+	        <!-- Vérification de l'email valide ou pas-->
+	        <div *ngIf="emailChomeur.dirty && emailChomeur.invalid">
+	            <small class="form-text text-danger"> <!-- *ngIf="emailChomeur.errors.required"> -->
+	                Ce champ ne doit pas être vide et l'email doit être valide </small>
+	        </div>
+	        <div class="form-group">
+	            <label class="form-control-label" >Regroupement</label>
+	           	<select class="form-control" name="codeRegroupement" [(ngModel)]="chomeur.codeRegroupement" >
+	                <option [ngValue]="null"></option>
+	                <option *ngFor="let regroupementOption of regroupements; trackBy: trackRegroupementById" [ngValue]="regroupementOption.codeRegroupement" > {{regroupementOption.libelleRegroupement}} </option> 
+	            </select>
+	        </div>
+	        <div class="form-group">
+	            <label class="form-control-label" >Etat civil</label>
+	          	<select class="form-control" name="codeTypeEtatCivil" [(ngModel)]="chomeur.codeTypeEtatCivil" >
+	                <option [ngValue]="null"></option>
+	                <option *ngFor="let typeEtatCivilOption of typeEtatCivils" [ngValue]="typeEtatCivilOption.codeTypeEtatCivil" > {{typeEtatCivilOption.libelleTypeEtatCivil}} </option> 
+	            </select>
+	        </div>
+	        <div class="form-group">
+	            <label class="form-control-label" >Sexe</label>
+	            <select class="form-control" name="codeTypeSexe" [(ngModel)]="chomeur.codeTypeSexe" >
+	                <option [ngValue]="null"></option>
+	                <option *ngFor="let typeSexeOption of typeSexes" [ngValue]="typeSexeOption.codeTypeSexe" > {{typeSexeOption.libelleTypeSexe}} </option> 
+	            </select>
+	        </div>
+	        <div class="form-group">
+	            <label class="form-control-label" >Nationalité</label>
+	            <select class="form-control" name="codeTypeNationalite" [(ngModel)]="chomeur.codeTypeNationalite" >
+	                <option [ngValue]="null"></option>
+	                <option *ngFor="let typeNationaliteOption of typeNationalites" [ngValue]="typeNationaliteOption.codeTypeNationalite" > {{typeNationaliteOption.libelleTypeNationalite}} </option>
+	            </select>
+	        </div>
+	        <div class="form-group">
+	            <label class="form-control-label" >Diplôme</label>
+	            <select class="form-control" name="codeTypeDiplome" [(ngModel)]="chomeur.codeTypeDiplome" >
+	                <option [ngValue]="null"></option>
+	                <option *ngFor="let t of typeDiplomes" [ngValue]="t.codeTypeDiplome" > {{t.libelleTypeDiplome}} </option>
+	            </select>
+	        </div>
+			
+	      </div>
+	      <div  class="col-sm-12">
+	        <button type="button" class="btn btn-secondary" (click)="clear()">
+	            <span class="fa fa-ban"></span>&nbsp;<span>Retour</span>
+	        </button>
+	        <button type="submit"class="btn btn-primary" [disabled]="editForm.form.invalid" > <!-- (click)="ajouterEmp()" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary"> -->
+	            <span class="fa fa-save"></span>&nbsp;<span>Enregistrer</span>
+	        </button>
+	    </div>
+	</form>

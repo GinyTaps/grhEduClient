@@ -1,0 +1,165 @@
+<div>
+
+	<!-- ********************************** Liste ********************************* -->
+	<div clas="row" *ngIf="mode === 1">
+		<div class="box">
+			<div class="box-header">
+				<h3 class="box-title">{{title}}</h3>
+			</div>
+			<!-- /.box-header -->
+			<div class="box-body">
+				<div class="row">
+					<div class="col-sm-6 float-right">
+						<div class="dataTables_filter">
+							<!-- <label>Search:<input type="search" class="form-control input-sm" placeholder="" aria-controls="example1">
+            				</label> -->
+							<button id="addToTable" class="btn btn-primary"
+								placement="bottom" (click)="createPoste()">
+								<i class="fa fa-plus"></i>
+							</button>
+						</div>
+					</div>
+				</div>
+				<div class="table-responsive">
+					<table class="table table-bordered table-striped">
+						<tr>
+							<td><span>Nom </span></td>
+							<td><span>Administration</span></td>
+							<td><span>Etablissement</span></td>
+							<td><span>Statut</span></td>
+							<td><span>Fonction </span></td>
+							<td>Actions</td>
+						</tr>
+						<tr *ngFor="let p of postes[0] | paginate: { itemsPerPage: 10, currentPage: p }">
+							<td>{{p.nomPoste}}</td>
+							<td>
+								<select name="codeAdministration" [(ngModel)]="p.codeAdministration" disabled>
+									<option *ngFor="let adminOption of administration" [ngValue]="adminOption.codeAdministration">
+										{{adminOption.nomAdministration}}
+									</option>
+								</select>
+							</td>
+							<td>
+								<select name="codeEtablissement" [(ngModel)]="p.codeEtablissement" disabled>
+									<option *ngFor="let etabOption of etablissement" [ngValue]="etabOption.codeEtablissement">
+										{{etabOption.nomEtablissement}}
+									</option>
+								</select>
+							</td>
+							<td>
+								<select name="codeTypeStatutEntite" [(ngModel)]="p.codeTypeStatutEntite" disabled>
+									<option *ngFor="let typeOption of typeStatutEntite" [ngValue]="typeOption.codeTypeStatutEntite">
+										{{typeOption.libelleTypeStatutEntite}}
+									</option>
+								</select>
+							</td>
+							<td><select name="codeTypeFonction" [(ngModel)]="p.codeTypeFonction" disabled>
+									<option [ngValue]="null"></option>
+									<option *ngFor="let typeOption of typeFonction" [ngValue]="typeOption.codeTypeFonction">
+										{{typeOption.libelleTypeFonction}}
+									</option>
+								</select>
+							</td>
+							<td class="actions">
+								<!-- <a class="on-default" (click)="detailsPoste(p.codePoste)"> <i class="fa fa-eye"></i></a>&nbsp; -->
+								<a class="on-default edit-row" (click)="editPoste(p.codePoste)"> <i class="fa fa-pencil"></i></a>&nbsp;
+								<a class="on-default remove-row" (click)="deletePoste(p.codePoste)"> <i
+									class="fa fa-trash-o"></i></a>
+							</td>
+						</tr>
+						<!-- <tr>
+						<td><span>Nom </span></td>
+						<td><span>Administration</span></td>
+						<td><span>Etablissement</span></td>
+						<td><span>Statut</span></td>
+						<td><span>Fonction </span></td>
+						<td>Actions</td>
+					</tr> -->
+					</table>
+				</div>
+				<div class="row">
+						<pagination-controls (pageChange)="p = $event"></pagination-controls>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- ************************************** Création *************************************************** -->
+	<div class="row" *ngIf="mode === 2 || mode === 3">
+		<div class="box">
+
+			<div class="box-header">
+				<h4>{{header}}</h4>
+				<button type="button" (click)="close()">&times;</button>
+			</div>
+			<div class="box-body">
+				<!-- <div class="form-group" [hidden]="!codePoste" >
+			    		<label> ID </label>
+			    		<input class="form-control" name="codePoste" type="number" readonly
+			    		[(ngModel)]="poste.codePoste" readonly />
+			    	</div> -->
+				<div class="table-responsive">
+					<table class="table table-bordered table-striped">
+						<tr>
+						</tr>
+						<td><span>Nom </span></td>
+						<td><span>Administration</span></td>
+						<td><span>Etablissement</span></td>
+						<td><span>Statut</span></td>
+						<td><span>Fonction </span></td>
+						<tr>
+							<td class="form-group">
+								<input type="text" name="nomPoste" [(ngModel)]="poste.nomPoste" />
+							</td>
+							<td>
+								<select name="codeAdministration" [(ngModel)]="poste.codeAdministration">
+										<option [ngValue]="null"></option>
+										<option *ngFor="let adminOption of administration"
+											[ngValue]="adminOption.codeAdministration">
+											{{adminOption.nomAdministration}}
+										</option>
+								</select>
+							</td>
+								<td><select name="codeEtablissement" [(ngModel)]="poste.codeEtablissement">
+										<option [ngValue]="null"></option>
+										<option *ngFor="let etabOption of etablissement" [ngValue]="etabOption.codeEtablissement">
+											{{etabOption.nomEtablissement}}
+										</option>
+								</select>
+							</td>
+							<td>
+								<select name="codeTypeStatutEntite" [(ngModel)]="poste.codeTypeStatutEntite">
+										<option [ngValue]="null"></option>
+										<option *ngFor="let typeOption of typeStatutEntite"
+											[ngValue]="typeOption.codeTypeStatutEntite">
+											{{typeOption.libelleTypeStatutEntite}}
+										</option>
+								</select>
+							</td>
+							<td>
+								<select name="codeTypeFonction" [(ngModel)]="poste.codeTypeFonction">
+										<option [ngValue]="null"></option>
+										<option *ngFor="let typeOption of typeFonction"
+											[ngValue]="typeOption.codeTypeFonction">
+											{{typeOption.libelleTypeFonction}}
+										</option>
+								</select>
+							</td>
+						</tr>
+					</table>
+				</div>
+				<div>
+					<button *ngIf="mode === 2" type="button" class="wrapper"
+						(click)="save()">
+						<span class="fa fa-save"></span>
+					</button>
+
+					<button *ngIf="mode === 3" type="button" class="wrapper"
+						(click)="edit()">
+						<span class="fa fa-save"></span>
+					</button>
+				</div>
+			</div>
+		</div>
+
+	</div>

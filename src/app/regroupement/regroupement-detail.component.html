@@ -1,0 +1,37 @@
+<div *ngIf="regroupement">
+    <h2><span >Regroupement</span> {{regroupement.libelleRegroupement}}</h2>
+    <hr>
+    <dl class="row-md jh-entity-details">
+        <dt><span>ID: </span></dt>
+        <dd>
+            <span> {{regroupement.codeRegroupement}}
+            </span>
+        </dd>
+
+        <dt><span>Libellé: </span> </dt>
+        <dd>
+            <span>{{regroupement.libelleRegroupement}}</span>
+        </dd>
+
+        <dt><span>Ordre: </span> </dt>  
+        <dd>
+            <span>{{regroupement.ordreRegroupement}}</span>
+        </dd>
+        <dt><span>Code regroupement pays: </span> </dt>  
+        <dd>
+            <span>{{regroupement.codeRegroupPays}}</span>
+        </dd>
+        <dt><span>Type de regroupement: </span> </dt>
+        <dd>
+            <div *ngIf="regroupement.codeTypeRegroupement">
+                <span>{{regroupement.codeTypeRegroupement}}</span>
+                <a [routerLink]="['/typeRegroupement-detail', regroupement.codeTypeRegroupement?.codeTypeRegroupement]"> {{regroupement.codeTypeRegroupement?.libelleTypeRegroupement}} </a>
+            </div>
+        </dd>
+    </dl>
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span> Retour </span>
+    </button>
+</div>

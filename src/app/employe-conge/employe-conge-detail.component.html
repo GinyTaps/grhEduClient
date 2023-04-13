@@ -1,0 +1,50 @@
+<div class="box">
+	<div class="box-header">
+		<h3 class="box-title" *ngIf="employe"> Détails du congé de {{employe.nomEmploye}}
+			{{employe.prenomEmploye}}</h3>
+	</div>
+	<div class="box-body">
+		<table class="table table-bordered table-striped" *ngIf="employeConge">
+			<tr>
+
+				<td>Type de congé:</td>
+				<td>
+					<div *ngIf="typeMotifConge">
+						<span>{{typeMotifConge.libelleTypeMotifConge}}</span>
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<td>Début du congé:</td>
+				<td>{{employeConge.id.dateDebutConge | date:'dd/MM/yyyy'}}</td>
+			</tr>
+			<tr>
+				<td>Fin du congé:</td>
+				<td>{{employeConge.dateFinConge | date:'dd/MM/yyyy'}}</td>
+			</tr>
+			<tr>
+				<td>Durée du congé:</td>
+				<td>{{employeConge.dureeConge}}</td>
+			</tr>
+			<tr>
+				<td>Reférence de début:</td>
+				<td>{{employeConge.refDebutConge}}</td>
+			</tr>
+			<tr>
+				<td>Reférence de fin:</td>
+				<td>{{employeConge.refFinConge}}</td>
+			</tr>
+			<tr>
+				<td>Commentaire de début:</td>
+				<td>{{employeConge.comDebutConge}}</td>
+			</tr>
+			<tr>
+				<td>Commentaire de fin:</td>
+				<td>{{employeConge.comFinConge}}</td>
+			</tr>
+		</table>
+		<button type="submit" (click)="previousState()" class="btn btn-info">
+			<span class="fa fa-arrow-left"></span>&nbsp;<span> Retour </span>
+		</button>
+	</div>
+</div>

@@ -1,0 +1,305 @@
+<div class="container">
+	<!-- <h3 class="box-title" *ngIf="employe">{{employe.nomEmploye}} - {{employe.prenomEmploye}}</h3> -->
+	<ul class="nav nav-tabs">
+		<li><a [routerLink]="['/employe-detail', id]">Généralité</a></li>
+		<li class="active"><a
+			[routerLink]="['/employe-qualification', id]"> <!-- <a [routerLink]="['/employe-qualification']"> -->Carrière
+		</a></li>
+		<li class="dropdown"><a href="#" class="dropdown-toggle"
+			data-toggle="dropdown">Mobilité <span class="caret"></span></a>
+			<ul class="dropdown-menu">
+				<li><a [routerLink]="['/employe-poste', id]">Poste en cours</a></li>
+				<li><a [routerLink]="['/employe-affectation', id]">Réaffectation</a></li>
+				<li><a [routerLink]="['/employe-transfert', id]">Transfert
+						dans l'administration</a></li>
+				<li><a [routerLink]="['/employe-transfert', id]">Transfert
+						dans une école</a></li>
+				<li><a [routerLink]="['/employe-detachement', id]">Détachement</a></li>
+				<li><a [routerLink]="['/employe-disponibilite', id]">Disponibilité</a></li>
+				<li><a [routerLink]="['/employe-suspension', id]">Suspension</a></li>
+				<li><a [routerLink]="['/employe-mutation', id]">Mutation</a></li>
+				<li><a [routerLink]="['/conge-employe', id]">Congé</a></li>
+			</ul></li>
+		<li class="dropdown"><a class="dropdown-toggle"
+			data-toggle="dropdown">Fin de carrière <span class="caret"></span></a>
+			<ul class="dropdown-menu">
+				<li><a [routerLink]="['/employe-retraite', id]">Retraite</a></li>
+				<li><a [routerLink]="['/employe-demission', id]">Démission</a></li>
+				<li><a [routerLink]="['/employe-revocation', id]">Révocation</a></li>
+				<li><a [routerLink]="['/employe-renvoi', id]">Renvoi</a></li>
+				<li><a [routerLink]="['/employe-deces', id]">Décès</a></li>
+			</ul></li>
+	</ul>
+</div>
+<br>
+
+<!-- ******************************** Exemple avec Admin LTE data tables template ******************* -->
+
+<!-- <div class="col-md-4"> -->
+	<div class="box">
+		<div class="box-header">
+			<h3 class="box-title" *ngIf="employe">Qualifications de
+				l'employé <span style="color: Turquoise; "> {{employe.nomEmploye}} {{employe.prenomEmploye}} </span></h3>
+		</div>
+		<!-- /.box-header -->
+		<div class="box-body">
+			<div class="row">
+				<div class="col-sm-6 float-right">
+					<button *ngIf="mode === 1" class="btn btn-primary"
+						(click)="createQualification()">
+						<i class="fa fa-plus"></i>
+					</button>
+					<button
+						*ngIf="mode === 2 || mode === 3 || mode === 4 || mode === 5"
+						class="btn btn-primary" placement="bottom" (click)="close()">
+						<i class="fa fa-close"></i>
+					</button>
+				</div>
+			</div>
+				<table class="table table-bordered table-striped table-responsive"
+					*ngIf="mode === 1 || mode === 2 || mode === 3 || mode === 4">
+					<!-- <table id="example1" class="table table-bordered table-striped">
+		                <tdead> -->
+					<tr>
+						<!-- <td *ngIf="mode === 1" class="delIcon"><span
+							class="fa fa-remove"> </span></td> -->
+						<td><span> <strong>Catégorie</strong> </span></td>
+						<td><span> <strong>Date catégorie</strong> </span></td>
+						<td><span> <strong>Titre</strong> </span></td>
+						<td><span> <strong>Diplôme</strong> </span></td>
+						<td><span> <strong>Date diplôme</strong> </span></td>
+						<td><span> <strong>Grade</strong> </span></td>
+						<td><span> <strong>Date grade</strong> </span></td>
+						<td><span> <strong>Indice</strong> </span></td>
+						<td><span> <strong>Echelon</strong> </span></td>
+						<td><span> <strong>Date échelon</strong> </span></td>
+						<td *ngIf="mode === 1"> <strong>Actions</strong> </td>
+					</tr>
+					<!-- </tdead> -->
+	
+<!-- ******************************************* Liste des qualifications ************************************* -->
+					<!-- <tbody> -->
+					<ng-container *ngIf="mode === 1">
+					<tr *ngFor="let emp of employeQualifications | paginate: { itemsPerPage: 10, currentPage: p }">
+						<!-- <td><input type="checkbox"
+							(click)="deleteCheck(emp.id.codeEmploye, emp.id.codeTypeCategorie, emp.id.codeTypeDiplome,
+									 emp.id.codeTypeEchelon, emp.id.codeTypeGrade, emp.id.codeTypeTitre, emp.dateDiplome, $event)"
+							[checked]="false"></td> -->
+						<td><select name="codeTypeCategorie"
+							[(ngModel)]="emp.id.codeTypeCategorie" disabled>
+								<option
+									*ngFor="let typeCategorieOption of typeCategories trackBy: trackTypeCategorieById"
+									[ngValue]="typeCategorieOption.codeTypeCategorie">
+									{{typeCategorieOption.libelleTypeCategorie}}</option>
+						</select></td>
+						<td>{{emp.dateCategorie| date:'dd/MM/yyyy'}}</td>
+						<td><select name="codeTypeTitre"
+							[(ngModel)]="emp.id.codeTypeTitre" disabled>
+								<option
+									*ngFor="let typeTitreOption of typeTitres trackBy: trackTypeTitreById"
+									[ngValue]="typeTitreOption.codeTypeTitre">
+									{{typeTitreOption.libelleTypeTitre}}</option>
+						</select></td>
+						<td><select name="codeTypeDiplome" [(ngModel)]="emp.id.codeTypeDiplome" disabled>
+								<option *ngFor="let typeDiplomeOption of typeDiplomes trackBy: trackTypeDiplomeById"
+									[ngValue]="typeDiplomeOption.codeTypeDiplome">
+									{{typeDiplomeOption.libelleTypeDiplome}}
+								</option>
+							</select>
+						</td>
+						<td>{{emp.dateDiplome| date:'dd/MM/yyyy'}}</td>
+						<td>
+							<select name="codeTypeGrade" [(ngModel)]="emp.id.codeTypeGrade" disabled>
+								<option *ngFor="let typeGradeOption of typeGrades trackBy: trackTypeGradeById"
+									[ngValue]="typeGradeOption.codeTypeGrade">
+									{{typeGradeOption.libelleTypeGrade}}
+								</option>
+							</select>
+						</td>
+						<td>{{emp.dateGrade| date:'dd/MM/yyyy'}}</td>
+						<td>{{emp.indice}} </td>
+						<td>
+							<select name="codeTypeEchelon" [(ngModel)]="emp.id.codeTypeEchelon" disabled>
+								<option *ngFor="let typeEchelonOption of typeEchelons trackBy: trackTypeEchelonById"
+									[ngValue]="typeEchelonOption.codeTypeEchelon">
+									{{typeEchelonOption.libelleTypeEchelon}}
+								</option>
+							</select>
+						</td>
+						<td>{{emp.dateEchelon| date:'dd/MM/yyyy'}}</td>
+						<td class="actions">
+							<a class="on-default" (click)="detailsQualification(emp.id.codeEmploye, 
+										emp.id.codeTypeCategorie, emp.id.codeTypeDiplome, emp.id.codeTypeEchelon, emp.id.codeTypeGrade, emp.id.codeTypeTitre )">
+								<!-- [routerLink] ="['/employe-qualification', emp.id.codeEmploye, 
+										emp.id.codeTypeCategorie, emp.id.codeTypeDiplome, emp.id.codeTypeEchelon, emp.id.codeTypeGrade, emp.id.codeTypeTitre]"> -->
+								<i class="fa fa-eye"></i>
+							</a> &nbsp; 
+							<a class="on-default edit-row" (click)="editQualification(emp)">
+								<i class="fa fa-pencil"></i></a> &nbsp;
+							<!-- <a class="on-default edit-row" (click)="editQualification(emp.id.codeEmploye, 
+										emp.id.codeTypeCategorie, emp.id.codeTypeDiplome, emp.id.codeTypeEchelon, emp.id.codeTypeGrade, emp.id.codeTypeTitre, emp.dateDiplome )"><i
+								class="fa fa-pencil"></i></a> &nbsp; --> 
+							<!-- <a class="on-default remove-row" (click)="deleteQualification(emp.id.codeEmploye, 
+										emp.id.codeTypeCategorie, emp.id.codeTypeDiplome, emp.id.codeTypeEchelon, emp.id.codeTypeGrade, emp.id.codeTypeTitre )">
+								<i class="fa fa-trash-o"></i>
+							</a> -->
+							<a [swal]="deleteAd"> <i class="fa fa-trash-o"></i> </a>
+							<swal #deleteAd title="Supprimer?" text="Confirmer la suppression de l'élément"
+								type="question" icon="warning" [showCancelButton]="true"
+								[focusCancel]="true" (confirm)="delete(emp)">
+							</swal>
+						</td>
+					</tr>
+					</ng-container>
+	
+<!-- *********************************************** Création et édition ********************************************* -->
+	
+					<ng-container *ngIf="mode === 2 || mode === 3">
+					<tr>
+						<td><select name="codeTypeCategorie"
+							[(ngModel)]="employeQualification.id.codeTypeCategorie" required>
+								<option [ngValue]="null"></option>
+								<option
+									*ngFor="let typeCategorieOption of typeCategories trackBy: trackTypeCategorieById"
+									[ngValue]="typeCategorieOption.codeTypeCategorie">
+									{{typeCategorieOption.libelleTypeCategorie}}</option>
+						</select></td>
+						<td><input type="date" name="dateCategorie"
+							[(ngModel)]="employeQualification.dateCategorie" /></td>
+						<td><select name="codeTypeTitre"
+							[(ngModel)]="employeQualification.id.codeTypeTitre" required>
+								<option [ngValue]="null"></option>
+								<option
+									*ngFor="let typeTitreOption of typeTitres trackBy: trackTypeTitreById"
+									[ngValue]="typeTitreOption.codeTypeTitre">
+									{{typeTitreOption.libelleTypeTitre}}</option>
+						</select></td>
+						<td><select name="codeTypeDiplome"
+							[(ngModel)]="employeQualification.id.codeTypeDiplome" required>
+								<option [ngValue]="null"></option>
+								<option
+									*ngFor="let typeDiplomeOption of typeDiplomes trackBy: trackTypeDiplomeById"
+									[ngValue]="typeDiplomeOption.codeTypeDiplome">
+									{{typeDiplomeOption.libelleTypeDiplome}}</option>
+						</select></td>
+						<td><input type="date" name="dateDiplome"
+							[(ngModel)]="employeQualification.dateDiplome" /></td>
+						<td><select name="codeTypeGrade"
+							[(ngModel)]="employeQualification.id.codeTypeGrade" required>
+								<option [ngValue]="null"></option>
+								<option
+									*ngFor="let typeGradeOption of typeGrades trackBy: trackTypeGradeById"
+									[ngValue]="typeGradeOption.codeTypeGrade">
+									{{typeGradeOption.libelleTypeGrade}}</option>
+						</select></td>
+						<td><input type="date" name="dateGrade"
+							[(ngModel)]="employeQualification.dateGrade" /></td>
+						<td><input type="number" name="indice"
+							[(ngModel)]="employeQualification.indice" /></td>
+						<td><select name="codeTypeEchelon"
+							[(ngModel)]="employeQualification.id.codeTypeEchelon" required>
+								<option [ngValue]="null"></option>
+								<option
+									*ngFor="let typeEchelonOption of typeEchelons trackBy: trackTypeEchelonById"
+									[ngValue]="typeEchelonOption.codeTypeEchelon">
+									{{typeEchelonOption.libelleTypeEchelon}}</option>
+						</select></td>
+						<td><input type="date" name="dateEchelon"
+							[(ngModel)]="employeQualification.dateEchelon" /></td>
+					</tr>
+					</ng-container>
+	
+	<!-- ***************************************************** Détails ***************************************************** -->
+					<ng-container *ngIf="mode === 5 && employeQualifications">
+					<tr *ngFor="let emp of employeQualifications ;trackBy: trackId">
+						<td><select name="codeTypeCategorie"
+							[(ngModel)]="employeQualifications.id.codeTypeCategorie" disabled>
+								<option
+									*ngFor="let typeCategorieOption of typeCategorie trackBy: trackTypeCategorieById"
+									[ngValue]="typeCategorieOption.codeTypeCategorie">
+									{{typeCategorieOption.libelleTypeCategorie}}</option>
+						</select></td>
+						<td>{{emp.dateCategorie| date:'dd/MM/yyyy'}} Date catégorie</td>
+						<td><select name="codeTypeTitre"
+							[(ngModel)]="employeQualifications.id.codeTypeTitre" disabled>
+								<option
+									*ngFor="let typeTitreOption of typeTitre trackBy: trackTypeTitreById"
+									[ngValue]="typeTitreOption.codeTypeTitre">
+									{{typeTitreOption.libelleTypeTitre}}</option>
+						</select></td>
+						<td><select name="codeTypeDiplome"
+							[(ngModel)]="employeQualifications.id.codeTypeDiplome" disabled>
+								<option
+									*ngFor="let typeDiplomeOption of typeDiplome trackBy: trackTypeDiplomeById"
+									[ngValue]="typeDiplomeOption.codeTypeDiplome">
+									{{typeDiplomeOption.libelleTypeDiplome}}</option>
+						</select></td>
+						<td>{{emp.dateDiplome| date:'dd/MM/yyyy'}} Date diplôme</td>
+						<td><select name="codeTypeGrade"
+							[(ngModel)]="employeQualifications.id.codeTypeGrade" disabled>
+								<option
+									*ngFor="let typeGradeOption of typeGrade trackBy: trackTypeGradeById"
+									[ngValue]="typeGradeOption.codeTypeGrade">
+									{{typeGradeOption.libelleTypeGrade}}</option>
+						</select>{{typg.libelleGrade}} Grade</td>
+						<td>{{emp.dateGrade| date:'dd/MM/yyyy'}} Date grade</td>
+						<td>{{emp.indice}} Indice</td>
+						<td><select name="codeTypeEchelon"
+							[(ngModel)]="employeQualifications.id.codeTypeEchelon" disabled>
+								<option
+									*ngFor="let typeEchelonOption of typeEchelon trackBy: trackTypeEchelonById"
+									[ngValue]="typeEchelonOption.codeTypeEchelon">
+									{{typeEchelonOption.libelleTypeEchelon}}</option>
+						</select></td>
+						<td>{{emp.dateEchelon| date:'dd/MM/yyyy'}} Date echelon</td>
+					</tr>
+					</ng-container>
+					<!-- </tbody> -->
+					<!-- <tfoot> -->
+					<!-- <tr *ngIf="mode === 1">
+						<td class="delIcon"><span class="fa fa-remove"> </span></td>
+						<td><span>Catégorie </span></td>
+						<td><span>Date catégorie</span></td>
+						<td><span>Titre</span></td>
+						<td><span>Diplôme </span></td>
+						<td><span>Date diplôme</span></td>
+						<td><span>Grade</span></td>
+						<td><span>Date grade</span></td>
+						<td><span>Indice</span></td>
+						<td><span>Echelon</span></td>
+						<td><span>Date échelon</span></td>
+						<td>Actions</td>
+					</tr> -->
+					<!-- </tfoot> -->
+				</table>
+			<div *ngIf="mode === 1" class="row">
+				<div class="col-sm-7" style="text-align: center">
+					<pagination-controls (pageChange)="p = $event"> </pagination-controls>
+				</div>
+			</div>
+			<div>
+				<button class="wrapper" *ngIf="mode === 2" class="btn btn-primary"
+					placement="bottom" (click)="save()">
+					<i class="fa fa-save"></i>
+				</button>
+				<button class="wrapper" *ngIf="mode === 3" class="btn btn-primary"
+					placement="bottom" (click)="edit()">
+					<i class="fa fa-save"></i>
+				</button>
+			</div>
+			<!-- ***************************************** Suppression *********************************** -->
+			<div *ngIf="mode === 5 && employeEtatCivil">
+				<div>
+					<p>Etes-vous sûr de vouloir supprimer cette qualification ?</p>
+				</div>
+				<br>
+				<button class="btn btn-primary" type="button"
+					(click)="delete(emp.id.codeEmploye, emp.id.codeTypeCategorie, emp.id.codeTypeDiplome,
+								 emp.id.codeTypeEchelon, emp.id.codeTypeGrade, emp.id.codeTypeTitre, emp.dateDiplome)">
+					<span class="fa fa-check"></span>
+				</button>
+			</div>
+			&nbsp;
+		</div>
+	</div>
+<!-- </div> -->

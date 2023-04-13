@@ -1,0 +1,145 @@
+<div>
+
+	<!-- ******************************** Liste des types  **************************** -->
+	<div clas="row" *ngIf="typeStructureEdu && mode === 1" >
+		<div class="box">
+			<div class="box-header">
+				<h3 class="box-title">{{title}}</h3>
+			</div>
+			<!-- /.box-header -->
+			<div class="box-body">
+				<!-- <div class="row"> -->
+					<div class="col-sm-6 float-right">
+						<div class="dataTables_filter">
+							<!-- <label>Search:<input type="search" class="form-control input-sm" placeholder="" aria-controls="example1">
+            				</label> -->
+							<button id="addToTable" class="btn btn-primary"
+								placement="bottom" (click)="createTypeStructureEdu()">
+								<i class="fa fa-plus"></i>
+							</button>
+						</div>
+					</div>
+				<!-- </div> -->
+				<table class="table table-bordered table-striped">
+					<tr>
+						<th>Libellé </th>
+						<th>Ordre </th>
+						<th>Statut entité </th>
+						<th>Actions</th>
+					</tr>
+					<tr *ngFor="let typ of typeStructureEdus[0] | paginate: { itemsPerPage: 10, currentPage: p }">
+						<td>{{typ.libelleTypeStructureEdu}}</td>
+						<td>{{typ.ordreTypeStructureEdu}}</td>
+						<td>
+							<select name="codeTypeStatutEntite" [(ngModel)]="typ.codeTypeStatutEntite" disabled>
+								<option *ngFor="let typeStatutEntiteOption of typeStatutEntite trackBy: trackTypeStatutEntiteById"
+									[ngValue]="typeStatutEntiteOption.codeTypeStatutEntite">
+									{{typeStatutEntiteOption.libelleTypeStatutEntite}}
+								</option>
+						</select>
+						</td>
+						<td class="actions">
+							<!-- <a class="on-default" (click)="detailsTypeStructureEdu(typ.codeTypeStructureEdu)"> <i class="fa fa-eye"></i></a>&nbsp; -->
+							<a class="on-default edit-row" (click)="editTypeStructureEdu(typ.codeTypeStructureEdu)"> <i class="fa fa-pencil"></i></a>&nbsp;
+							<a [swal]="deleteSwal"> <i class="fa fa-trash-o"></i> </a>
+								<swal #deleteSwal title="Supprimer?" text="Confirmer la suppression de ce type"
+									type="question" icon="warning" [showCancelButton]="true"
+									[focusCancel]="true" (confirm)="deleteType(typ.codeTypeStructureEdu)">
+							  	</swal>
+						</td>
+					</tr>
+					<!-- <tr>
+						<td><span><label> Libellé </label></span></td>
+						<td><span><label> Ordre </label></span></td>
+						<td><span><label> Statut entité </label></span></td>
+						<td><label> Actions </label></td>
+					</tr> -->
+				</table>
+			</div>
+			<div class="row" style="text-align: center">
+				<pagination-controls (pageChange)="p = $event"></pagination-controls>
+			</div>
+		</div>
+	</div>
+	
+<!-- ************************************** Création ****************************** -->
+	<div class="row" *ngIf="mode === 2 || mode === 3">
+		<div class="box">
+			<!-- <form *ngIf="mode === 3" name="f" novalidate (ngSubmit)="save(f)" #f="ngForm" > -->
+			<!-- <form *ngIf="mode === 4" name="f" novalidate (ngSubmit)="edit(f.value)" #f="ngForm" > -->
+	
+			    <div class="box-header">
+			        <h4>{{header}} </h4>
+			        <button type="button" (click)="close()">&times;</button>
+			    </div>
+			    <div class="box-body">
+			    	<div class="form-group" [hidden]="!codeTypeStructureEdu" >
+			    		<label> ID </label>
+			    		<input class="form-control" name="codeTypeStructureEdu" type="number"
+			    		[(ngModel)]="typeStructureEdu.codeTypeStructureEdu" readonly />
+			    	</div>
+			    	<table class="table table-bordered table-striped">
+					<tr>
+						<td><span>Libellé</span></td>
+						<td><span>Ordre </span></td>
+						<td><span>Statut entité </span></td>
+					</tr>
+					<tr>
+						<td>
+							<input type="text" class="form-control" name="libelleTypeStructureEdu"
+			            	[(ngModel)]="typeStructureEdu.libelleTypeStructureEdu" />
+			            </td>
+						<td>
+							<input type="number" class="form-control" name="ordreTypeStructureEdu"
+			                [(ngModel)]="typeStructureEdu.ordreTypeStructureEdu" />
+			            </td>
+						<td>
+							<select class="form-control" name="codeTypeStatutEntite" [(ngModel)]="typeStructureEdu.codeTypeStatutEntite">
+								<option [ngValue]="null"></option>
+								<option *ngFor="let typeStatutEntiteOption of typeStatutEntite trackBy: trackTypeStatutEntiteById"
+									[ngValue]="typeStatutEntiteOption.codeTypeStatutEntite">
+									{{typeStatutEntiteOption.libelleTypeStatutEntite}}
+								</option>
+							</select>
+						</td>
+					</tr>
+				</table>
+			    	<!-- <div class="form-group">
+			            <label class="form-control-label">Libellé</label>
+			            <input type="text" class="form-control" name="libelleTypeStructureEdu"
+			            [(ngModel)]="typeStructureEdu.libelleTypeStructureEdu" />
+			        </div>
+			        <div class="form-group">
+			            <label class="form-control-label" >Ordre</label>
+			            <input type="number" class="form-control" name="ordreTypeStructureEdu"
+			                [(ngModel)]="typeStructureEdu.ordreTypeStructureEdu"  />
+			        </div>
+			        <div class="form-group">
+			        	<label class="form-control-label">Statut entité</label>
+			        	<select class="form-control" name="codeTypeStatutEntite" [(ngModel)]="typeStructureEdu.codeTypeStatutEntite">
+								<option [ngValue]="null"></option>
+								<option *ngFor="let typeStatutEntiteOption of typeStatutEntite trackBy: trackTypeStatutEntiteById"
+									[ngValue]="typeStatutEntiteOption.codeTypeStatutEntite">
+									{{typeStatutEntiteOption.libelleTypeStatutEntite}}
+								</option>
+						</select>
+			        </div> -->
+			      </div> 
+			      <div>
+			        <button type="button" class="btn btn-secondary" (click)="close()" >
+			            <span class="fa fa-save"></span>&nbsp;<span>Retour</span>
+			        </button>
+			        
+			        <button *ngIf="mode === 2" type="button" class="btn btn-primary" (click)="save()" > 
+			            <span class="fa fa-save"></span>&nbsp;<span>Enregistrer</span>
+			        </button>
+			        
+			        <button *ngIf="mode === 3" type="button" class="btn btn-primary" (click)="edit()" > 
+			            <span class="fa fa-save"></span>
+			        </button>
+			    </div>
+			<!-- </form> -->
+		</div>
+	</div>
+	
+</div>

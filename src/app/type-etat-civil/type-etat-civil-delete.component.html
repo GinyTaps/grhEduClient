@@ -1,0 +1,18 @@
+<form name="deleteForm" (ngSubmit)="confirmDelete(typeEtatCivil.codeTypeEtatCivil)">
+    <div class="modal-header">
+        <h4 class="modal-title" >Confirmation de la suppression</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <p >Etes-vous sûr de vouloir supprimer ce type d'état civil ?</p> <!-- translateValues="{codeTypeEtatCivil: '{{typeEtatCivil.libelleTypeEtatCivil}}'}" -->
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span>Retour</span>
+        </button>
+        <button type="submit" class="btn btn-danger">
+            <span class="fa fa-remove"></span>&nbsp;<span>Supprimer</span>
+        </button>
+    </div>
+</form>

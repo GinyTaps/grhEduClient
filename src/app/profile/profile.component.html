@@ -1,0 +1,101 @@
+<div class="row">
+  <!-- <div *ngIf="add_profile" style="text-align: center; height: 100%; width: 100%; z-index: 25; position: absolute; top: 0; left: 0; background: rgba(255,255,255,0.8);">
+    <div class="row">
+      <form class="col-sm-6 col-sm-offset-3 pform" (ngSubmit)="create_profile();" [formGroup]="profile_form">
+        <div class="col-sm-12" style="text-align: center;"> 
+        	<h3>Ajouter un profil</h3>
+        </div>
+        <div class="col-sm-12">
+          <label for="plib">Libellé</label>
+          <input type="text" id="plib" class="form-control" formControlName="libelle" name ="nomGroupe" [(ngModel)]="profile.nomGroupe">
+          <input type="text" *ngIf="mode === 3" class="form-control" name ="nomGroupe" [(ngModel)]="profile.nomGroupe">
+        </div>
+        <font class="col-sm-12 text-danger" *ngIf="(profile_form.touched && !profile_form.valid)">Veuillez entrer un libellé!!!</font>
+        <div class="col-sm-12">
+          <button type="submit" class="btn btn-primary">Valider</button>
+          <button type="button" class="btn" (click)="add_profile=false;">Annuler</button>
+        </div>
+      </form>
+    </div>
+  </div> -->
+  <div class="box" *ngIf="mode === 2 || mode === 3">
+  	<div class="box-header">
+  		<h3>{{header}}</h3>
+  		<button type="button" (click)="close()">&times;</button>
+  	</div>
+  		<div class="box-body">
+	  		<label>Nom du groupe</label>
+	        <input type="text" class="form-control" name ="nomGroupe" [(ngModel)]="profile.nomGroupe">
+	    </div>
+  		<div>
+	  		<button class="btn btn-secondary" type="button" (click)="close()">
+				<span class="fa fa-ban"></span>&nbsp;<span>Retour</span>
+			</button>
+			<button *ngIf="mode === 2" type="button" class="btn btn-primary" (click)="save()" >
+				<span class="fa fa-save"></span>&nbsp;<span>Enregistrer</span>
+			</button>
+	  		<button *ngIf="mode === 3" type="button" class="btn btn-primary" (click)="edit()" > 
+				<span class="fa fa-save"></span>&nbsp;<span>Enregistrer</span>
+			</button>
+		</div>
+  </div>
+  
+	<div class="box" *ngIf="mode === 1">
+            <div class="box-header">
+              <h3 class="box-title">Profiles</h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+            	<div class="row">
+                <div class="col-sm-4 right">
+                  <div fxLayout fxLayoutAlign="center center">
+                  	<button id="addToTable" (click)="createGroupe()" class="btn btn-primary"  placement="bottom">
+                      <i class="fa fa-plus"></i>
+                    </button>
+                    <!-- <button id="addToTable" (click)="add_profile=true;" class="btn btn-primary"  placement="bottom">
+                      <i class="fa fa-plus"></i>
+                    </button> -->
+                  </div>
+                </div>
+              </div>
+          <table id="example1" class="table table-bordered table-striped">
+            <thead>
+            <tr>
+              <!-- <th>N°</th> -->
+              <th> Libellé </th>
+              <th> Actions </th>
+            </tr>
+              </thead>
+              <tbody>
+                <!-- <tr *ngFor="let pr of profiles; let n = index;"> -->
+                <tr *ngFor ="let pr of profiles[0] | paginate: { itemsPerPage: 10, currentPage: p }">
+                  <!-- <td>{{ n+1 }}</td> -->
+                  <td>{{ pr.nomGroupe }}</td>
+                  <td>
+                    <a class="on-default edit-row" (click)="edit_item(pr);"><i class="fa fa-pencil"></i></a> &nbsp;
+                    <!--a class="on-default remove-row" (click)="delete_item(pr);"> <i class="fa fa-trash-o"></i></a-->
+                    <a [swal]="deleteSwal">
+                      <i class="fa fa-trash-o"></i>
+                    </a>
+                    <swal #deleteSwal title="Supprimer le groupe {{ pr.nomGroupe }}?" type="question"
+                      icon="warning" [showCancelButton]="true" [focusCancel]="true" (confirm)="delete_item(pr);">
+                    </swal>
+                  </td>
+                </tr>
+              </tbody>
+              <!-- <tfoot>
+                <tr>
+                  <th>Libellé</th>
+                  <th>Actions</th>
+                </tr>
+                </tfoot> -->
+              </table>
+            </div>
+            <div class="row">
+				<div class="col-sm-7" style="text-align: center">
+					<pagination-controls (pageChange)="p = $event"> </pagination-controls>
+				</div>
+		</div>
+	</div>
+		
+</div>

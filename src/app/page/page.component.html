@@ -1,0 +1,120 @@
+<div>
+	<!-- ******************************** Exemple avec Admin LTE data tables template ******************* -->
+	<div class="box" *ngIf="mode === 1">
+            <div class="box-header">
+              <h3 class="box-title">Pages</h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+            	<div class="row">
+            		<div class="col-sm-6 right">
+						  <button id="addToTable" class="btn btn-primary"  placement="bottom" (click)="savePage()"> 
+								<i class="fa fa-plus"></i>
+							</button>
+					</div>
+				</div>
+              <table id="example1" class="table table-bordered table-striped">
+                <thead>
+                <tr>
+                  <th>Nom Page</th>
+                  <th>url</th>
+                  <!-- <th>Page parente</th> -->
+                  <th>Privilège</th>
+				  <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+	                <tr *ngFor ="let p of pages | paginate: { itemsPerPage: 10, currentPage: p }">
+						<td>{{p.nomPage}}</td>
+						<td>{{p.url}}</td>
+						<td>
+							<div *ngIf="p.privilege === 2;else nonprivilege">Accès en lecture</div> 
+							<ng-template #nonprivilege> Accès en écriture </ng-template> 
+						</td>
+						<!-- <td> {{p.pages}}
+							<select class="form-control" name="pages" [(ngModel)]="page.pages" >
+	                			<option *ngFor="let page of pages" [ngValue]="page.idPage" > {{page.nomPage}} </option> 
+	            			</select>
+	            		</td> -->
+						<td class="actions">
+							<a class="on-default edit-row" (click)="editPage(p)" ><i class="fa fa-pencil"></i></a> &nbsp;
+							<!--a class="on-default remove-row" (click)="deletePage(p.idPage)" > <i class="fa fa-trash-o"></i></a-->
+							<a [swal]="deleteSwal"> <i class="fa fa-trash-o"></i> </a>
+							  <swal #deleteSwal title="Supprimer?" text="Confirmer la suppression de l'élément"
+								type="question" icon="warning" [showCancelButton]="true"
+								[focusCancel]="true" (confirm)="deletePage(p);">
+							  </swal>
+						</td>
+	                </tr>
+                </tbody>
+                <!-- <tfoot>
+                <tr>
+                  <th>Nom Page</th>
+                  <th>url</th>
+                  <th>Page parente</th>
+                  <th>Privilège</th>
+				  <th>Actions</th>
+                </tr>
+                </tfoot> -->
+              </table>
+            </div>
+			<div class="row">
+				<div class="col-sm-7" style="text-align: center">
+					<!-- pager -->
+					<pagination-controls (pageChange)="p = $event"></pagination-controls>
+				</div>
+			</div>
+		
+		</div>
+	<!-- ***************************** Création et édition ********************************** -->	
+		<div class="box" *ngIf="mode === 2 || mode === 3">
+				<form name="editForm" novalidate (ngSubmit)="save()" #editForm="ngForm"> 
+		
+		    <div class="modal-header">
+		        <h4 class="modal-title" id="employeLabel">{{header}}</h4>
+		        <button type="button" (click)="close()">&times;</button>
+		    </div>
+		    <div class="modal-body">
+		        <div class="form-group">
+		            <label class="form-control-label">Nom de la page</label>
+		            <input type="text" class="form-control" name="nomPage" [(ngModel)]="page.nomPage" />
+		        </div>
+		        <div class="form-group">
+		            <label class="form-control-label">Url</label>
+		            <input type="text" class="form-control" name="url" [(ngModel)]="page.url" />
+		        </div>
+		        <div>
+		        	<label class="form-control-label">Privilège:</label>&nbsp;
+		        	<label class="form-check-label">
+					    <input type="radio" class="form-check-input" name="privilege" 
+					    [value]="2" [(ngModel)]="page.privilege"> en lecture
+					</label> &nbsp;
+					<label class="form-check-label">
+					    <input type="radio" class="form-check-input" name="privilege" 
+					    [value]="3" [(ngModel)]="page.privilege"> en écriture
+					</label> <!-- [value] permet de sélectiooner par défaut le privillège correspondant -->
+		        </div>
+		        <!-- <div>
+		        	<label class="form-control-label">Page parente</label>
+		        	<select class="form-control" name="pages" [(ngModel)]="page.pages" >
+		        		<option [ngValue] ="null"></option>
+	               		<option *ngFor="let page of pages" [ngValue]="page.idPage" > {{page.nomPage}} </option> 
+	            	</select>
+		        </div> -->
+		
+		      </div>
+		      <div>
+		        <button type="button" class="btn btn-secondary" (click)="close()">
+		            <span class="fa fa-ban"></span>&nbsp;<span>Retour</span>
+		        </button>
+		        <button *ngIf="mode === 2" type="submit"class="btn btn-primary" [disabled]="editForm.form.invalid" > 
+		            <span class="fa fa-save"></span>&nbsp;<span>Enregistrer</span>
+		        </button>
+		        <button *ngIf="mode === 3" type="button"class="btn btn-primary" (click)="edit()" > 
+		            <span class="fa fa-save"></span>&nbsp;<span>Enregistrer</span>
+		        </button>
+		    </div>
+		</form>
+		
+	</div>
+</div>

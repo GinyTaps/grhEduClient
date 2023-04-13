@@ -1,0 +1,9 @@
+.detailitem{ line-height: 40px; }
+.detailitem .caption{font-weight: bold;}
+
+.uform div{margin-top: 20px;}
+
+.wrapper {
+    text-align: center;
+    background: white;
+}

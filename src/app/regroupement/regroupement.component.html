@@ -1,0 +1,176 @@
+
+<div class="row">
+		<ul class="nav nav-tabs">
+		  <li class="active">
+		  	<a>Localités</a>
+		  </li>
+		  <li class="dropdown">
+		  	<a class="dropdown-toggle" data-toggle="dropdown" [routerLink] = "['/chaine']">Chaines</a>
+		  </li>
+		  <li class="dropdown">
+		  	<a class="dropdown-toggle" data-toggle="dropdown" [routerLink] = "['/liaison']">Liaisons</a>
+		  </li>
+		</ul> <br>
+		<div class="row">
+			  <div class="col-md-6">
+				  	<div class="box">
+					<div class="col-sm-12" style="text-align: center;"><h3>Types de localités</h3></div>
+					
+					<form *ngIf="edit_type_loc || create_type_loc" (ngSubmit)="saveTypeLoc()" [formGroup]="type_loc_form" class="col-sm-12">
+					  <input type="hidden" formControlName="id">
+					  <div>
+						<label for="plib">Libellé</label>
+						<input type="text" id="plib" formControlName="lib" name="libelleTypeRegroupement" [(ngModel)]="typeRegroupement.libelleTypeRegroupement" class="form-control" required>
+					  </div>
+					  <!--font class="col-sm-12 text-danger">Veuillez entrer un libellé!!!</font-->
+					  <div>
+						<label for="order">Ordre</label>
+						<input type="number" id="order" formControlName="order" name="ordreTypeRegroupement" [(ngModel)]="typeRegroupement.ordreTypeRegroupement" class="form-control" required>
+					  </div> <br>
+					  <div>
+							<button  *ngIf="create_type_loc" type="submit" class="btn btn-primary">Valider</button>
+						  	<button *ngIf="edit_type_loc" type="button" (click)="editType()" class="btn btn-primary">Valider</button>
+							<button type="button" (click)="create_type_loc=false; edit_type_loc=false;" class="btn">Annuler</button>
+					  </div>
+					</form>
+					<div *ngIf="!edit_type_loc && !create_type_loc" class="col-md-12">
+					  <button id="addToTable" (click)="createTypeLoc()" class="btn btn-primary"  placement="bottom">
+						<i class="fa fa-plus"></i>
+					  </button>
+					  
+					  <table class="table table-bordered table-striped">
+						<tr>
+						  <!-- <th>N°</th> -->
+						  <th>Nom localité</th>
+						  <th>Ordre </th>
+						  <th>Actions</th>
+						</tr>
+						<!-- <tr *ngFor="let tl of type_loc_array; let n = index;"> -->
+						<tr *ngFor ="let t of typeRegroupements | paginate: {id:'t', itemsPerPage: 10, currentPage: t }">
+						  <!-- <td>{{ t.codeTypeRegroupement }}</td> -->
+						  <td>{{ t.libelleTypeRegroupement }}</td>
+						  <td>{{ t.ordreTypeRegroupement }}</td>
+						  <td class="actions">
+							<a class="on-default edit-row" (click)="editTypeLoc(t)"> <i class="fa fa-pencil"></i></a>&nbsp;
+							<!--a class="on-default remove-row" (click)="deleteType(t.codeTypeRegroupement)"> <i class="fa fa-trash-o"></i></a-->
+							<a [swal]="deleteTl"> <i class="fa fa-trash-o"></i> </a>
+							<swal #deleteTl title="Supprimer?" text="Confirmer la suppression de l'élément"
+								type="question" icon="warning" [showCancelButton]="true"
+								[focusCancel]="true" (confirm)="delete_type(t);">
+							</swal>
+						  </td>
+						</tr>
+						<!-- <tr>
+						  <td>N°</td>
+						  <td><span>Nom localité</span></td>
+						  <td><span>Ordre </span></td>
+						  <td>Actions</td>
+						</tr> -->
+					  </table>
+					  <div class="row" style="text-align: center">
+							<pagination-controls id="t" (pageChange)="p = $event"></pagination-controls>
+						  </div>
+					</div>
+				  </div>
+		 </div>
+		<!--<div class="row"> -->
+			
+			  <div class="col-md-6">
+			  	<div class="box">
+					  <div class="col-sm-12" style="text-align: center;"><h3>Localités</h3></div>
+					  <form *ngIf="edit_loc || create_loc" (ngSubmit)="createLoc()" [formGroup]="loc_form" class="col-sm-12">
+						<div>
+							<label>Type localité</label>
+						  <select class="form-control" formControlName="type_loc" name="codeTypeRegroupement" [(ngModel)]="regroupement.codeTypeRegroupement" required>
+							<option value="null"></option>
+							<option *ngFor="let t of typeRegroupements" (change)="change($event);" [ngValue]="t.codeTypeRegroupement">{{ t.libelleTypeRegroupement }}</option>
+						  </select>
+						</div>
+						<div>
+						  <label>Libellé</label>
+						  <input type="text" id="llib" formControlName="lib" name="libelleRegroupement" [(ngModel)]="regroupement.libelleRegroupement" class="form-control" required>
+						</div>
+						<div>
+						  <label>Ordre</label>
+						  <input type="number" formControlName="ordre" name="ordreRegroupement" [(ngModel)]="regroupement.ordreRegroupement" class="form-control" required>
+						</div>
+						<div>
+						  <label>Code pays</label>
+						  <input type="number" formControlName="codeRP" name="codeRegroupPays" [(ngModel)]="regroupement.codeRegroupPays" class="form-control" required>
+						</div>
+						<!-- <div>
+							<label>Localité parente</label>
+							  <select class="form-control" formControlName="type_loc" name="liaisonRegroupement" [(ngModel)]="regroupement.liaisonRegroupement" required>
+								<option value="null"></option>
+								<option *ngFor="let r of regroupements" [ngValue]="r">{{ r.libelleRegroupement }}</option>
+							  </select>
+						</div> --> <br>
+		
+						<!--font class="col-sm-12 text-danger">Veuillez entrer un libellé!!!</font-->
+						<div>
+						  <button  *ngIf="create_loc" type="submit" class="btn btn-primary">Valider</button>
+						  <button *ngIf="edit_loc" type="button" (click)="edit()" class="btn btn-primary">Valider</button>
+						  <button type="button" (click)="create_loc=false; edit_loc=false;" class="btn">Annuler</button>
+						</div>
+					  </form>
+					  <div class="box-body"  *ngIf="!create_loc && !edit_loc">
+							<div class="row">
+								 <div class="col-sm-12">
+									<button id="addToTable" (click)="create_localite()" class="btn btn-primary"  placement="bottom">
+									  <i class="fa fa-plus"></i>
+									</button> &nbsp;
+									<input type="number" [(ngModel)]="regroupFilter.codeTypeRegroupement" placeholder="numéro du type de regroupement"> 
+									<!-- <input type="text" (keyup)="onKey($event)" [(ngModel)]="regroupFilter.codeTypeRegroupement" placeholder="type de regroupement"> -->
+									<!-- <input type="text" (keyup)="onKey()" [(ngModel)]="searchText" placeholder="type de regroupement"> -->
+									<!-- (ngModelChange) = "filtre(regroupFilter.codeTypeRegroupement)" -->
+								</div>
+							</div>
+							<table class="table table-bordered table-striped">
+							  <tr>
+								<th>Code pays</th>
+								<th>Nom localité</th>
+								<th>Ordre</th>
+								<th>Type localité</th>
+								<th>Actions</th>
+							  </tr>
+							  <tr *ngFor ="let r of regroupements | filterBy: regroupFilter | paginate: {id:'rg', itemsPerPage: 10, currentPage: p }">
+								<td>{{ r.codeRegroupPays}}</td>
+								<td>{{ r.libelleRegroupement }}</td>
+								<td>{{ r.ordreRegroupement }}</td>
+								<!-- <td>{{ r.codeTypeRegroupement}}</td> -->
+								<td> 
+									<select name="codeTypeRegroupement" [(ngModel)]="r.codeTypeRegroupement" disabled>
+										<option *ngFor="let tr of typeRegroupements" [ngValue]="tr.codeTypeRegroupement"> {{tr.libelleTypeRegroupement}} </option>
+									</select> 
+								</td>
+								<!-- <td *ngFor ="let tr of r.typeRegroupements; let i = index"> {{tr.libelleTypeRegroupement}} </td> -->
+								<td class="actions">
+								  <a class="on-default edit-row" (click)="editLoc(r)"> <i class="fa fa-pencil"></i></a>&nbsp;
+								  <!--a class="on-default remove-row" (click)="deleteType(typ.codeTypeChaineLoc)"> <i class="fa fa-trash-o"></i></a-->
+								  <a [swal]="deleteLoc"> <i class="fa fa-trash-o"></i> </a>
+								  <swal #deleteLoc title="Supprimer?" text="Confirmer la suppression de l'élément"
+									type="question" icon="warning" [showCancelButton]="true"
+									[focusCancel]="true" (confirm)="delete_localite(r);">
+								  </swal>
+								</td>
+							  </tr>
+							  <!-- <tr>
+								<td><span>Code pays</span></td>
+								<td><span>Nom localité</span></td>
+								<td><span>Ordre</span></td>
+								<td><span>Type localité</span></td>
+								<td>Actions</td>
+							  </tr> -->
+							</table>
+							<div class="row" style="text-align: center">
+								<pagination-controls id="rg" (pageChange)="p = $event"></pagination-controls>
+							</div>
+						</div>
+				  </div>
+			  </div>
+		  </div>
+	  
+	
+	</div>
+	
+	

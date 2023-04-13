@@ -1,0 +1,179 @@
+<div class="col-md-4 center">
+	<div class="row">
+		<div class="box"> <!-- *ngIf="mode === 1 || mode === 2 || mode === 3 || mode === 4"> -->
+			<div class="box-header">
+				<h3 class="box-title">Sélection des types</h3>
+			</div>
+			<div class="box-body">
+				<table class="table table-bordered table-striped">
+					<!-- *ngIf="employeEtatCivil"> -->
+					<!-- <tr>
+						<td>Secteur</td>
+						<td><input type="text"></td>
+					</tr> -->
+					<tr>
+						<td>Tables</td>
+						<td><select name="typesTable" [(ngModel)]="typeSelected" (change)="selectType(typeSelected)">
+								<option [ngValue]="null"></option>
+								<option *ngFor="let types of typesTable" [ngValue]="types" [selected]="this[typeSelected]">
+									{{types}}</option>
+						</select></td>
+					</tr>
+					<tr *ngIf="typeCategorie.codeTypeCategorieParent">
+						<td>ID Parent</td>
+						<td>{{typeCategorie.codeTypeCategorieParent}}</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</div>
+
+<!-- ************************************** Liste des types  ******************************************* -->
+	<div clas="row" *ngIf="typeCategorie && mode === 1" >
+			<div class="box">
+				<div class="box-header">
+					<h3 class="box-title">{{title}}</h3>
+				</div>
+				<!-- /.box-header -->
+				<div class="box-body">
+					<div class="row">
+						<div class="col-sm-6 float-right">
+							<div class="dataTables_filter">
+								<!-- <label>Search:<input type="search" class="form-control input-sm" placeholder="" aria-controls="example1">
+	            				</label> -->
+								<button id="addToTable" class="btn btn-primary"
+									placement="bottom" (click)="createTypeCategorie()">
+									<i class="fa fa-plus"></i>
+								</button>
+							</div>
+						</div>
+					</div>
+					<table class="table table-bordered table-striped">
+						<tr>
+							<td><span>Libellé</span></td>
+							<td><span>Ordre </span></td>
+							<td>Actions</td>
+						</tr>
+						<tr *ngFor="let typ of typeCategories | paginate: { itemsPerPage: 10, currentPage: p }">
+							<td>{{typ.libelleTypeCategorie}}</td>
+							<td>{{typ.ordreTypeCategorie}}</td>
+							<td class="actions">
+								<!-- <a class="on-default" (click)="detailsTypeCategorie(typ.codeTypeCategorie)"> <i class="fa fa-eye"></i></a>&nbsp; -->
+								<a class="on-default edit-row" (click)="editTypeCategorie(typ.codeTypeCategorie)"> <i class="fa fa-pencil"></i></a>&nbsp;
+								<a [swal]="deleteSwal"> <i class="fa fa-trash-o"></i> </a>
+							  		<swal #deleteSwal title="Supprimer?" text="Confirmer la suppression de ce type"
+									type="question" icon="warning" [showCancelButton]="true"
+									[focusCancel]="true" (confirm)="deleteType(typ.codeTypeCategorie)">
+							  		</swal>
+								
+								<!-- <a class="on-default remove-row" (click)="deleteType(typ.codeTypeCategorie)"> <i class="fa fa-trash-o"></i></a> -->
+								<!-- <a class="on-default remove-row" data-toggle="modal" data-target="#confirmModal"> <i class="fa fa-trash-o"></i></a> -->
+								<!-- Button to Open the Modal -->
+								  <!-- <a class="on-default remove-row" data-toggle="modal" data-target="#myModal"> <i class="fa fa-trash-o"></i></a>
+								
+								Modal
+							  <div class="modal fade" id="myModal" role="dialog">
+							    <div class="modal-dialog">
+							    
+							      Modal content
+							      <div class="modal-content">
+							        <div class="modal-header">
+							          <button type="button" class="close" data-dismiss="modal">&times;</button>
+							          <h4 class="modal-title">Confirmation de la suppression</h4>
+							        </div>
+							        <div class="modal-body">
+							          <p>Etes-vous sûr de vouloir supprimer ce type?</p>
+							        </div>
+							        <div class="modal-footer">
+							          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+							          <button type="button" class="btn btn-primary">Save changes</button>
+							        </div>
+							      </div>
+							      
+							    </div>
+							  </div> -->
+								
+								<!-- Modal -->
+								<!-- <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-hidden="true">
+								  <div class="modal-dialog" role="document">
+								    <div class="modal-content">
+								      <div class="modal-header">
+								        <h5 class="modal-title">Confirmation de la suppression</h5>
+								        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								          <span aria-hidden="true">&times;</span>
+								        </button>
+								      </div>
+								      <div class="modal-body">
+								      </div>
+								      <div class="modal-footer">
+								        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+								        <button type="button" class="btn btn-primary">Save changes</button>
+								        <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Close</button>
+								        <button type="button" (click)= "confirmDeleteType(typeCategories.codeTypeCategorie)" class="fa fa-check"></button>
+								      </div>
+								    </div>
+								  </div>
+								</div> -->
+								
+							</td>
+						</tr>
+						<tr>
+							<td><span>Libellé</span></td>
+							<td><span>Ordre </span></td>
+							<td>Actions</td>
+						</tr>
+					</table>
+				</div>
+				<div class="row">
+					<!-- <div class="col-sm-7"> -->
+						<pagination-controls (pageChange)="p = $event"></pagination-controls>
+					<!-- </div> -->
+				</div>
+			</div>
+		</div>
+	
+<!-- *********************************************** Création ****************************************** -->
+	<div class="row" *ngIf="mode === 2 || mode === 3">
+		<div class="box">
+			<!-- <form *ngIf="mode === 3" name="f" novalidate (ngSubmit)="save(f)" #f="ngForm" > -->
+			<!-- <form *ngIf="mode === 4" name="f" novalidate (ngSubmit)="edit(f.value)" #f="ngForm" > -->
+	
+			    <div class="box-header">
+			        <h4>{{header}} </h4>
+			        <button type="button" (click)="close()">&times;</button>
+			    </div>
+			    <div class="box-body">
+			    	<div class="form-group" [hidden]="!codeTypeCategorie" >
+			    		<label> ID </label>
+			    		<input class="form-control" name="codeTypeCategorie" type="number" readonly
+			    		[(ngModel)]="typeCategorie.codeTypeCategorie" readonly />
+			    	</div>
+			    	<div class="form-group">
+			            <label class="form-control-label">Libellé</label>
+			            <input type="text" class="form-control" name="libelleTypeCategorie"
+			            [(ngModel)]="typeCategorie.libelleTypeCategorie" />
+			        </div>
+			        <div class="form-group">
+			            <label class="form-control-label" >Ordre</label>
+			            <input type="number" class="form-control" name="ordreTypeCategorie"
+			                [(ngModel)]="typeCategorie.ordreTypeCategorie"  />
+			        </div>
+			      </div> 
+			      <div>
+			        <button type="button" class="btn btn-secondary" (click)="close()" >
+			            <span class="fa fa-save"></span>&nbsp;<span>Retour</span>
+			        </button>
+			        
+			        <button *ngIf="mode === 2" type="button" class="btn btn-primary" (click)="save()" > 
+			            <span class="fa fa-save"></span>&nbsp;<span>Enregistrer</span>
+			        </button>
+			        
+			        <button *ngIf="mode === 3" type="button" class="btn btn-primary" (click)="edit()" > 
+			            <span class="fa fa-save"></span>
+			        </button>
+			    </div>
+			<!-- </form> -->
+		</div>
+	</div>
+	
+</div>

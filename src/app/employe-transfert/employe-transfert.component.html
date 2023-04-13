@@ -1,0 +1,189 @@
+<div class="container">
+	  <!-- <h3 class="box-title" *ngIf="employe">{{employe.nomEmploye}} - {{employe.prenomEmploye}}</h3> -->
+	  <ul class="nav nav-tabs">
+	    <li><a [routerLink] ="['/employe-detail',id]">Généralité</a></li>
+	    <li><a [routerLink]="['/employe-qualification', id]"><!-- <a [routerLink]="['/employe-qualification']"> -->Carrière</a></li>
+	    <li class="dropdown active">
+	      <a href="#"  class="dropdown-toggle" data-toggle="dropdown">Mobilité
+	      <span class="caret"></span></a>
+	      <ul class="dropdown-menu">
+	      	<li><a [routerLink]="['/employe-poste', id]">Poste en cours</a></li>
+	      	<li><a [routerLink]="['/employe-affectation', id]">Réaffectation</a></li>
+	      	<li (click)="tAdmin()" [ngClass]="{'active': show}"><a [routerLink]="['/employe-transfert', id]">Transfert dans l'administration</a></li>
+	      	<li (click)="tEcole()" [ngClass]="{'active': hide}"><a [routerLink]="['/employe-transfertEco', id, 'E']">Transfert dans une école</a></li>
+	      	<li><a [routerLink]="['/employe-detachement', id]">Détachement</a></li>
+	      	<li><a [routerLink]="['/employe-disponibilite', id]">Disponibilité</a></li>
+	      	<li><a [routerLink]="['/employe-suspension', id]">Suspension</a></li>
+	      	<li><a [routerLink]="['/employe-mutation', id]">Mutation</a></li>
+	        <li><a [routerLink]="['/conge-employe', id]">Congé</a></li>                   
+	      </ul>
+	    </li>
+	    <li class="dropdown">
+	      <a class="dropdown-toggle" data-toggle="dropdown">Fin de carrière
+	      <span class="caret"></span></a>
+	      <ul class="dropdown-menu">
+	      	<li><a [routerLink]="['/employe-retraite', id]">Retraite</a></li>
+	      	<li><a [routerLink]="['/employe-demission', id]">Démission</a></li>
+	      	<li><a [routerLink]="['/employe-revocation', id]">Révocation</a></li>
+	      	<li><a [routerLink]="['/employe-renvoi', id]">Renvoi</a></li>
+	      	<li><a [routerLink]="['/employe-deces', id]">Décès</a></li>              
+	      </ul>
+	    </li>
+	  </ul>
+	</div> <br>
+	<div clas="row">
+		<label> Localités: </label>
+		<select #t [(ngModel)]="codeTypeRegroupement" 
+			(ngModelChange)="getChaineRegroupement($event)">
+				<option [ngValue]="null"></option>
+				<option *ngFor="let t of typeRegroupements" [ngValue]="t">
+					{{t.libelleTypeRegroupement}}
+				</option>
+		</select> &nbsp;
+		<select *ngIf="regChaines" #r name="codeRegroupement" [(ngModel)]="codeRegroupement"
+			(ngModelChange)="getRegroupement($event)">
+				<option [ngValue]="null"></option>
+				<option *ngFor="let r of regChaines" [ngValue]="r">
+					{{r.libelleRegroupement}}
+				</option>
+		</select> &nbsp;
+		<select *ngIf="regFils" #rf name="codeRegroupement" [(ngModel)]="codeRegroupementA"
+		(ngModelChange)="getSousRegroupement($event)">
+				<option [ngValue]="null"></option>
+				<option *ngFor="let rf of regFils" [ngValue]="rf">
+					{{rf.libelleRegroupement}}
+				</option>
+		</select> &nbsp;
+		<select *ngIf="regSousFils" name="codeRegroupement" #rff [(ngModel)]="codeRegroupementUnder"
+		(ngModelChange)="getSousSRegroupement($event)">
+				<option [ngValue]="null"></option>
+				<option *ngFor="let rff of regSousFils" [ngValue]="rff">
+					{{rff.libelleRegroupement}}
+				</option>
+		</select> &nbsp;
+		<select *ngIf="mode === 2 && administrations" name="codeAdministration" [(ngModel)]="codeAdministration" (ngModelChange)="getAdm($event)">
+					<option [ngValue]="null"></option>
+					<option *ngFor="let a of administrations" [ngValue]="a">{{a.nomAdministration}}</option>
+		</select>
+		<select *ngIf="mode === 3" name="codeRegroupement" [(ngModel)]="codeEtablissement" (ngModelChange)="getEtab($event)">
+					<option [ngValue]="null"></option>
+					<option *ngFor="let e of etablissements" [ngValue]="e">{{e.nomEtablissement}}</option>
+		</select>
+	</div>
+	 <br>
+	
+	<div class="box">
+            <div class="box-header" *ngIf="employe" >
+            <!-- <h3 class="box-title" *ngIf="mode === 1"> Effectuer un transfert </h3> -->
+              <h3 class="box-title" *ngIf="mode === 2"> Effectuer le transfert de l'employé <span style="color: Turquoise; "> {{employe.nomEmploye}} {{employe.prenomEmploye}} </span> dans une administration</h3>
+              <h3 class="box-title" *ngIf="mode === 3"> Effectuer le transfert de l'employé <span style="color: Turquoise; "> {{employe.nomEmploye}} {{employe.prenomEmploye}} </span> dans une école</h3>
+            </div>
+            <div class="box-body">
+            	<form name="editForm" novalidate (ngSubmit)="save()"  #editForm="ngForm">
+            		<label class="form-label">Secteur:</label>
+            		<select name="codePoste" [(ngModel)]="poste.codePoste">
+				                <option [ngValue]="null"></option>
+				                <option *ngFor="let posteOption of postes; trackBy: trackPosteById" 
+				                [ngValue]="posteOption.codePoste"> {{posteOption.nomPoste}} </option>
+				    </select>
+				    
+	            	<table class="table table-bordered table-striped" *ngIf="employe">
+	                  <tr [hidden] = "hide">
+	                  	<td>Représentation:</td>
+	                  	<td>
+	                  		<input type="text" name="code" readonly />
+	                  	</td>
+	                  </tr>
+	                  <tr [hidden] = "hide">
+	                  	<td>Service:</td>
+	                  	<td>
+	                  		<select name="codePoste" [(ngModel)]="employePoste.id.codePoste">
+				                <option [ngValue]="null"></option>
+				                <option *ngFor="let posteOption of postes; trackBy: trackPosteById" 
+				                [ngValue]="posteOption.codePoste"> {{posteOption.nomPoste}} </option>
+				            </select>
+	                  	</td>
+	                  </tr>
+	                  <tr [hidden] = "show">
+	                  	<td>Regroupement:</td>
+	                  	<td>
+	                  		<input type="text" name="code" readonly />
+	                  	</td>
+	                  </tr>
+	                  <tr [hidden] = "show">
+	                  	<td>Code établissement:</td>
+	                  	<td>
+	                  		<input type="text" name="code" readonly />
+	                  	</td>
+	                  </tr>
+	                  <tr>
+	                  	<td>Poste:</td>
+	                  	<td>
+	                  		<select name="codePoste" [(ngModel)]="employePoste.id.codePoste" >
+				                <option [ngValue]="null"></option>
+				                <option *ngFor="let posteOption of postes; trackBy: trackPosteById" 
+				                [ngValue]="posteOption.codePoste"> {{posteOption.nomPoste}} </option>
+				            </select>
+	                  	</td>
+	                  </tr>
+	                  <tr>
+	                  	<td>Fonction:</td>
+	                  	<td>
+	                  		<select name="codeTypeFonction" [(ngModel)]="employeFonction.id.codeTypeFonction">
+				                <option [ngValue]="null"></option>
+				                <option *ngFor="let typeOption of typeFonctions" 
+				                 [ngValue]="typeOption.codeTypeFonction"> {{typeOption.libelleTypeFonction}} </option>
+				            </select>
+	                  		<!-- <select class="form-control" name="codeTypeFonction" [(ngModel)]="poste.codeTypeFonction" required >
+				                <option [ngValue]="null"></option>
+				                <option *ngFor="let posteOption of postes; trackBy: trackPosteById" 
+				                [ngValue]="posteOption.codeTypeFonction"> {{posteOption.libelleTypeFonction}} </option>
+				            </select> -->
+	                  	</td>
+	                  </tr>
+	                  <tr>
+	                  	<td>Statut:</td>
+	                  	<td>
+	                  		<select name="codeTypeStatutEntite" [(ngModel)]="typeStatutEntite.codeTypeStatutEntite">
+				                <option [ngValue]="null"></option>
+				                <option *ngFor="let typeOption of typeStatutEntites"
+				                 [ngValue]="typeOption.codeTypeStatutEntite"> {{typeOption.libelleTypeStatutEntite}} </option>
+				            </select>
+	                  		<!-- <select class="form-control" name="codeTypeStatutEntite" [(ngModel)]="poste.codeTypeStatutEntite" required >
+				                <option [ngValue]="null"></option>
+				                <option *ngFor="let posteOption of postes; trackBy: trackPosteById" 
+				                [ngValue]="posteOption.codeTypeStatutEntite"> {{posteOption.libelleTypeStatutEntite}} </option>
+				            </select> -->
+	                  	</td>
+	                  </tr>
+	                  <tr>
+	                  	<td>Date:</td>
+	                  	<td>
+	                  		<input type="date" name="dateTransfert"
+			                [(ngModel)]="employeTransfert.id.dateTransfert" required />
+	                  	</td>
+	                  </tr>
+	                  <tr>
+	                  	<td>Reférence:</td>
+	                  	<td>
+	                  		<input type="text" name="refTransfert"
+			                [(ngModel)]="employeTransfert.refTransfert" />
+	                  	</td>
+	                  </tr>
+	                  <tr>
+	                  	<td>Commentaire:</td>
+	                  	<td>
+	                  		<textarea name="comTransfert" 
+	                  		[(ngModel)]="employeTransfert.comTransfert"> </textarea>
+	                  	</td>
+	                  </tr>
+	                  
+	    		</table>
+	    		<div style="text-align: center">
+	    			<button type="submit" class="btn btn-primary" [disabled]="editForm.form.invalid">
+						<span class="fa fa-save"></span>&nbsp;<span> Enregistrer </span>
+					</button>
+				</div>
+	    	</form>
+    	</div>
+    </div>

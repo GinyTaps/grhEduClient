@@ -1,0 +1,423 @@
+
+<div class="container">
+	<!-- <h3 class="box-title" *ngIf="employe">{{employe.nomEmploye}} - {{employe.prenomEmploye}}</h3> -->
+	<ul class="nav nav-tabs">
+		<li><a [routerLink]="['/employe-detail', congeEmpSelected]">Généralités</a></li>
+		<li><a
+			[routerLink]="['/employe-qualification', congeEmpSelected]"> <!-- <a [routerLink]="['/employe-qualification']"> -->Carrières
+		</a></li>
+		<li class="dropdown active"><a href="#" class="dropdown-toggle"
+			data-toggle="dropdown">Mobilité <span class="caret"></span></a>
+			<ul class="dropdown-menu">
+				<li><a [routerLink]="['/employe-poste', congeEmpSelected]">Poste
+						en cours</a></li>
+				<li><a
+					[routerLink]="['/employe-affectation', congeEmpSelected]">Réaffectation</a></li>
+				<li><a [routerLink]="['/employe-transfert', congeEmpSelected]">Transfert
+						dans l'administration</a></li>
+				<li><a [routerLink]="['/employe-transfert', congeEmpSelected]">Transfert
+						dans une école</a></li>
+				<li><a
+					[routerLink]="['/employe-detachement', congeEmpSelected]">Détachement</a></li>
+				<li><a
+					[routerLink]="['/employe-disponibilite', congeEmpSelected]">Disponibilité</a></li>
+				<li><a [routerLink]="['/employe-suspension', congeEmpSelected]">Suspension</a></li>
+				<li><a [routerLink]="['/employe-mutation', congeEmpSelected]">Mutation</a></li>
+				<li class="active"><a [routerLink]="['/conge-employe', id]">Congé</a></li>
+			</ul></li>
+		<li class="dropdown"><a class="dropdown-toggle"
+			data-toggle="dropdown">Fin de carrière <span class="caret"></span></a>
+			<ul class="dropdown-menu">
+				<li><a [routerLink]="['/employe-retraite', congeEmpSelected]">Retraite</a></li>
+				<li><a [routerLink]="['/employe-demission', congeEmpSelected]">Démission</a></li>
+				<li><a [routerLink]="['/employe-revocation', congeEmpSelected]">Révocation</a></li>
+				<li><a [routerLink]="['/employe-renvoi', congeEmpSelected]">Renvoi</a></li>
+				<li><a [routerLink]="['/employe-deces', congeEmpSelected]">Décès</a></li>
+			</ul></li>
+	</ul>
+</div>
+<br>
+
+<!-- ******************************** Liste avec Admin LTE data tables template  ******************* -->
+<div class="box" *ngIf="mode === 1">
+	<div class="box-header">
+		<h3 class="box-title" *ngIf="employe">Congés de l'employé
+			<span style="color: Turquoise; "> {{employe.nomEmploye}} {{employe.prenomEmploye}} </span></h3>
+	</div>
+	<!-- /.box-header -->
+	<div class="box-body">
+		<div class="row">
+			<div class="col-sm-6 right">
+				<div id="example1_filter" class="dataTables_filter">
+					<!-- <label>Search:<input type="search" class="form-control input-sm" placeholder="" aria-controls="example1">
+	            				</label> -->
+					<button id="addToTable" class="btn btn-primary"
+						[ngbTooltip]="addTooltip" placement="bottom"
+						(click)="create(congeEmpSelected)">
+						<!-- [routerLink]="['/employe-conge-dialog', congeEmpSelected]"> -->
+						<!-- [routerLink]="['/', { outlets: { popup: ['employe-dialog'] } }]"> -->
+						<i class="fa fa-plus"></i>
+						<ng-template #addTooltip> <span>Ajouter un
+							congé </span> </ng-template>
+					</button>
+				</div>
+				<!-- <div class="mb-md">
+								<button id="addToTable" class="btn btn-primary" [routerLink]="['/', { outlets: { popup: ['employe-dialog'] } }]">
+									Add <i class="fa fa-plus"></i>
+								</button>
+							</div> -->
+			</div>
+		</div>
+		<table id="example1" class="table table-bordered table-striped">
+			<thead>
+				<tr>
+					<!-- <th><span>Nom - Prénom</span></th> -->
+					<th><span>Début de congé </span></th>
+					<th><span>Fin de congé</span></th>
+					<th><span>Type de congé</span></th>
+					<th>Actions</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr *ngFor="let emp of employeConges | paginate: { itemsPerPage: 10, currentPage: p }">
+					<!-- <tr *ngFor ="let emp of pageEmployeConges ;trackBy: trackId"> -->
+					<!-- <td><a [routerLink]="['../employe', emp.codeEmploye ]">{{emp.codeEmploye}}</a></td> -->
+
+					<!-- <td *ngIf="emp.id.codeEmploye" [routerLink] ="['../employe-detail', emp.id.codeEmploye?.codeEmploye]">
+			                	{{emp.id.codeEmploye | orderBy: nomEmploye: reverse}} - {{emp.id.codeEmploye}} {{nomEmploye}} {{prenomEmploye}}
+			                	
+			                	<span *ngFor="let employeOption of employes; trackBy: trackEmployeById"> {{employeOption.nomEmploye}}</span>
+			                    <div *ngIf="emp.id">
+			                        <a [routerLink] ="['../employe-detail', emp.id.codeEmploye?.codeEmploye]">{{emp.id.codeEmploye?.nomEmploye}}</a>
+			                    </div>
+			                </td> -->
+					<td>{{emp.id.dateDebutConge| date:'dd/MM/yyyy'}}</td>
+					<td>{{emp.dateFinConge| date:'dd/MM/yyyy'}}</td>
+					<!-- <td *ngFor="let typeMotifConge of typeMotifConges; let i =index; trackBy: trackTypeMotifCongeById">
+			                	{{typeMotifConge.libelleTypeMotifConge}} -->
+					<!-- <div *ngFor="let typeMotifConge of typeMotifConges; let i =index; trackBy: trackTypeMotifCongeById">
+			                		<span> {{typeMotifConge.libelleTypeMotifConge}} </span>
+			                	</div> -->
+					<!-- <td>
+			                	<div *ngFor="let typeMotifConge of typeMotifConges; trackBy: trackTypeMotifCongeById">
+			                		<span> {{typeMotifConge.libelleTypeMotifConge}} </span>
+			                	</div>
+			                	<div  *ngIf="typeMotifConges">
+                					<span> {{typeMotifConges.libelleTypeMotifConge}} </span>
+                				</div>
+                			</td> -->
+					<td>{{emp.id.codeTypeMotifConge}}</td>
+					<td class="actions">
+						<!-- <a class="on-default"
+						(click)="displayDetails(emp.id.codeEmploye, emp.id.dateDebutConge)"><i
+							class="fa fa-eye"></i></a> --> &nbsp; <!-- <a class="on-default" [routerLink] ="['/employe-conge-detail', emp.id.codeEmploye, emp.id.dateDebutConge]"><i class="fa fa-eye"></i></a> &nbsp; -->
+						<!-- <a class="on-default edit-row"
+						[routerLink]="['/employe-conge-dialog', emp.id.codeEmploye, emp.id.dateDebutConge]"><i
+							class="fa fa-pencil"></i></a> &nbsp;  -->
+							
+						<a class="on-default edit-row" (click)="editConge(emp)">
+							<i class="fa fa-pencil"></i> &nbsp;
+						</a>
+						<a class="on-default remove-row" [swal]="deleteE"> <i class="fa fa-trash-o"></i> </a>
+						<swal #deleteE title="Supprimer {{emp.nomEmploye}} {{emp.prenomEmploye}}?" text="Confirmer la suppression de l'élément"
+						type="question" icon="warning" [showCancelButton]="true" [focusCancel]="true" (confirm)="deleteEmp(emp)">
+						</swal>
+						<!-- <a class="on-default remove-row"
+						[routerLink]="['/employe-conge-delete', emp.id.codeEmploye, emp.id.dateDebutConge]">
+							<i class="fa fa-trash-o"></i>
+						</a> -->
+					</td>
+				</tr>
+			</tbody>
+			<tfoot>
+				<tr>
+					<!-- <th><span>Nom - Prénom</span></th> -->
+					<th><span>Début de congé </span></th>
+					<th><span>Fin de congé</span></th>
+					<th><span>Type de congé</span></th>
+					<th>Actions</th>
+				</tr>
+				<!-- <tr>
+					    <button type="submit" (click)="previousState()" class="btn btn-info">
+					        <span class="fa fa-arrow-left"></span>&nbsp;<span> Retour </span>
+					    </button>
+	    			</tr> -->
+			</tfoot>
+		</table>
+	</div>
+	<div class="row">
+		<div class="col-sm-7" style="text-align: center">
+			<pagination-controls (pageChange)="p = $event"> </pagination-controls>
+		</div>
+	</div>
+</div>
+
+<!-- ********************************** Détails *********************************** -->
+<div class="box" *ngIf="mode === 2">
+	<div class="box-header">
+		<h3 class="box-title" *ngIf="employe">Détails du congé de
+			{{employe.nomEmploye}} {{employe.prenomEmploye}}</h3>
+	</div>
+	<div class="box-body">
+		<table class="table table-bordered table-striped" *ngIf="employeConge">
+			<tr>
+
+				<td>Type de congé:</td>
+				<td>
+					<div *ngIf="typeMotifConge">
+						<span>{{typeMotifConge.libelleTypeMotifConge}}</span>
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<td>Début du congé:</td>
+				<td>{{employeConge.id.dateDebutConge | date:'dd/MM/yyyy'}}</td>
+			</tr>
+			<tr>
+				<td>Fin du congé:</td>
+				<td>{{employeConge.dateFinConge | date:'dd/MM/yyyy'}}</td>
+			</tr>
+			<tr>
+				<td>Durée du congé:</td>
+				<td>{{employeConge.dureeConge}}</td>
+			</tr>
+			<tr>
+				<td>Reférence de début:</td>
+				<td>{{employeConge.refDebutConge}}</td>
+			</tr>
+			<tr>
+				<td>Reférence de fin:</td>
+				<td>{{employeConge.refFinConge}}</td>
+			</tr>
+			<tr>
+				<td>Commentaire de début:</td>
+				<td>{{employeConge.comDebutConge}}</td>
+			</tr>
+			<tr>
+				<td>Commentaire de fin:</td>
+				<td>{{employeConge.comFinConge}}</td>
+			</tr>
+		</table>
+		<button type="submit" (click)="previousState()" class="btn btn-info">
+			<span class="fa fa-arrow-left"></span>&nbsp;<span> Retour </span>
+		</button>
+	</div>
+</div>
+
+<!-- ***************************** Création *********************************** -->
+<div class="box" *ngIf="mode === 3">
+	<div class="box-header">
+		<h3 class="box-title" *ngIf="employe"> {{header}}
+			{{employe.nomEmploye}} {{employe.prenomEmploye}}</h3>
+	</div>
+	<!-- /.box-header -->
+	<div class="box-body">
+		<form name="editForm" novalidate (ngSubmit)="save()"
+			#editForm="ngForm">
+			<!-- *ngIf="success" > -->
+			<div class="alert alert-danger" *ngIf="errorEmpExists == 1">
+				<strong>Cet employé a déjà un congé enregistré à cette
+					date!</strong> Veuillez choisir un autre employé ou changer de date début.
+			</div>
+			<div class="alert alert-danger" *ngIf="errorEmpExists == 2">
+				<strong>La date n'est pas valide!</strong> Veuillez changer les
+				dates.
+			</div>
+			<div class="alert alert-danger" *ngIf="errorDureeExists == 1">
+				<strong>La durée ne peut pas être supérieure au nombre de
+					jours!</strong> Veuillez la changer.
+			</div>
+			<!-- <div class="form-group"> Employé <br>
+					        	<label class="form-control-label" >Nom - prénom </label>
+					        	<select class="form-control" name="codeEmploye" [(ngModel)]="employeConge.id.codeEmploye" [disabled]="hide">
+					                <option *ngFor="let employeOption of employes; trackBy: trackEmployeById" [value]="employeOption.codeEmploye" > {{employeOption.nomEmploye}} - {{employeOption.prenomEmploye}} </option>
+					            </select>
+					            <small class="alert alert-danger" *ngIf="errorEmpExists == 1">
+			                		SVP choisissez un autre employé.
+					            </small>
+					        </div> -->
+			<div class="form-group">
+				<label class="form-control-label">Type de congé</label> <select
+					class="form-control" name="codeTypeMotifConge"
+					[(ngModel)]="employeConge.id.codeTypeMotifConge" required>
+					<option [ngValue]="null"></option>
+					<option
+						*ngFor="let tm of typeConges" [ngValue]="tm.codeTypeMotifConge">
+						{{tm.libelleTypeMotifConge}}</option>
+				</select>
+			</div>
+			<div class="form-group">
+				<label class="form-control-label">Début de congé</label> <input
+					type="date" class="form-control" name="dateDebutConge"
+					#dateDebutCongeInput="ngModel"
+					[(ngModel)]="employeConge.id.dateDebutConge" required /> <small
+					class="alert alert-danger" *ngIf="errorDateExists == 1">
+					SVP choisissez une autre date. </small> <small class="alert alert-danger"
+					*ngIf="errorDateExists == 2"> SVP changer la date de début.
+				</small>
+			</div>
+			<div class="form-group">
+				<label class="form-control-label">Fin de congé</label> <input
+					type="date" class="form-control" name="dateFinConge"
+					[(ngModel)]="employeConge.dateFinConge" /> <small
+					class="alert alert-danger" *ngIf="errorDateExists == 2">
+					SVP changer la date de fin. </small>
+			</div>
+			<div class="form-group">
+				<label class="form-control-label">Durée</label> <input type="number"
+					class="form-control" name="dureeConge"
+					[(ngModel)]="employeConge.dureeConge" /> <small
+					class="alert alert-danger" *ngIf="errorDureeExists == 1">
+					SVP changez la durée. </small>
+			</div>
+			<div class="form-group">
+				<label class="form-control-label">Reférence du début</label> <input
+					type="text" class="form-control" name="refDebutConge"
+					[(ngModel)]="employeConge.refDebutConge" />
+			</div>
+			<div class="form-group">
+				<label class="form-control-label">Reférence de fin</label> <input
+					type="text" class="form-control" name="refFinConge"
+					[(ngModel)]="employeConge.refFinConge" />
+			</div>
+			<div class="form-group">
+				<label class="form-control-label">Commentaire de début</label>
+				<textarea class="form-control" name="comDebutConge"
+					[(ngModel)]="employeConge.comDebutConge"> </textarea>
+			</div>
+			<div class="form-group">
+				<label class="form-control-label">Commentaire de fin de
+					congé</label>
+				<textarea class="form-control" name="comFinConge"
+					[(ngModel)]="employeConge.comFinConge"> </textarea>
+			</div>
+			<div>
+				<button type="button" class="btn btn-secondary" (click)="clear()">
+					<span class="fa fa-ban"></span>&nbsp;<span>Retour</span>
+				</button>
+				<button type="submit" class="btn btn-primary"
+					[disabled]="editForm.form.invalid">
+					<span class="fa fa-save"></span>&nbsp;<span>Enregistrer</span>
+				</button>
+			</div>
+		</form>
+	</div>
+</div>
+
+<!-- ***************************** Edition *********************************** -->
+<div class="box" *ngIf="mode === 4">
+	<div class="box-header">
+		<h3 class="box-title" *ngIf="employe">{{header}}
+			{{employe.nomEmploye}} {{employe.prenomEmploye}}</h3>
+	</div>
+	<!-- /.box-header -->
+	<div class="box-body">
+		<form name="editForm" novalidate (ngSubmit)="edit()"
+			#editForm="ngForm">
+			<!-- *ngIf="success" > -->
+			<div class="alert alert-danger" *ngIf="errorEmpExists == 1">
+				<strong>Cet employé a déjà un congé enregistré à cette
+					date!</strong> Veuillez choisir un autre employé ou changer de date début.
+			</div>
+			<div class="alert alert-danger" *ngIf="errorEmpExists == 2">
+				<strong>La date n'est pas valide!</strong> Veuillez changer les
+				dates.
+			</div>
+			<div class="alert alert-danger" *ngIf="errorDureeExists == 1">
+				<strong>La durée ne peut pas être supérieure au nombre de
+					jours!</strong> Veuillez la changer.
+			</div>
+			<div class="form-group">
+				<label class="form-control-label">Type de congé</label> <select
+					class="form-control" name="codeTypeMotifConge"
+					[(ngModel)]="employeConge.id.codeTypeMotifConge" required>
+					<option [ngValue]="null"></option>
+					<option *ngFor="let tm of typeConges" [ngValue]="tm.codeTypeMotifConge"> {{tm.libelleTypeMotifConge}}</option>
+				</select>
+			</div>
+			<div class="form-group">
+				<label class="form-control-label">Début de congé</label> <input
+					type="date" class="form-control" name="dateDebutConge"
+					#dateDebutCongeInput="ngModel"
+					[(ngModel)]="employeConge.id.dateDebutConge" required /> <small
+					class="alert alert-danger" *ngIf="errorDateExists == 1">
+					SVP choisissez une autre date. </small> <small class="alert alert-danger"
+					*ngIf="errorDateExists == 2"> SVP changer la date de début.
+				</small>
+			</div>
+			<div class="form-group">
+				<label class="form-control-label">Fin de congé</label> <input
+					type="date" class="form-control" name="dateFinConge"
+					[(ngModel)]="employeConge.dateFinConge" /> <small
+					class="alert alert-danger" *ngIf="errorDateExists == 2">
+					SVP changer la date de fin. </small>
+			</div>
+			<div class="form-group">
+				<label class="form-control-label">Durée</label> <input type="number"
+					class="form-control" name="dureeConge"
+					[(ngModel)]="employeConge.dureeConge" /> <small
+					class="alert alert-danger" *ngIf="errorDureeExists == 1">
+					SVP changez la durée. </small>
+			</div>
+			<div class="form-group">
+				<label class="form-control-label">Reférence du début</label> <input
+					type="text" class="form-control" name="refDebutConge"
+					[(ngModel)]="employeConge.refDebutConge" />
+			</div>
+			<div class="form-group">
+				<label class="form-control-label">Reférence de fin</label> <input
+					type="text" class="form-control" name="refFinConge"
+					[(ngModel)]="employeConge.refFinConge" />
+			</div>
+			<div class="form-group">
+				<label class="form-control-label">Commentaire de début</label>
+				<textarea class="form-control" name="comDebutConge"
+					[(ngModel)]="employeConge.comDebutConge"> </textarea>
+			</div>
+			<div class="form-group">
+				<label class="form-control-label">Commentaire de fin de
+					congé</label>
+				<textarea class="form-control" name="comFinConge"
+					[(ngModel)]="employeConge.comFinConge"> </textarea>
+			</div>
+			<div>
+				<button type="button" class="btn btn-secondary" (click)="clear()">
+					<span class="fa fa-ban"></span>&nbsp;<span>Retour</span>
+				</button>
+				<button type="submit" class="btn btn-primary"
+					[disabled]="editForm.form.invalid">
+					<span class="fa fa-save"></span>&nbsp;<span>Enregistrer</span>
+				</button>
+			</div>
+		</form>
+	</div>
+</div>
+
+<!-- ************************************** Pagination ***************************************** -->
+<!-- <div class="row">
+	<div class="col-sm-7">
+		<div class="dataTables_paginate paging_simple_numbers"
+			id="example1_paginate" style="text-align: right">
+			<ul class="pagination">
+				<li class="paginate_button previous disabled" id="example1_previous">
+					<a href="#" aria-controls="example1" data-dt-idx="0" tabindex="0">Previous</a>
+				</li>
+				<li class="paginate_button active"><a href="#"
+					aria-controls="example1" data-dt-idx="1" tabindex="0">1</a></li>
+				<li class="paginate_button "><a href="#"
+					aria-controls="example1" data-dt-idx="2" tabindex="0">2</a></li>
+				<li class="paginate_button "><a href="#"
+					aria-controls="example1" data-dt-idx="3" tabindex="0">3</a></li>
+				<li class="paginate_button "><a href="#"
+					aria-controls="example1" data-dt-idx="4" tabindex="0">4</a></li>
+				<li class="paginate_button "><a href="#"
+					aria-controls="example1" data-dt-idx="5" tabindex="0">5</a></li>
+				<li class="paginate_button "><a href="#"
+					aria-controls="example1" data-dt-idx="6" tabindex="0">6</a></li>
+				<li class="paginate_button next" id="example1_next"><a href="#"
+					aria-controls="example1" data-dt-idx="7" tabindex="0">Next</a></li>
+			</ul>
+		</div>
+	</div>
+</div> -->
+<!-- </div> -->

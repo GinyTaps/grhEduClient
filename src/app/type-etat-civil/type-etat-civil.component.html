@@ -1,0 +1,296 @@
+<div class="col-md-4">
+	<div class="row">
+		<div class="box">
+			<div class="box-header">
+				<h3 class="box-title">Sélection des types</h3>
+			</div>
+			<div class="box-body">
+				<table class="table table-bordered table-striped">
+					<!-- *ngIf="employeEtatCivil"> -->
+					<tr>
+						<td>Tables</td>
+						<td><select name="typesTable" [(ngModel)]="typeSelected" (change)="selectType()">
+								<option [ngValue]="null"></option>
+								<option *ngFor="let types of typesTable" [ngValue]="types" [selected]="this[typeSelected]">
+									{{types}}</option>
+						</select></td>
+					</tr>
+					<!-- <tr *ngIf="typeEtatCivil.codeTypeEtatCivilParent">
+						<td>ID Parent</td>
+						<td>{{typeEtatCivil.codeTypeEtatCivilParent}}</td>
+					</tr> -->
+				</table>
+			</div>
+		</div>
+	</div>
+
+	<!-- ******************************** Liste des types  **************************** -->
+	<div clas="row" *ngIf="typeEtatCivil && mode === 1" >
+		<div class="box">
+			<div class="box-header">
+				<h3 class="box-title">{{title}}</h3>
+			</div>
+			<!-- /.box-header -->
+			<div class="box-body">
+				<div class="row">
+					<div class="col-sm-6 float-right">
+						<div class="dataTables_filter">
+							<!-- <label>Search:<input type="search" class="form-control input-sm" placeholder="" aria-controls="example1">
+            				</label> -->
+							<button id="addToTable" class="btn btn-primary"
+								placement="bottom" (click)="createTypeEtatCivil()">
+								<i class="fa fa-plus"></i>
+							</button>
+						</div>
+					</div>
+				</div>
+				<table class="table table-bordered table-striped">
+					<tr>
+						<td><span>Libellé</span></td>
+						<td><span>Ordre </span></td>
+						<td>Actions</td>
+					</tr>
+					<tr *ngFor="let typ of typeEtatCivils[0] | paginate: { itemsPerPage: 10, currentPage: p }">
+						<td>{{typ.libelleTypeEtatCivil}}</td>
+						<td>{{typ.ordreTypeEtatCivil}}</td>
+						<td class="actions">
+							<!-- <a class="on-default" (click)="detailsTypeEtatCivil(typ.codeTypeEtatCivil)"> <i class="fa fa-eye"></i></a>&nbsp; -->
+							<a class="on-default edit-row" (click)="editTypeEtatCivil(typ.codeTypeEtatCivil)"> <i class="fa fa-pencil"></i></a>&nbsp;
+							<a [swal]="deleteSwal"> <i class="fa fa-trash-o"></i> </a>
+								<swal #deleteSwal title="Supprimer?" text="Confirmer la suppression de ce type"
+									type="question" icon="warning" [showCancelButton]="true"
+									[focusCancel]="true" (confirm)="deleteType(typ.codeTypeEtatCivil)">
+							  	</swal>
+						</td>
+					</tr>
+					<tr>
+						<td><span>Libellé</span></td>
+						<td><span>Ordre </span></td>
+						<td>Actions</td>
+					</tr>
+				</table>
+			</div>
+			<div class="row">
+				<pagination-controls (pageChange)="p = $event"></pagination-controls>
+			</div>
+		</div>
+	</div>
+	
+<!-- ************************************** Création ****************************** -->
+	<div class="row" *ngIf="mode === 2 || mode === 3">
+		<div class="box">
+			    <div class="box-header">
+			        <h4>{{header}} </h4>
+			        <button type="button" (click)="close()">&times;</button>
+			    </div>
+			    <div class="box-body">
+			    	<div class="form-group" [hidden]="!codeTypeEtatCivil" >
+			    		<label> ID </label>
+			    		<input class="form-control" name="codeTypeEtatCivil" type="number" readonly
+			    		[(ngModel)]="typeEtatCivil.codeTypeEtatCivil" readonly />
+			    	</div>
+			    	<div class="form-group">
+			            <label class="form-control-label">Libellé</label>
+			            <input type="text" class="form-control" name="libelleTypeEtatCivil"
+			            [(ngModel)]="typeEtatCivil.libelleTypeEtatCivil" />
+			        </div>
+			        <div class="form-group">
+			            <label class="form-control-label" >Ordre</label>
+			            <input type="number" class="form-control" name="ordreTypeEtatCivil"
+			                [(ngModel)]="typeEtatCivil.ordreTypeEtatCivil"  />
+			        </div>
+			      </div> 
+			      <div>
+			        <button type="button" class="btn btn-secondary" (click)="close()" >
+			            <span class="fa fa-save"></span>&nbsp;<span>Retour</span>
+			        </button>
+			        
+			        <button *ngIf="mode === 2" type="button" class="btn btn-primary" (click)="save()" > 
+			            <span class="fa fa-save"></span>&nbsp;<span>Enregistrer</span>
+			        </button>
+			        
+			        <button *ngIf="mode === 3" type="button" class="btn btn-primary" (click)="edit()" > 
+			            <span class="fa fa-save"></span>
+			        </button>
+			    </div>
+		</div>
+	</div>
+	
+</div>
+
+
+<!-- <div>
+	******************************** Exemple avec Admin LTE data tables template *******************
+	<div class="box">
+            <div class="box-header">
+              <h3 class="box-title">Etat-civils</h3>
+            </div>
+            /.box-header
+            <div class="box-body">
+            	<div class="row">
+            		<div class="col-sm-6">
+            			<div class="dataTables_length" id="example1_length">
+            				<label>Show entries
+            					<select name="example1_length" aria-controls="example1" class="form-control input-sm">
+            						<option value="10">10</option>
+            						<option value="25">25</option>
+            						<option value="50">50</option>
+            						<option value="100">100</option>
+            					</select> 
+            				</label>
+            			</div>
+            		</div>
+            		<div class="col-sm-6 float-right">
+            			<div id="example1_filter" class="dataTables_filter">
+            				<label>Search:<input type="search" class="form-control input-sm" placeholder="" aria-controls="example1">
+            				</label>
+             				<button id="addToTable" class="btn btn-primary" [ngbTooltip]="addTooltip" placement="bottom" [routerLink] = "['/employe-dialog']"> [routerLink]="['/', { outlets: { popup: ['employe-dialog'] } }]">
+								Add <i class="fa fa-plus"></i>
+								<ng-template #addTooltip> <span>Ajouter un employé </span> </ng-template>
+							</button>
+            			</div>
+            			<div class="mb-md">
+							<button id="addToTable" class="btn btn-primary" [routerLink]="['/', { outlets: { popup: ['employe-dialog'] } }]">
+								Add <i class="fa fa-plus"></i>
+							</button>
+						</div>
+            		</div>
+				</div>
+              <table id="example1" class="table table-bordered table-striped">
+                <thead>
+                <tr>
+                  <th><span>Libellé</span></th>
+	            	<th><span>Ordre de congé</span></th>
+				  <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+	                <tr *ngFor ="let typ of typeEtatCivils ;trackBy: trackId">
+		                <td>
+		                    {{typ.libelleTypeEtatCivil}}
+		               	</td>
+		                <td>
+		                    {{typ.ordreTypeEtatCivil}}
+		                </td>
+						<td class="actions">
+							<a class="on-default" [routerLink] ="['/typeEtatCivil-detail', typ.codeTypeEtatCivil]"><i class="fa fa-eye"></i></a>
+							<a class="on-default edit-row" [routerLink]="['/typeEtatCivil-dialog', typ.codeTypeEtatCivil]" ><i class="fa fa-pencil"></i></a> 
+							<a class="on-default remove-row" [routerLink]="['/typeEtatCivil-delete', typ.codeTypeEtatCivil]" > <i class="fa fa-trash-o"></i></a>
+							<a class="on-default remove-row" data-toggle="modal" data-target="#modal-danger" [routerLink]="['/', { outlets: { popup: 'employe-delete/'+ emp.codeEmploye} }]"><i class="fa fa-trash-o"></i></a>
+						</td>
+	                </tr>
+                </tbody>
+                <tfoot>
+                <tr>
+                  <th><span>Libellé</span></th>
+	            	<th><span>Ordre de congé</span></th>
+				  <th>Actions</th>
+                </tr>
+                </tfoot>
+              </table>
+            </div>
+		</div>
+		<div class="row">
+			<div class="col-sm-5">
+				<div class="dataTables_info" id="example1_info" role="status" aria-live="polite">Showing 1 to 10 of 57 entries
+				</div>
+			</div>
+			<div class="col-sm-7">
+				<div class="dataTables_paginate paging_simple_numbers" id="example1_paginate">
+					<ul class="pagination">
+						<li class="paginate_button previous disabled" id="example1_previous">
+							<a href="#" aria-controls="example1" data-dt-idx="0" tabindex="0">Previous</a>
+						</li>
+						<li class="paginate_button active">
+							<a href="#" aria-controls="example1" data-dt-idx="1" tabindex="0">1</a>
+						</li>
+						<li class="paginate_button ">
+							<a href="#" aria-controls="example1" data-dt-idx="2" tabindex="0">2</a>
+						</li>
+						<li class="paginate_button ">
+							<a href="#" aria-controls="example1" data-dt-idx="3" tabindex="0">3</a>
+						</li>
+						<li class="paginate_button ">
+							<a href="#" aria-controls="example1" data-dt-idx="4" tabindex="0">4</a>
+						</li>
+						<li class="paginate_button ">
+							<a href="#" aria-controls="example1" data-dt-idx="5" tabindex="0">5</a>
+						</li>
+						<li class="paginate_button ">
+							<a href="#" aria-controls="example1" data-dt-idx="6" tabindex="0">6</a>
+						</li>
+						<li class="paginate_button next" id="example1_next">
+							<a href="#" aria-controls="example1" data-dt-idx="7" tabindex="0">Next</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div> -->
+
+<!-- ************************************* Exemple classique ***************************************** -->
+    <!-- <div class="row">
+        <div class="col-sm-8"> 
+            <h2> Etat civils </h2>
+        </div>
+        <div class="col-sm-4 text-right">
+            <button class="btn btn-primary float-right create-points" [ngbTooltip]="addTooltip" placement="bottom" [routerLink]="['/', { outlets: { popup: ['typeEtatCivil-dialog'] } }]"> [routerLink] ="['/employe-dialog']" [ngbTooltip]="addTooltip" placement="bottom"> [routerLink]="['/', { outlets: { popup: ['employe-dialog'] } }]">
+                <span class="fa fa-plus"></span>
+                <span class="hidden-md-down"></span>
+				<ng-template #addTooltip> <span>Créer un type d'état civil </span> </ng-template>
+            </button>
+        
+            <form #fs ="ngForm" (ngSubmit) = "onSearch(motCle)" class="form-inline">
+                <div class="input-group w-100 mr-1">
+                    <input class="form-control" type="text" [(ngModel)]="motCle" name="motCle" required placeholder="Mot clé" >
+                    <button type="submit" class="btn btn-primary">chercher</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <br/>
+
+	<div class="table-responsive" *ngIf="typeEtatCivils" > *ngIf="pageTypeEtatCivils" > 
+	        <table class="table table-striped">
+	            <thead>
+	            <tr (predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
+	            <tr>
+	            <th><span>Libellé</span></th>
+	            <th><span>Ordre de congé</span></th>
+	            </tr>
+	            </thead>
+	            <tbody>
+	            <tr *ngFor ="let typ of typeEtatCivils ;trackBy: trackId">  <tr *ngFor ="let emp of pageEmployeConges ;trackBy: trackId">
+	                <td>
+	                    {{typ.libelleTypeEtatCivil}}
+	               	</td>
+	                <td>
+	                    {{typ.ordreTypeEtatCivil}}
+	                </td>
+	                <td class="text-right">
+	                    <div class="btn-group flex-btn-group-container">
+	                        <button type="submit" class="btn btn-info btn-sm" [routerLink] ="['/typeEtatCivil-detail', typ.codeTypeEtatCivil]" >
+	                            <span class="fa fa-eye"></span>
+	                            <span class="hidden-md-down" >View</span>
+	                        </button>
+	                        <button type="submit" replaceUrl="true" class="btn btn-primary btn-sm" [routerLink]="['/', { outlets: { popup: 'typeEtatCivil-dialog/'+ typ.codeTypeEtatCivil} }]" >
+	                            <span class="fa fa-pencil"></span>
+	                            <span class="hidden-md-down">Edit</span>
+	                        </button>
+	                        <button type="submit" replaceUrl="true" class="btn btn-danger btn-sm" [routerLink]="['/', { outlets: { popup: 'typeEtatCivil-delete/'+ typ.codeTypeEtatCivil} }]" > 
+	                            <span class="fa fa-remove"></span>
+	                            <span class="hidden-md-down" >Delete</span>
+	                        </button>
+	                    </div>
+	                </td>
+	              </tr>
+	        </tbody>
+	    </table>
+	    <div class="container">
+	        <ul class="nav nav-pills">
+	            <li [ngClass]="{'active': i== currentPage}" *ngFor= "let p of pages; let i=index"> 
+	                <a (click)= "goToPage(i)"> {{i}} </a>
+	            </li>
+	        </ul>
+	    </div>
+	</div>
+</div> -->

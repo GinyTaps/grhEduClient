@@ -1,0 +1,26 @@
+<div *ngIf="typeMotifConge">
+    <h2><span >Motif congé</span> {{typeMotifConge.libelleTypeMotifConge}}</h2>
+    <hr>
+    <dl class="row-md jh-entity-details">
+        <dt><span>ID: </span></dt>
+        <dd>
+            <span> {{typeMotifConge.codeTypeMotifConge}}
+            </span>
+        </dd>
+
+        <dt><span>Libellé: </span> </dt>
+        <dd>
+            <span>{{typeMotifConge.libelleTypeMotifConge}}</span>
+        </dd>
+
+        <dt><span>Ordre: </span> </dt>  
+        <dd>
+            <span>{{typeMotifConge.ordreTypeMotifConge}}</span>
+        </dd>
+    </dl>
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span> Retour </span>
+    </button>
+</div>

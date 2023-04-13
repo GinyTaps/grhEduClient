@@ -1,0 +1,69 @@
+<form name="editForm" novalidate (ngSubmit)="save()" #editForm="ngForm" *ngIf="mode" >
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="typeNationaliteLabel" >Créer un type d'état civil</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+    	<div class="form-group" [hidden]="!typeEtatCivil.codeTypeEtatCivil" >
+    		<label> ID </label>
+    		<input class="form-control" name="codeTypeEtatCivil" type="number"
+    		[(ngModel)]="typeEtatCivil.codeTypeEtatCivil" readonly />
+    	</div>
+    	<div class="form-group">
+            <label class="form-control-label">Libellé</label>
+            <input type="text" class="form-control" name="libelleTypeEtatCivil"
+                [(ngModel)]="typeEtatCivil.libelleTypeEtatCivil" />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" >Ordre</label>
+            <input type="number" class="form-control" name="ordreTypeEtatCivil"
+                [(ngModel)]="typeEtatCivil.ordreTypeEtatCivil"  />
+        </div>
+      </div> 
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span>Retour</span>
+        </button>
+        <button type="submit"class="btn btn-primary" [disabled]="editForm.form.invalid" > 
+            <span class="fa fa-save"></span>&nbsp;<span>Enregistrer</span>
+        </button>
+    </div>
+</form>
+
+<!-- ****************************** Formulaire d'édition ****************************** -->
+
+<form name="editForm" novalidate (ngSubmit)="edit()" #editForm="ngForm" *ngIf="!mode" >
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="typeNationaliteLabel" >Modifier un type d'état civil</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+    	<div class="form-group" [hidden]="!typeEtatCivil.codeTypeEtatCivil" >
+    		<label> ID </label>
+    		<input class="form-control" name="codeTypeEtatCivil" type="number"
+    		[(ngModel)]="typeEtatCivil.codeTypeEtatCivil" readonly />
+    	</div>
+    	<div class="form-group">
+            <label class="form-control-label">Libellé</label>
+            <input type="text" class="form-control" name="libelleTypeEtatCivil"
+                [(ngModel)]="typeEtatCivil.libelleTypeEtatCivil" />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" >Ordre</label>
+            <input type="number" class="form-control" name="ordreTypeEtatCivil"
+                [(ngModel)]="typeEtatCivil.ordreTypeEtatCivil"  />
+        </div>
+      </div> 
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span>Retour</span>
+        </button>
+        <button type="submit"class="btn btn-primary" [disabled]="editForm.form.invalid" > 
+            <span class="fa fa-save"></span>&nbsp;<span>Enregistrer</span>
+        </button>
+    </div>
+</form>

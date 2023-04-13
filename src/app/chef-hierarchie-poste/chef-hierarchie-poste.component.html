@@ -1,0 +1,103 @@
+<div>
+
+<!-- ********************************** Liste des chef hiérarchique poste  ****************************** -->
+	<div clas="row" *ngIf="mode === 1" >
+		<div class="box">
+			<div class="box-header">
+				<h3 class="box-title">{{title}}</h3>
+			</div>
+			<!-- /.box-header -->
+			<div class="box-body">
+				<div class="row">
+					<div class="col-sm-6 float-right">
+						<div class="dataTables_filter">
+							<!-- <label>Search:<input type="search" class="form-control input-sm" placeholder="" aria-controls="example1">
+            				</label> -->
+							<button id="addToTable" class="btn btn-primary"
+								placement="bottom" (click)="createChefHierarchiePoste()">
+								<i class="fa fa-plus"></i>
+							</button>
+						</div>
+					</div>
+				</div>
+				<div class="table-responsive">
+				<table class="table table-bordered table-striped">
+					<tr>
+						<td><span> <strong> Poste parente </strong> </span></td>
+						<td><span> <strong> Niveau </strong> </span></td>
+						<td> <strong> Actions </strong> </td>
+					</tr>
+					<tr *ngFor="let chp of chefHierarchiePostes | paginate: { itemsPerPage: 10, currentPage: p }">
+						<td>{{chp.codePosteParent}}</td>
+						<td>{{chp.niveau}}</td>
+						<td class="actions">
+							<!-- <a class="on-default" (click)="detailsChefHierarchiePoste(ad.codeChefHierarchiePoste)"> <i class="fa fa-eye"></i></a>&nbsp; -->
+							<a class="on-default edit-row" (click)="editChefHierarchiePoste(chp)"> <i class="fa fa-pencil"></i></a>&nbsp;
+							<a [swal]="deleteAd">
+								<i class="fa fa-trash-o"></i>
+							</a>
+							<swal #deleteAd title="Supprimer?" text="Confirmer la suppression de l'élément"
+								type="question" icon="warning" [showCancelButton]="true"
+								[focusCancel]="true" (confirm)="deleteChefHierarchiePoste(chp)">
+							</swal>
+						</td>
+					</tr>
+				</table>
+				</div>
+				<div class="row">
+						<pagination-controls (pageChange)="p = $event"></pagination-controls>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+<!-- ************************************** Création *************************************************** -->
+	<div class="row" *ngIf="mode === 2 || mode === 3">
+		<div class="box">
+	
+			    <div class="box-header">
+			        <h4>{{header}} </h4>
+			        <button type="button" (click)="close()">&times;</button>
+				</div>
+				
+			    <div class="box-body">
+					<div class="col-sm-12">
+						<h4 style="text-align: center;">ChefHierarchiePoste</h4>
+						<div class="col-sm-6">
+							<label>Poste</label>
+							<select class="form-control" name="codePoste" [(ngModel)]="chefHierarchiePoste.codePoste">
+									<option [ngValue]="null"></option>
+									<option *ngFor="let p of postes" [ngValue]="p.codePoste">
+										{{p.nomPoste}}
+									</option>
+							</select>
+						</div>
+						<div class="col-sm-6">
+							<label>Poste parent</label>
+							<select class="form-control" name="codePosteParent" [(ngModel)]="chefHierarchiePoste.codePosteParent">
+									<option [ngValue]="null"></option>
+									<option *ngFor="let p of postes" [ngValue]="p.codePoste">
+										{{p.nomPoste}}
+									</option>
+							</select>
+						</div>
+						<div class="col-sm-6">
+							<label>Niveau</label>
+							<input class="form-control" type="text" name="niveau"
+						                [(ngModel)]="chefHierarchiePoste.niveau"  />
+						</div>
+						<div class="col-sm-12">
+							<button *ngIf="mode === 2" type="button" class="wrapper btn btn-primary" (click)="save()" >
+								<span class="fa fa-save"></span>
+							</button>
+							
+							<button *ngIf="mode === 3" type="button" class="wrapper btn btn-primary" (click)="edit()" > 
+								<span class="fa fa-save"></span>
+							</button>
+						</div>
+					</div>
+			    </div>
+		</div>
+	</div>
+	
+</div>

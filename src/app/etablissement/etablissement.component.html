@@ -1,0 +1,210 @@
+<div>
+
+<!-- ********************************** Liste ********************************* -->
+	<div clas="row" *ngIf="mode === 1" >
+		<div class="box">
+			<div class="box-header">
+				<h3 class="box-title">{{title}}</h3>
+			</div>
+			<!-- /.box-header -->
+			<div class="box-body">
+				<div class="row">
+					<div class="col-sm-6 float-right">
+						<div class="dataTables_filter">
+							<!-- <label>Search:<input type="search" class="form-control input-sm" placeholder="" aria-controls="example1">
+            				</label> -->
+							<button id="addToTable" class="btn btn-primary"
+								placement="bottom" (click)="createEtablissement()">
+								<i class="fa fa-plus"></i>
+							</button>
+						</div>
+					</div>
+				</div>
+				<div class="table-responsive">
+				<table class="table table-bordered table-striped">
+					<tr>
+						<th> Code adminitratif établissement </th>
+						<th> Nom </th>
+						<th> Téléphone </th>
+						<th> Fax </th>
+						<th> Email </th>
+						<th> Adresse postale </th>
+						<th> Année de création </th>
+						<th> Type du milieu </th>
+						<th> Statut de l'établissement </th>
+						<th> Type d'établissement </th>
+						<th> Actions </th>
+					</tr>
+					<tr *ngFor="let etab of etablissements | paginate: { itemsPerPage: 10, currentPage: p }">
+						<td>{{etab.codeAdministratifEtablissement}}</td>
+						<td>{{etab.nomEtablissement}}</td>
+						<td>{{etab.telEtablissement}}</td>
+						<td>{{etab.faxEtablissement}}</td>
+						<td>{{etab.emailEtablissement}}</td>
+						<td>{{etab.adressePostEtablissement}}</td>
+						<td>{{etab.anneeCreationEtablissement}}</td>
+						<td>
+							<select name="codeTypeMilieu" [(ngModel)]="etab.codeTypeMilieu" disabled>
+								<option *ngFor="let typeOption of typeMilieu trackBy: trackTypeStructureEduById"
+									[ngValue]="typeOption.codeTypeMilieu">
+									{{typeOption.libelleTypeMilieu}}
+								</option>
+							</select>
+						</td>
+						<td>
+							<select name="codeTypeStatutEtablissement" [(ngModel)]="etab.codeTypeStatutEtablissement" disabled>
+								<option [ngValue]="null"></option>
+								<option *ngFor="let typeOption of typeStatutEtablissements"
+									[ngValue]="typeOption.codeTypeStatutEtablissement">
+									{{typeOption.libelleTypeStatutEtab}}
+								</option>
+							</select>
+						</td>
+						<td>
+							<select name="codeTypeEtablissement" [(ngModel)]="etab.codeTypeEtablissement" disabled>
+								<option [ngValue]="null"></option>
+								<option *ngFor="let typeOption of typeEtablissements"
+									[ngValue]="typeOption.codeTypeEtablissement">
+									{{typeOption.libelleTypeEtablissement}}
+								</option>
+							</select>
+						</td>
+						<td class="actions">
+							<!-- <a class="on-default" (click)="detailsEtablissement(etab.codeEtablissement)"> <i class="fa fa-eye"></i></a>&nbsp; -->
+							<a class="on-default edit-row" (click)="editEtablissement(etab.codeEtablissement)"> <i class="fa fa-pencil"></i></a>&nbsp;
+							<!--a class="on-default remove-row" (click)="deleteEtablissement(etab.codeEtablissement)"> <i class="fa fa-trash-o"></i></a-->
+							<a [swal]="deleteEts" (confirm)="deleteEtablissement(etab.codeEtablissement);" class="on-default remove-row">
+									<i class="fa fa-trash-o"></i>
+								</a>
+								<swal
+									#deleteEts
+									title="Effaçer?"
+									text="Confirmer la suppression de l'élément"
+									type="question"
+									icon="warning" 
+									[showCancelButton]="true"
+									[focusCancel]="true"
+									(confirm)="deleteEtablissement(etab.codeEtablissement);">
+								</swal>
+						</td>
+					</tr>
+					<!-- <tr>
+						<td><span>Code adminitratif établissement</span></td>
+						<td><span>Nom </span></td>
+						<td><span>Téléphone</span></td>
+						<td><span>Fax </span></td>
+						<td><span>Email</span></td>
+						<td><span>Adresse postale </span></td>
+						<td><span>Année de création</span></td>
+						<td><span>Type du milieu</span></td>
+						<td><span>Statut de l'établissement </span></td>
+						<td><span>Type d'établissement </span></td>
+						<td>Actions</td>
+					</tr> -->
+				</table>
+				</div>
+				<div class="row" style="text-align: center">
+						<pagination-controls (pageChange)="p = $event"></pagination-controls>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+<!-- ************************************** Création *************************************************** -->
+	<div class="row" *ngIf="mode === 2 || mode === 3">
+		<div class="box">
+	
+			    <div class="box-header">
+			        <h4>{{header}} </h4>
+			        <button type="button" (click)="close()">&times;</button>
+			    </div>
+			    <div class="box-body">
+			    	<!-- <div class="form-group" [hidden]="!codeEtablissement" >
+			    		<label> ID </label>
+			    		<input class="form-control" name="codeEtablissement" type="number" readonly
+			    		[(ngModel)]="etablissement.codeEtablissement" readonly />
+			    	</div> -->
+			    	<div class="col-sm-12">
+						<div class="col-sm-6">
+							<label>Code adminitratif établissement</label>
+							<input class="form-control" type="text" name="codeAdministratifEtablissement"
+					            		[(ngModel)]="etablissement.codeAdministratifEtablissement" />
+						</div>
+						<div class="col-sm-6">
+							<label>Nom</label>
+							<input class="form-control" type="text" name = "nomEtablissement"
+						                [(ngModel)]="etablissement.nomEtablissement" />
+						</div>
+						<div class="col-sm-6">
+							<label>Téléphone</label>
+							<input class="form-control" type="tel" name="telEtablissement"
+						                [(ngModel)]="etablissement.telEtablissement"  />
+						</div>
+						<div class="col-sm-6">
+							<label>Fax</label>
+							<input class="form-control" type="number" name="faxEtablissement"
+						                [(ngModel)]="etablissement.faxEtablissement"  />
+						</div>
+						<div class="col-sm-6">
+							<label>Email</label>
+							<input class="form-control" type="email" name="emailEtablissement"
+						                [(ngModel)]="etablissement.emailEtablissement"  />
+						</div>
+						<div class="col-sm-6">
+							<label>Adresse postale </label>
+							<input class="form-control" type="text" name="adressePostEtablissement"
+						                [(ngModel)]="etablissement.adressePostEtablissement"  />
+						</div>
+						<div class="col-sm-6">
+							<label>Année de création</label>
+							<input class="form-control" type="number" name="anneeCreationEtablissement"
+						                [(ngModel)]="etablissement.anneeCreationEtablissement"  />
+						</div>
+						<div class="col-sm-6">
+							<label>Type du milieu</label>
+							<select class="form-control" name="codeTypeMilieu" [(ngModel)]="etablissement.codeTypeMilieu">
+									<option [ngValue]="null"></option>
+									<option *ngFor="let typeOption of typeMilieu trackBy: trackTypeStructureEduById"
+											[ngValue]="typeOption.codeTypeMilieu">
+											{{typeOption.libelleTypeMilieu}}
+									</option>
+							</select>
+						</div>
+						<div class="col-sm-6">
+							<label>Statut de l'établissement</label>
+							<select class="form-control" name="codeTypeStatutEtablissement" [(ngModel)]="etablissement.codeTypeStatutEtablissement">
+									<option [ngValue]="null"></option>
+									<option *ngFor="let typeOption of typeStatutEtablissements"
+											[ngValue]="typeOption.codeTypeStatutEtablissement">
+											{{typeOption.libelleTypeStatutEtab}}
+									</option>
+							</select>
+						</div>
+						<div class="col-sm-6">
+							<label>Type d'établissement</label>
+							<select class="form-control" name="codeTypeEtablissement" [(ngModel)]="etablissement.codeTypeEtablissement">
+									<option [ngValue]="null"></option>
+									<option *ngFor="let typeOption of typeEtablissements"
+											[ngValue]="typeOption.codeTypeEtablissement">
+											{{typeOption.libelleTypeEtablissement}}
+									</option>
+							</select>
+						</div>
+					            
+			      </div> 
+			      <div class="col-sm-12">
+			      	<button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="close()">
+						<span class="fa fa-ban"></span>&nbsp;<span>Retour</span>
+					</button>
+			        <button *ngIf="mode === 2" type="button" class="btn btn-primary" (click)="save()" >
+			            <span class="fa fa-save"></span>&nbsp;<span>Enregistrer</span>
+			        </button>
+			        
+			        <button *ngIf="mode === 3" type="button" class="btn btn-primary" (click)="edit()" > 
+			            <span class="fa fa-save"></span>&nbsp;<span>Enregistrer</span>
+			        </button>
+			    </div>
+		</div>
+	</div>
+	
+</div>

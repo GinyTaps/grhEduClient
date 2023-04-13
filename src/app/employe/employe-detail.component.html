@@ -1,0 +1,1078 @@
+
+<div class="container">
+	<!-- <h3 class="box-title" *ngIf="employe">{{employe.nomEmploye}} - {{employe.prenomEmploye}}</h3> -->
+	<ul class="nav nav-tabs">
+		<li class="active"><a>Généralité</a></li>
+		<li><a [routerLink]="['/employe-qualification', id]"> <!-- <a [routerLink]="['/employe-qualification']"> -->Carrière
+		</a></li>
+		<li class="dropdown"><a href="#" class="dropdown-toggle"
+			data-toggle="dropdown">Mobilité <span class="caret"></span></a>
+			<ul class="dropdown-menu">
+				<li><a [routerLink]="['/employe-poste', id]">Poste en cours</a></li>
+				<li><a [routerLink]="['/employe-affectation', id]">Réaffectation</a></li>
+				<!-- <li><a (click) = "getRoutePoste()">{{title}}</a></li>
+				<li><a (click) = "getRouteAffectation()">Réaffectation</a></li> -->
+				<li><a [routerLink]="['/employe-transfert', id]">Transfert
+						dans l'administration</a></li>
+				<li><a [routerLink]="['/employe-transfertEco', id, 'E']">Transfert
+						dans une école</a></li>
+				<li><a [routerLink]="['/employe-detachement', id]">Détachement</a></li>
+				<li><a [routerLink]="['/employe-disponibilite', id]">Disponibilité</a></li>
+				<li><a [routerLink]="['/employe-suspension', id]">Suspension</a></li>
+				<li><a [routerLink]="['/employe-mutation', id]">Mutation</a></li>
+				<li><a [routerLink]="['/conge-employe', id]">Congé</a></li>
+			</ul></li>
+		<li class="dropdown"><a class="dropdown-toggle"
+			data-toggle="dropdown">Fin de carrière <span class="caret"></span></a>
+			<ul class="dropdown-menu">
+				<li><a [routerLink]="['/employe-retraite', id]">Retraite</a></li>
+				<li><a [routerLink]="['/employe-demission', id]">Démission</a></li>
+				<li><a [routerLink]="['/employe-revocation', id]">Révocation</a></li>
+				<li><a [routerLink]="['/employe-renvoi', id]">Renvoi</a></li>
+				<li><a [routerLink]="['/employe-deces', id]">Décès</a></li>
+			</ul></li>
+	</ul>
+</div> <br>
+
+<div class="row" style="width:400px;border: 1px solid">
+	<label> Localité: </label> <font color="red"> <input *ngIf="regroupements" type="text" disabled [(ngModel)]="regroupements.libelleRegroupement"> </font> <br>
+	<label> Poste: </label> <font color="red"> <input *ngIf="postes" type="text" disabled [(ngModel)]="postes.nomPoste"> </font>
+	<!-- <label> Poste: </label> <input *ngIf="typeFonctions" type="text" disabled [(ngModel)]="typeFonctions.libelleTypeFonction"> -->
+</div> <br>
+
+<div class="row">
+
+	<div class="col-md-4">
+		<div class="box">
+			<div class="box-header">
+				<h3 class="box-title" *ngIf="employe">
+					<span style="color: Turquoise;">{{employe.nomEmploye}}
+						{{employe.prenomEmploye}} </span>
+				</h3>
+				<div>
+					<img src="/assets/dist/img/user4-128x128.jpg"> <br/>
+					<!-- <input type="image" value="photo"> -->
+					<!-- <input type='file' (change)="onSelectFile($event)"> -->
+				</div>
+			</div>
+			<div class="box-body">
+				<table class="table table-bordered table-striped" *ngIf="employe">
+					<tr>
+						<td> <strong>ID: </strong> </td>
+						<td>{{employe.codeEmploye}}</td>
+					</tr>
+					<tr>
+						<td> <strong>Matricule: </strong> </td>
+						<td>{{employe.matriculeEmploye}}</td>
+					</tr>
+					<tr>
+						<td> <strong>Téléphone: </strong> </td>
+						<td>{{employe.telEmploye}}</td>
+					</tr>
+					<tr>
+						<td> <strong>Email: </strong> </td>
+						<td>{{employe.emailEmploye}}</td>
+					</tr>
+					<tr>
+						<td> <strong>Date de naissance: </strong> </td>
+						<td>{{employe.dateNaissEmploye| date:'dd/MM/yyyy'}}</td>
+					</tr>
+					<tr>
+						<td> <strong>Enseigné?: </strong> </td>
+						<td>
+							<div *ngIf="employe.enseigneYN;else nonenseigneYN">Oui</div> 
+							<ng-template #nonenseigneYN> Non </ng-template>
+						</td>
+					</tr>
+					<tr>
+						<td> <strong>Confirmé?: </strong> </td>
+						<td>
+							<div *ngIf="employe.confirmeYN;else nonconfirmeYN">Oui</div> <ng-template
+								#nonconfirmeYN> Non </ng-template>
+						</td>
+					</tr>
+					<tr>
+						<td> <strong>Carte d'identification nationale(CIN): </strong> </td>
+						<td>{{employe.cinEmploye}}</td>
+					</tr>
+					<tr>
+						<td> <strong>Date CIN: </strong> </td>
+						<td>{{employe.dateCinEmploye | date:'dd/MM/yyyy'}}</td>
+					</tr>
+					<tr>
+						<td> <strong>Adresse: </strong> </td>
+						<td>{{employe.adresseEmploye}}</td>
+					</tr>
+					<tr>
+						<td> <strong>Date d'engagement: </strong> </td>
+						<td>{{employe.dateEngEmploye | date:'dd/MM/yyyy'}}</td>
+					</tr>
+					<tr>
+						<td> <strong>Date CIN: </strong> </td>
+						<td>{{employe.dateCinEmploye | date:'dd/MM/yyyy'}}</td>
+					</tr>
+					<tr>
+						<td> <strong>Date de titularisation: </strong> </td>
+						<td>{{employe.dateTitEmploye | date:'dd/MM/yyyy'}}</td>
+					</tr>
+					<tr>
+						<td> <strong>Nationalité: </strong> </td>
+						<td>
+							<div *ngIf="typeNationalite">
+								<span>{{typeNationalite.libelleTypeNationalite}}</span>
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td> <strong>sexe: </strong> </td>
+						<td>
+							<div *ngIf="typeSexe">
+								<span>{{typeSexe.libelleTypeSexe}}</span>
+							</div>
+						</td>
+					</tr>
+					<!-- <tr>
+				    <button type="submit" (click)="previousState()" class="btn btn-info">
+				        <span class="fa fa-arrow-left"></span>&nbsp;<span> Retour </span>
+				    </button>
+    			</tr> -->
+				</table>
+				&nbsp;
+				<div class="wrapper">
+					<button type="submit" (click)="previousState()"
+						class="btn btn-info">
+						<span class="fa fa-arrow-left"></span>&nbsp;<span> Retour </span>
+					</button>
+				</div>
+			</div>
+
+			<!--  <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'employe/'+ employe.code_EMPLOYE + '/edit'} }]"
+            replaceUrl="true"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span> Edit</span>
+    </button> -->
+		</div>
+	</div>
+	&nbsp; &nbsp;
+
+	<!-- ***************************************************** Etat-civil ************************************************ -->
+	<div class="col-md-4">
+		<div class="row">
+			<div class="box">
+				<div class="box-header">
+					<h3 class="box-title">Etat-civil</h3>
+				</div>
+				<div class="box-body">
+					<div class="row">
+						<div class="col-sm-6 float-right">
+							<div id="example1_filter" class="dataTables_filter">
+								<button *ngIf="mode === 1" class="btn btn-primary"
+									placement="bottom" (click)="createEtatCivil()">
+									<!-- [routerLink] = "['/employe-etat-civil', id]">  [routerLink]="['/', { outlets: { popup: ['employe-dialog'] } }]"> -->
+									<i class="fa fa-plus"></i>
+								</button>
+								<button *ngIf="mode === 2 || mode === 3" class="btn btn-primary"
+									placement="bottom" (click)="close()">
+									<!-- [routerLink] = "['/employe-etat-civil', id]">  [routerLink]="['/', { outlets: { popup: ['employe-dialog'] } }]"> -->
+									<i class="fa fa-close"></i>
+								</button>
+							</div>
+						</div>
+					</div>
+					<div class="table-responsive">
+						<!-- <form name="crForm" (ngSubmit)="save()" #crForm="ngForm"> -->
+						<table class="table table-bordered table-striped"
+							*ngIf="mode === 1 || mode === 2 || mode === 3">
+							<tr>
+								<!-- <td class="delIcon"><span class="fa fa-remove"> </span></td>&nbsp; -->
+								<td><span> <strong> Statut </strong> </span></td> &nbsp;
+								<td><span> <strong> Date </strong> </span></td>
+								<td *ngIf="mode === 1"><span> <strong> Actions </strong> </span></td>
+							</tr>
+	
+	<!-- ***************************************************** Liste des état-civils *********************************** -->
+							<ng-container *ngIf="mode === 1">
+								<tr *ngFor="let em of employeEtatCivils">
+									<!-- <td><input type="checkbox"
+										(click)="deleteCheck(em.id.codeEmploye, em.id.dateEmployeEtatCivil, $event)"
+										[checked]="false" /></td> &nbsp; -->
+										
+									<td> 
+										<select class="form-control" name="codeTypeEtatCivil" [(ngModel)]="em.id.codeTypeEtatCivil" disabled>
+											<option *ngFor="let te of typeEtatCivils" [ngValue]="te.codeTypeEtatCivil"> {{te.libelleTypeEtatCivil}} </option>
+										</select> 
+									</td> &nbsp;
+									
+									<!-- <td *ngFor="let te of em.typeEtatCivils; let i = index"> {{te.libelleTypeEtatCivil}} </td> &nbsp; -->
+									<td>{{em.id.dateEmployeEtatCivil | date:'dd/MM/yyyy'}}</td>
+									<td class="actions">
+										<a class="on-default" (click)="editEtatCivil(em)">
+												<i class="fa fa-pencil"></i>
+										</a> 
+										<a [swal]="deleteE">
+											<i class="fa fa-trash-o"></i>
+										</a>
+										<swal #deleteE title="Supprimer?" text="Confirmer la suppression de l'élément"
+											type="question" icon="warning" [showCancelButton]="true"
+											[focusCancel]="true" (confirm)="deleteEtatCivil(em)">
+										</swal>
+									</td>
+								</tr>
+							</ng-container>
+							<!-- ************************************************** Création et édition ************************************************ -->
+							<tr *ngIf="mode === 2">
+								<td>
+									<select name="codeTypeEtatCivil" [(ngModel)]="employeEtatCivil.id.codeTypeEtatCivil" required>
+											<option [ngValue]="null"></option>
+											<option *ngFor="let typeEtatCivilOption of typeEtatCivils; trackBy: trackTypeEtatCivilById"
+												[ngValue]="typeEtatCivilOption.codeTypeEtatCivil">
+												{{typeEtatCivilOption.libelleTypeEtatCivil}}</option>
+									</select>
+								</td> &nbsp;
+								<td>
+									<input type="date" name="dateEmployeEtatCivil" [(ngModel)]="employeEtatCivil.id.dateEmployeEtatCivil" required />
+								</td>
+							</tr>
+	<!-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
+							<tr *ngIf="mode === 3">
+								<td><select name="codeTypeEtatCivil"
+									[(ngModel)]="employeEtatCivil.id.codeTypeEtatCivil">
+										<option
+											*ngFor="let typeEtatCivilOption of typeEtatCivils; trackBy: trackTypeEtatCivilById"
+											[ngValue]="typeEtatCivilOption.codeTypeEtatCivil">
+											{{typeEtatCivilOption.libelleTypeEtatCivil}}</option>
+								</select></td> &nbsp;
+								<td><input type="date" name="dateEmployeEtatCivil"
+									#dateDebutCongeInput="ngModel"
+									[(ngModel)]="employeEtatCivil.id.dateEmployeEtatCivil" required />
+								</td>
+							</tr>
+						</table>
+						<div *ngIf="mode === 2" class="wrapper">
+							<button class="btn btn-primary" type="button" (click)="save()">
+								<!-- [disabled]="crForm.form.invalid"> -->
+								<span class="fa fa-save"></span>&nbsp;<span>Enregister</span>
+							</button>
+						</div>
+						<div *ngIf="mode === 3" class="wrapper">
+							<button class="btn btn-primary" type="button" (click)="edit()">
+								<!-- [disabled]="crForm.form.invalid"> -->
+								<span class="fa fa-save"></span>&nbsp;<span>Enregister</span>
+							</button>
+						</div>
+	<!-- ************************************************* Suppression ******************************************** -->
+						<!-- <div *ngIf="mode === 4 && employeEtatCivil">
+									<div>
+								        <p >Etes-vous sûr de vouloir supprimer ce état-civil ?</p>
+								    </div> <br>
+								    <button class="btn btn-primary" type="button" (click)="delete(employeEtatCivil.id.codeEmploye, employeEtatCivil.id.dateEmployeEtatCivil)"> [disabled]="crForm.form.invalid">
+										<span class="fa fa-check"></span>
+									</button>
+							</div> -->
+						&nbsp;
+						<!-- </form> -->
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- ************************************** Dernier poste occupé par l'employé  ******************************* -->
+		<div class="row">
+			<div class="box">
+				<div class="box-header">
+					<h3 class="box-title">Dernier poste occupé</h3>
+				</div>
+				<div class="box-body">
+					<table class="table table-bordered table-striped">
+						<tr>
+							<td> <strong> Fonction </strong> </td>
+							<td>
+								<div *ngIf="typeFonction">
+									{{typeFonction.libelleTypeFonction}}</div>
+							</td>
+						</tr>
+						<tr>
+							<td> <strong> Statut </strong> </td>
+							<td>
+								<div *ngIf="typeStatutEntite">
+									{{typeStatutEntite.libelleTypeStatutEntite}}</div>
+							</td>
+						</tr>
+						<tr>
+							<td> <strong> Poste </strong> </td>
+							<td>
+								<div *ngIf="poste">{{poste.nomPoste}}</div>
+							</td>
+						</tr>
+						<tr>
+							<td> <strong> Situation actuelle </strong> </td>
+							<td>
+								<div *ngIf="poste;else nonPoste">En fonction</div> 
+								<ng-template #nonPoste> Chomeur </ng-template>
+							</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- ************************************* Liste du parcours de l'employé ******************************** -->
+
+	<div class="col-md-8">
+		<div class="box">
+			<div class="box-header">
+				<h3 class="box-title">Historique</h3>
+			</div>
+			<div class="box-body">
+				<div class="table-responsive">
+					<table class="table table-bordered table-striped">
+						<tr>
+							<td> <strong> Type </strong> </td>
+							<td> <strong> Période </strong> </td>
+							<td> <strong> Reférence </strong> </td>
+							<td> <strong> Observations </strong> </td>
+							<td> <strong> Actions </strong> </td>
+						</tr>
+						
+						<tr *ngFor="let emp of employeSituations">
+						
+							<td> <select name="codeTypeSituation"
+								[(ngModel)]="emp.id.codeTypeSituation" disabled>
+								<option *ngFor="let ts of typeSituation" [ngValue]="ts.codeTypeSituation">{{ts.libelleTypeSituation}} 
+								</option> </select>
+							</td>
+							<!-- <td *ngFor="let ts of emp.typeSituation; let i = index"> {{emp.typeSituation[i].libelleTypeSituation}} </td> -->
+							<td> {{emp.id.dateDebutSituation | date:'dd/MM/yyyy'}} - {{emp.dateFinSituation | date:'dd/MM/yyyy'}}</td>
+							<td> {{emp.refSituation}} </td>
+							<td> </td> <!-- {{employeDisponibilite.comDebutDisponibilite}} </td> -->
+							<td> 
+								<a class="on-default edit-row" (click) = "getRoute(emp)">
+											<!-- [routerLink]="['/employe-disponibilite', emp.id.codeEmploye, emp.id.dateDebutSituation]"> -->
+										<i class="fa fa-pencil"></i>
+								</a>
+								<a [swal]="deleteSwal"> <i class="fa fa-trash-o"></i> </a>
+								<swal #deleteSwal title="Supprimer?" text="Confirmer la suppression de ce type"
+									type="question" icon="warning" [showCancelButton]="true"
+									[focusCancel]="true" (confirm)="deleteHistorique(emp)">
+							  	</swal>
+							</td>
+						</tr>
+						
+						<!-- <tr *ngFor="let emp of employePosteT">
+							<td>
+								<table>
+
+									<tr>
+										<td>Poste</td>
+									</tr>
+								</table>
+							</td>
+							<td>
+								<table>
+									<tr>
+										<td>{{emp.id.dateDebutEmployePoste | date:'dd/MM/yyyy'}} -
+											{{emp.dateFinEmployePoste | date:'dd/MM/yyyy'}}
+										</td>
+									</tr>
+								</table>
+							</td>
+							<td>
+								<table>
+									<tr>
+										<td></td>
+									</tr>
+								</table>
+							</td>
+							<td>
+								<table>
+									<tr>
+										<td>
+											<div *ngFor="let p of emp.posteT; let i = index">{{p.nomPoste}}</div>
+										</td>
+									</tr>
+								</table>
+							</td>
+							<td>
+								<table>
+									<tr>
+										<td class="actions">
+											<a class="on-default edit-row"
+												[routerLink]="['/employe-affectation', emp.id.codeEmploye, emp.id.dateEmployeAffectation]">
+													<i class="fa fa-pencil"></i>
+											</a> &nbsp;
+											<a [swal]="deleteAd" class="on-default remove-row"> <i class="fa fa-trash-o"></i> </a>
+											<swal #deleteAd title="Supprimer?" text="Confirmer la suppression de l'élément"
+												type="question" icon="warning" [showCancelButton]="true"
+												[focusCancel]="true" (confirm)="deletePoste(emp)">
+											</swal>
+										</td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+
+						<tr *ngFor="let emp of employeAffectation">
+							<td>
+								<table>
+
+									<tr>
+										<td>Affectation</td>
+									</tr>
+								</table>
+							</td>
+							<td>
+								<table>
+									<tr>
+										<td>{{emp.id.dateEmployeAffectation | date:'dd/MM/yyyy'}}</td>
+									</tr>
+								</table>
+							</td>
+							<td>
+								<table>
+									<tr>
+										<td>{{emp.refEmployeAffectation}}</td>
+									</tr>
+								</table>
+							</td>
+							<td>
+								<table>
+									<tr>
+										<td>{{emp.comEmployeAffectation}}</td>
+									</tr>
+								</table>
+							</td>
+							<td>
+								<table>
+									<tr>
+										<td class="actions">
+											<a class="on-default edit-row"
+												[routerLink]="['/employe-affectation', emp.id.codeEmploye, emp.id.dateEmployeAffectation]">
+													<i class="fa fa-pencil"></i>
+											</a> 
+											<a [swal]="deleteAd" class="on-default remove-row"> </a>
+											<swal #deleteAd title="Supprimer {{emp.nomEmploye}} {{emp.prenomEmploye}}?" text="Confirmer la suppression de l'élément"
+												type="question" icon="warning" [showCancelButton]="true"
+												[focusCancel]="true" (confirm)="deleteHistorique(emp)">
+											</swal>
+										</td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+
+						<tr *ngFor="let emp of employeTransfert">
+							<td>
+								<table>
+									<tr>
+										<td>Transfert</td>
+									</tr>
+								</table>
+							</td>
+							<td>
+								<table>
+									<tr>
+										<td>{{emp.id.dateTransfert | date:'dd/MM/yyyy'}}</td>
+									</tr>
+								</table>
+							</td>
+							<td>
+								<table>
+									<tr>
+										<td>{{emp.refTransfert}}</td>
+									</tr>
+								</table>
+							</td>
+							<td>
+								<table>
+									<tr>
+										<td>{{emp.comTransfert}}</td>
+									</tr>
+								</table>
+							</td>
+							<td>
+								<table>
+									<tr>
+										<td class="actions"><a class="on-default edit-row"
+											[routerLink]="['/employe-transfert', emp.id.codeEmploye, emp.id.dateTransfert]">
+												<i class="fa fa-pencil"></i>
+										</a> <a class="on-default remove-row"> <i
+												class="fa fa-trash-o"></i>
+										</a></td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+
+						<tr *ngFor="let emp of employeDetachement">
+							<td>
+								<table>
+									<tr>
+										<td>Détachement</td>
+									</tr>
+								</table>
+							</td>
+							<td>
+								<table>
+									<tr>
+										<td>{{emp.id.dateDebutDetachement | date:'dd/MM/yyyy'}} -
+											{{emp.dateFinDetachement | date:'dd/MM/yyyy'}}</td>
+									</tr>
+								</table>
+							</td>
+							<td>
+								<table>
+									<tr>
+										<td>{{emp.refDetachement}}</td>
+									</tr>
+								</table>
+							</td>
+							<td>
+								<table>
+									<tr>
+										<td>{{emp.comDetachement}}</td>
+									</tr>
+								</table>
+							</td>
+							<td>
+								<table>
+									<tr>
+										<td class="actions"><a class="on-default edit-row"
+											[routerLink]="['/employe-detachement', emp.id.codeEmploye, emp.id.dateDebutDetachement]">
+												<i class="fa fa-pencil"></i>
+										</a> <a class="on-default remove-row"> <i
+												class="fa fa-trash-o"></i>
+										</a></td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+
+						<tr *ngFor="let emp of employeDemission">
+							<td>
+								<table>
+									<tr>
+										<td>Démission</td>
+									</tr>
+								</table>
+							</td>
+							<td>
+								<table>
+									<tr>
+										<td>{{emp.id.dateDemission | date:'dd/MM/yyyy'}}</td>
+									</tr>
+								</table>
+							</td>
+							<td>
+								<table>
+									<tr>
+										<td>{{emp.refDemission}}</td>
+									</tr>
+								</table>
+							</td>
+							<td>
+								<table>
+									<tr>
+										<td>{{emp.comDemission}}</td>
+									</tr>
+								</table>
+							</td>
+							<td>
+								<table>
+									<tr>
+										<td class="actions"><a class="on-default edit-row"
+											[routerLink]="['/employe-demission', emp.id.codeEmploye, emp.id.dateDemission]">
+												<i class="fa fa-pencil"></i>
+										</a> <a class="on-default remove-row"> <i
+												class="fa fa-trash-o"></i>
+										</a></td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+
+						<tr *ngFor="let emp of employeDisponibilite">
+							<td>
+								<table>
+									<tr>
+										<td>Démission</td>
+									</tr>
+								</table>
+							</td>
+							<td>
+								<table>
+									<tr>
+										<td>{{emp.id.dateDebutDisponibilite | date:'dd/MM/yyyy'}}
+											- {{emp.dateFinDisponibilite | date:'dd/MM/yyyy'}}</td>
+									</tr>
+								</table>
+							</td>
+							<td>
+								<table>
+									<tr>
+										<td>{{emp.refDebutDisponibilite}} -
+											{{emp.refFinDisponibilite}}</td>
+									</tr>
+								</table>
+							</td>
+							<td>
+								<table>
+									<tr>
+										<td>{{emp.comDebutDisponibilite}} -
+											{{emp.comFinDisponibilite}}</td>
+									</tr>
+								</table>
+							</td>
+							<td>
+								<table>
+									<tr>
+										<td class="actions"><a class="on-default edit-row"
+											[routerLink]="['/employe-disponibilite', emp.id.codeEmploye, emp.id.dateDebutDisponibilite]">
+												<i class="fa fa-pencil"></i>
+										</a> <a class="on-default remove-row"> <i
+												class="fa fa-trash-o"></i>
+										</a></td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+
+						<tr *ngFor="let emp of employeSuspension">
+							<td>
+								<table>
+									<tr>
+										<td>Suspension</td>
+									</tr>
+								</table>
+							</td>
+							<td>
+								<table>
+									<tr>
+										<td>{{emp.id.dateDebutSuspension | date:'dd/MM/yyyy'}} -
+											{{emp.dateFinSuspension | date:'dd/MM/yyyy'}}</td>
+									</tr>
+								</table>
+							</td>
+							<td>
+								<table>
+									<tr>
+										<td>{{emp.refDebutSuspension}} - {{emp.refFinSuspension}}</td>
+									</tr>
+								</table>
+							</td>
+							<td>
+								<table>
+									<tr>
+										<td>{{emp.comDebutSuspension}} - {{emp.comFinSuspension}}</td>
+									</tr>
+								</table>
+							</td>
+							<td>
+								<table>
+									<tr>
+										<td class="actions"><a class="on-default edit-row"
+											[routerLink]="['/employe-suspension', emp.id.codeEmploye, emp.id.dateDebutSuspension]">
+												<i class="fa fa-pencil"></i>
+										</a> <a class="on-default remove-row"> <i
+												class="fa fa-trash-o"></i>
+										</a></td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+
+						<tr *ngFor="let emp of employeMutation">
+							<td>
+								<table>
+									<tr>
+										<td>Mutation</td>
+									</tr>
+								</table>
+							</td>
+							<td>
+								<table>
+									<tr>
+										<td>{{emp.id.dateMutation | date:'dd/MM/yyyy'}}</td>
+									</tr>
+								</table>
+							</td>
+							<td>
+								<table>
+									<tr>
+										<td>{{emp.refMutation}}</td>
+									</tr>
+								</table>
+							</td>
+							<td>
+								<table>
+									<tr>
+										<td>{{emp.comMutation}}</td>
+									</tr>
+								</table>
+							</td>
+							<td>
+								<table>
+									<tr>
+										<td class="actions"><a class="on-default edit-row"
+											[routerLink]="['/employe-mutation', emp.id.codeEmploye, emp.id.dateMutation]">
+												<i class="fa fa-pencil"></i>
+										</a> <a class="on-default remove-row"> <i
+												class="fa fa-trash-o"></i>
+										</a></td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+
+						<tr *ngFor="let emp of employeDeces">
+							<td>
+								<table>
+									<tr>
+										<td>Décès</td>
+									</tr>
+								</table>
+							</td>
+							<td>
+								<table>
+									<tr>
+										<td>{{emp.id.dateDeces | date:'dd/MM/yyyy'}}</td>
+									</tr>
+								</table>
+							</td>
+							<td>
+								<table>
+									<tr>
+										<td>{{emp.refDeces}}</td>
+									</tr>
+								</table>
+							</td>
+							<td>
+								<table>
+									<tr>
+										<td>{{emp.comDeces}}</td>
+									</tr>
+								</table>
+							</td>
+							<td>
+								<table>
+									<tr>
+										<td class="actions"><a class="on-default edit-row"
+											[routerLink]="['/employe-deces', emp.id.codeEmploye, emp.id.dateDeces]">
+												<i class="fa fa-pencil"></i>
+										</a> <a class="on-default remove-row"> <i
+												class="fa fa-trash-o"></i>
+										</a></td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+
+						<tr *ngFor="let emp of employeRetraite">
+							<td>
+								<table>
+									<tr>
+										<td>Retraite</td>
+									</tr>
+								</table>
+							</td>
+							<td>
+								<table>
+									<tr>
+										<td>{{emp.id.dateRetraite | date:'dd/MM/yyyy'}}</td>
+									</tr>
+								</table>
+							</td>
+							<td>
+								<table>
+									<tr>
+										<td>{{emp.refRetraite}}</td>
+									</tr>
+								</table>
+							</td>
+							<td>
+								<table>
+									<tr>
+										<td>{{emp.comRetraite}}</td>
+									</tr>
+								</table>
+							</td>
+							<td>
+								<table>
+									<tr>
+										<td class="actions"><a class="on-default edit-row"
+											[routerLink]="['/employe-retraite', emp.id.codeEmploye, emp.id.dateRetraite]">
+												<i class="fa fa-pencil"></i>
+										</a> <a class="on-default remove-row"> <i
+												class="fa fa-trash-o"></i>
+										</a></td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+
+						<tr *ngFor="let emp of employeRevocation">
+							<td>
+								<table>
+									<tr>
+										<td>Révocation</td>
+									</tr>
+								</table>
+							</td>
+							<td>
+								<table>
+									<tr>
+										<td>{{emp.id.dateRevocation | date:'dd/MM/yyyy'}}</td>
+									</tr>
+								</table>
+							</td>
+							<td>
+								<table>
+									<tr>
+										<td>{{emp.refRevocation}}</td>
+									</tr>
+								</table>
+							</td>
+							<td>
+								<table>
+									<tr>
+										<td>{{emp.comRevocation}}</td>
+									</tr>
+								</table>
+							</td>
+							<td>
+								<table>
+									<tr>
+										<td class="actions"><a class="on-default edit-row"
+											[routerLink]="['/employe-revocation', emp.id.codeEmploye, emp.id.dateRevocation]">
+												<i class="fa fa-pencil"></i>
+										</a> <a class="on-default remove-row"> <i
+												class="fa fa-trash-o"></i>
+										</a></td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+
+						<tr *ngFor="let emp of employeRenvoi">
+							<td>
+								<table>
+									<tr>
+										<td>Renvoi</td>
+									</tr>
+								</table>
+							</td>
+							<td>
+								<table>
+									<tr>
+										<td>{{emp.id.dateRenvoi | date:'dd/MM/yyyy'}}</td>
+									</tr>
+								</table>
+							</td>
+							<td>
+								<table>
+									<tr>
+										<td>{{emp.refRenvoi}}</td>
+									</tr>
+								</table>
+							</td>
+							<td>
+								<table>
+									<tr>
+										<td>{{emp.comRenvoi}}</td>
+									</tr>
+								</table>
+							</td>
+							<td>
+								<table>
+									<tr>
+										<td class="actions"><a class="on-default edit-row"
+											[routerLink]="['/employe-renvoi', emp.id.codeEmploye, emp.id.dateRenvoi]">
+												<i class="fa fa-pencil"></i>
+										</a> <a class="on-default remove-row"> <i
+												class="fa fa-trash-o"></i>
+										</a></td>
+									</tr>
+								</table>
+							</td>
+						</tr> -->
+
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- ***************************************************** Informations spécifiques ************************************************ -->
+	<div class="col-md-6">
+		<!-- <div class="row"> -->
+		<div class="box">
+			<div class="box-header">
+				<h3 class="box-title" *ngIf="display === 0">Informations
+					spécifiques</h3>
+				<h3 class="box-title" *ngIf="display === 1">Ajouter un handicap</h3>
+				<h3 class="box-title" *ngIf="display === 2">Ajouter une pathologie</h3>
+			</div>
+			<div class="box-body">
+				<div class="row">
+					<div class="col-sm-6 float-right">
+						<div id="example1_filter" class="dataTables_filter">
+							<button *ngIf="!show" class="btn btn-primary" placement="bottom"
+								(click)="create()">
+								<i class="fa fa-plus"></i>
+							</button>
+							<button *ngIf="show" class="btn btn-primary" placement="bottom"
+								(click)="close()">
+								<i class="fa fa-close"></i>
+							</button>
+							<select *ngIf="show" (change)="selectedVal()" [(ngModel)]="typeSelected">
+								<option [ngValue]="null"></option>
+								<option *ngFor="let types of tableSpecs" [ngValue]="types.name">
+									{{types.id}}</option>
+							</select>
+						</div>
+					</div>
+				</div>
+				<!-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ La liste des spécificités @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
+				<!-- <div class="row"> -->
+					<div class="table-responsive" *ngIf="display === 0">
+						<table class="table table-bordered table-striped">
+							<tr>
+								<td> <strong> Handicap/Pathologie </strong> </td>
+								<td> <strong> Date </strong> </td>
+								<td> <strong> Actions </strong> </td>
+							</tr>
+							<tr *ngFor="let emp of employeHandicaps; trackBy: trackId">
+								<td>
+									<table>
+										<tr>
+											<td><select class="form-control" name="codeTypeHandicap"
+												[(ngModel)]="emp.id.codeTypeHandicap" disabled>
+													<option
+														*ngFor="let typeHandicapOption of typeHandicaps; trackBy: trackById"
+														[ngValue]="typeHandicapOption.codeTypeHandicap">
+														{{typeHandicapOption.libelleTypeHandicap}}</option>
+											</select></td>
+										</tr>
+									</table>
+								</td>
+								<td>
+									<table>
+										<tr>
+											<td>{{emp.id.dateEmployeHandicap | date:'dd/MM/yyyy'}}</td>
+										</tr>
+									</table>
+								</td>
+								<td>
+									<table>
+										<tr>
+											<td class="actions">
+												<!-- <a class="on-default" (click)="createHandicap()"> <i class="fa fa-plus"></i>
+																</a> &nbsp; --> <a class="on-default"
+												(click)="editHandicap(emp.id.codeEmploye, emp.id.dateEmployeHandicap)">
+													<i class="fa fa-pencil"></i>
+											</a>
+											<a class="on-default" (click)="deleteHandicap(emp.id.codeEmploye, emp.id.dateEmployeHandicap)">
+													<i class="fa fa-trash-o"></i>
+											</a>
+											</td>
+										</tr>
+									</table>
+								</td>
+							</tr>
+							<tr *ngFor="let emp of employePathologies; trackBy: trackId">
+								<td>
+									<table>
+										<tr>
+											<td><select class="form-control"
+												name="codeTypePathologie"
+												[(ngModel)]="emp.id.codeTypePathologie" disabled>
+													<option
+														*ngFor="let typePathologieOption of typePathologies; trackBy: trackById"
+														[ngValue]="typePathologieOption.codeTypePathologie">
+														{{typePathologieOption.libelleTypePathologie}}</option>
+											</select></td>
+										</tr>
+									</table>
+								</td>
+								<td>
+									<table>
+										<tr>
+											<td>{{emp.id.dateEmployePathologie | date:'dd/MM/yyyy'}}
+											</td>
+										</tr>
+									</table>
+								</td>
+								<td class="actions">
+									<table>
+										<tr>
+											<td><a class="on-default"
+												(click)="editPathologie(emp.id.codeEmploye, emp.id.dateEmployePathologie)">
+													<i class="fa fa-pencil"></i>
+											</a>
+											<a class="on-default" (click)="deletePathologie(emp.id.codeEmploye, emp.id.dateEmployePathologie)">
+													<i class="fa fa-trash-o"></i>
+											</a></td>
+										</tr>
+									</table>
+								</td>
+							</tr>
+						</table>
+					</div>
+				<!-- </div> -->
+				<!-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Création et Edition @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
+				<!-- <div class="row"> -->
+					<div class="table-responsive" *ngIf="display === 1 || display === 2">
+						<table class="table table-bordered table-striped">
+							<tr>
+								<td *ngIf="display === 1">Type d'handicap</td>
+								<td *ngIf="display === 2">Type de pathologie</td>
+								<td *ngIf="display === 1 || display === 2">Date</td>
+							</tr>
+							<tr>
+								<td *ngIf="display === 1">
+									<select class="form-control" name="codeTypeHandicap" [(ngModel)]="employeHandicap.id.codeTypeHandicap" required>
+											<option [ngValue]=""></option>
+											<option *ngFor="let typeHandicapOption of typeHandicaps; trackBy: trackById"
+												[ngValue]="typeHandicapOption.codeTypeHandicap">
+												{{typeHandicapOption.libelleTypeHandicap}}
+											</option>
+									</select>
+								</td>
+								<td *ngIf="display === 2">
+									<select class="form-control" name="codeTypePathologie" [(ngModel)]="employePathologie.id.codeTypePathologie" required>
+											<option [ngValue]=""></option>
+											<option *ngFor="let typePathologieOption of typePathologies; trackBy: trackById"
+												[ngValue]="typePathologieOption.codeTypePathologie">
+												{{typePathologieOption.libelleTypePathologie}}
+											</option>
+									</select>
+								</td>
+								<td *ngIf="display === 1">
+									<input type="date" name="dateEmployeHandicap" [(ngModel)]="employeHandicap.id.dateEmployeHandicap" required>
+								</td>
+								<td *ngIf="display === 2">
+									<input type="date" name="dateEmployePathologie" [(ngModel)]="employePathologie.id.dateEmployePathologie" required>
+								</td>
+							</tr>
+						</table>
+					</div>
+					<div *ngIf="display === 1 || display === 2">
+						<button class="btn btn-primary" placement="bottom" (click)="saveHandicap()" *ngIf="!hide && display === 1">
+							<i class="fa fa-check"></i>
+						</button>
+						<button class="btn btn-primary" placement="bottom" (click)="editH()" *ngIf="hide && display === 1">
+							<i class="fa fa-check"></i>
+						</button>
+						<button class="btn btn-primary" placement="bottom" (click)="savePathologie()" *ngIf="!hide && display === 2">
+							<i class="fa fa-check"></i>
+						</button>
+						<button class="btn btn-primary" placement="bottom" (click)="editP()" *ngIf="hide && display === 2">
+							<i class="fa fa-check"></i>
+						</button>
+						
+						</div>
+				<!-- </div> -->
+			</div>
+		</div>
+	</div>
+</div>

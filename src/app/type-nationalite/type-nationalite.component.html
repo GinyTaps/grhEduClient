@@ -1,0 +1,191 @@
+<div class="col-md-4">
+	<div class="row">
+		<div class="box">
+			<div class="box-header">
+				<h3 class="box-title">Sélection des types</h3>
+			</div>
+			<div class="box-body">
+				<table class="table table-bordered table-striped">
+					<!-- *ngIf="employeEtatCivil"> -->
+					<tr>
+						<td>Tables</td>
+						<td><select name="typesTable" [(ngModel)]="typeSelected" (change)="selectType()">
+								<option [ngValue]="null"></option>
+								<option *ngFor="let types of typesTable" [ngValue]="types" [selected]="this[typeSelected]">
+									{{types}}</option>
+						</select></td>
+					</tr>
+					<!-- <tr *ngIf="typeNationalite.codeTypeNationaliteParent">
+						<td>ID Parent</td>
+						<td>{{typeNationalite.codeTypeNationaliteParent}}</td>
+					</tr> -->
+				</table>
+			</div>
+		</div>
+	</div>
+
+	<!-- ******************************** Liste des types  **************************** -->
+	<div clas="row" *ngIf="typeNationalite && mode === 1" >
+		<div class="box">
+			<div class="box-header">
+				<h3 class="box-title">{{title}}</h3>
+			</div>
+			<!-- /.box-header -->
+			<div class="box-body">
+				<div class="row">
+					<div class="col-sm-6 float-right">
+						<div class="dataTables_filter">
+							<!-- <label>Search:<input type="search" class="form-control input-sm" placeholder="" aria-controls="example1">
+            				</label> -->
+							<button id="addToTable" class="btn btn-primary"
+								placement="bottom" (click)="createTypeNationalite()">
+								<i class="fa fa-plus"></i>
+							</button>
+						</div>
+					</div>
+				</div>
+				<table class="table table-bordered table-striped">
+					<tr>
+						<td><span>Libellé</span></td>
+						<td><span>Ordre </span></td>
+						<td>Actions</td>
+					</tr>
+					<tr *ngFor="let typ of typeNationalites[0] | paginate: { itemsPerPage: 10, currentPage: p }">
+						<td>{{typ.libelleTypeNationalite}}</td>
+						<td>{{typ.ordreTypeNationalite}}</td>
+						<td class="actions">
+							<!-- <a class="on-default" (click)="detailsTypeNationalite(typ.codeTypeNationalite)"> <i class="fa fa-eye"></i></a>&nbsp; -->
+							<a class="on-default edit-row" (click)="editTypeNationalite(typ.codeTypeNationalite)"> <i class="fa fa-pencil"></i></a>&nbsp;
+							<a [swal]="deleteSwal"> <i class="fa fa-trash-o"></i> </a>
+								<swal #deleteSwal title="Supprimer?" text="Confirmer la suppression de ce type"
+									type="question" icon="warning" [showCancelButton]="true"
+									[focusCancel]="true" (confirm)="deleteType(typ.codeTypeNationalite)">
+							  	</swal>
+						</td>
+					</tr>
+					<tr>
+						<td><span>Libellé</span></td>
+						<td><span>Ordre </span></td>
+						<td>Actions</td>
+					</tr>
+				</table>
+			</div>
+			<div class="row">
+				<pagination-controls (pageChange)="p = $event"></pagination-controls>
+			</div>
+		</div>
+	</div>
+	
+<!-- ************************************** Création et edition ****************************** -->
+	<div class="row" *ngIf="mode === 2 || mode === 3">
+		<div class="box">
+			    <div class="box-header">
+			        <h4>{{header}} </h4>
+			        <button type="button" (click)="close()">&times;</button>
+			    </div>
+			    <div class="box-body">
+			    	<div class="form-group" [hidden]="!codeTypeNationalite" >
+			    		<label> ID </label>
+			    		<input class="form-control" name="codeTypeNationaliten" type="number" readonly
+			    		[(ngModel)]="typeNationalite.codeTypeNationalite" readonly />
+			    	</div>
+			    	<div class="form-group">
+			            <label class="form-control-label">Libellé</label>
+			            <input type="text" class="form-control" name="libelleTypeNationalite"
+			            [(ngModel)]="typeNationalite.libelleTypeNationalite" />
+			        </div>
+			        <div class="form-group">
+			            <label class="form-control-label" >Ordre</label>
+			            <input type="number" class="form-control" name="ordreTypeNationalite"
+			                [(ngModel)]="typeNationalite.ordreTypeNationalite"  />
+			        </div>
+			      </div> 
+			      <div>
+			        <button type="button" class="btn btn-secondary" (click)="close()" >
+			            <span class="fa fa-save"></span>&nbsp;<span>Retour</span>
+			        </button>
+			        
+			        <button *ngIf="mode === 2" type="button" class="btn btn-primary" (click)="save()" > 
+			            <span class="fa fa-save"></span>&nbsp;<span>Enregistrer</span>
+			        </button>
+			        
+			        <button *ngIf="mode === 3" type="button" class="btn btn-primary" (click)="edit()" > 
+			            <span class="fa fa-save"></span>
+			        </button>
+			    </div>
+		</div>
+	</div>
+	
+</div>
+
+
+
+<!-- <div></div>
+    <div class="row">
+        <div class="col-sm-8"> 
+            <h2> Nationalités </h2>
+        </div>
+        <div class="col-sm-4 text-right">
+            <button class="btn btn-primary float-right create-points" [ngbTooltip]="addTooltip" placement="bottom" [routerLink]="['/typeNationalite-dialog']">  [routerLink]="['/', { outlets: { popup: ['typeNationalite-dialog'] } }]"> 
+                <span class="fa fa-plus"></span>
+                <span class="hidden-md-down"></span>
+				<ng-template #addTooltip> <span>Créer une nouvelle nationalité </span> </ng-template>
+            </button>
+        
+            <form #fs ="ngForm" (ngSubmit) = "onSearch(motCle)" class="form-inline">
+                <div class="input-group w-100 mr-1">
+                    <input class="form-control" type="text" [(ngModel)]="motCle" name="motCle" required placeholder="Mot clé" >
+                    <button type="submit" class="btn btn-primary">chercher</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <br/>
+
+<div class="table-responsive" *ngIf="typeNationalites" > *ngIf="pageTypeNationalites" > 
+        <table class="table table-striped">
+            <thead>
+            <tr (predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
+            <tr>
+            <th><span>Libellé</span></th>
+            <th><span>Ordre de la nationalité</span></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor ="let typ of typeNationalites ;trackBy: trackId">  <tr *ngFor ="let typ of pageTypeNationalites ;trackBy: trackId">
+                <td>
+                    {{typ.libelleTypeNationalite}}
+               	</td>
+                <td>
+                    {{typ.ordreTypeNationalite}}
+                </td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit" class="btn btn-info btn-sm" [routerLink] ="['/typeNationalite-detail', typ.codeTypeNationalite]" >
+                            <span class="fa fa-eye"></span>
+                            <span class="hidden-md-down" >View</span>
+                        </button>
+                        <button type="submit" replaceUrl="true" class="btn btn-primary btn-sm" [routerLink]="['/', { outlets: { popup: 'typeNationalite-dialog/'+ typ.codeTypeNationalite} }]" >
+                        <button type="submit" replaceUrl="true" class="btn btn-primary btn-sm" [routerLink]="['/typeNationalite-dialog', typ.codeTypeNationalite]">
+                            <span class="fa fa-pencil"></span>
+                            <span class="hidden-md-down">Edit</span>
+                        </button>
+                        <button type="submit" replaceUrl="true" class="btn btn-primary btn-sm" [routerLink]="['/typeNationalite-delete', typ.codeTypeNationalite]">
+                        <button type="submit" replaceUrl="true" class="btn btn-danger btn-sm" [routerLink]="['/', { outlets: { popup: 'typeNationalite-delete/'+ typ.codeTypeNationalite} }]" > 
+                            <span class="fa fa-remove"></span>
+                            <span class="hidden-md-down" >Delete</span>
+                        </button>
+                    </div>
+                </td>
+              </tr>
+        </tbody>
+    </table>
+    <div class="container">
+        <ul class="nav nav-pills">
+            <li [ngClass]="{'active': i== currentPage}" *ngFor= "let p of pages; let i=index"> 
+                <a (click)= "goToPage(i)"> {{i}} </a>
+            </li>
+        </ul>
+    </div>
+</div>
+ -->

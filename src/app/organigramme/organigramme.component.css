@@ -1,0 +1,361 @@
+/************************** Exemple avec ng-organizational-chart ***********************/
+
+ ng-organization-chart {
+	padding-top: 20px; position: relative;
+	transition: all 0.5s;
+	-webkit-transition: all 0.5s;
+	-moz-transition: all 0.5s;
+    display: block;
+}
+
+/*Time to add downward connectors from parents*/
+ ng-organization-chart::before{
+	content: '';
+	position: absolute; top: 0; left: 50%;
+	border-left: 1px solid #ccc;
+	width: 0; height: 20px;
+}
+
+.container{
+	border: 1px solid #ccc;
+	padding: 5px 10px;
+	text-decoration: none;
+	color: #666;
+	font-family: arial, verdana, tahoma;
+	font-size: 11px;
+	display: inline-block;
+	
+	border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	
+	transition: all 0.5s;
+	-webkit-transition: all 0.5s;
+	-moz-transition: all 0.5s;
+}
+
+/* ###################################################### */
+
+ng-organization-chart-node {
+	float: left; text-align: center;
+	list-style-type: none;
+	position: relative;
+	padding: 20px 5px 0 5px;
+	transition: all 0.5s;
+	-webkit-transition: all 0.5s;
+	-moz-transition: all 0.5s;
+}
+
+ng-organization-chart-node:only-child {
+
+	padding-top: 0px;
+}
+
+/*We will use ::before and ::after to draw the connectors*/
+
+ ng-organization-chart-node::before,  ng-organization-chart-node::after{
+	content: '';
+	position: absolute; top: 0; right: 50%;
+	border-top: 1px solid #ccc;
+	width: 50%; height: 20px;
+}
+ ng-organization-chart-node::after{
+	right: auto; left: 50%;
+	border-left: 1px solid #ccc;
+}
+
+/*We need to remove left-right connectors from elements without 
+any siblings*/
+ ng-organization-chart-node:only-child::after,  ng-organization-chart-node:only-child::before {
+	display: none;
+}
+
+/*Remove left connector from first child and 
+right connector from last child*/
+ ng-organization-chart-node:first-child::before,  ng-organization-chart-node:last-child::after{
+	border: 0 none;
+}
+/*Adding back the vertical connector to the last nodes*/
+ ng-organization-chart-node:last-child::before{
+	border-right: 1px solid #ccc;
+	border-radius: 0 5px 0 0;
+	-webkit-border-radius: 0 5px 0 0;
+	-moz-border-radius: 0 5px 0 0;
+}
+ ng-organization-chart-node:first-child::after{
+	border-radius: 5px 0 0 0;
+	-webkit-border-radius: 5px 0 0 0;
+	-moz-border-radius: 5px 0 0 0;
+}
+
+
+/* @charset "UTF-8";
+
+#orgChart{
+    		width: 100%;
+    		height: 100%;
+		}
+
+#orgChartContainer{
+    		width: 100%;
+    		height: 100%;
+		}
+
+label{
+}
+
+div.orgChart {
+  margin : 10px;
+  padding : 20px;
+}
+
+div.orgChart h2 {
+  margin : 0px;
+  font-size : 16px;
+  font-weight: normal;
+  min-height: 20px;
+}
+
+div.orgChart h2:hover {
+  background: #fcfaca;
+  cursor: text;
+}
+
+div.orgChart ul {
+  list-style : none;
+  margin : 4px;
+  padding : 0px;
+  font-size : 0.8em;
+  text-align : left;
+}
+
+div.orgChart ul.stack,
+div.orgChart ul.stack ul { text-align : center; }
+
+div.orgChart table { width : 100%; }
+
+div.orgChart tr.lines td.line {
+  width : 1px;
+  height : 20px;
+}
+
+div.orgChart tr.lines td.top { border-top : 1px dashed black; }
+
+div.orgChart tr.lines td.left { border-right : 1px dashed black; }
+
+div.orgChart tr.lines td.right { border-left : 0px dashed black; }
+
+div.orgChart tr.lines td.half { width : 50%; }
+
+div.orgChart td {
+  text-align : center;
+  vertical-align : top;
+  padding : 0px 2px;
+}
+
+div.orgChart div.node {
+  cursor : default;
+  border : 1px solid #e7e7e7;
+  display : inline-block;
+  padding : 5px;
+  width : 96px;
+  height : 60px;
+  background: #ffffff; Old browsers
+  background: -moz-linear-gradient(top, #ffffff 0%, #fbfbfb 100%); FF3.6+
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffffff), color-stop(100%, #fbfbfb)); Chrome,Safari4+
+  background: -webkit-linear-gradient(top, #ffffff 0%, #fbfbfb 100%); Chrome10+,Safari5.1+
+  background: -o-linear-gradient(top, #ffffff 0%, #fbfbfb 100%); Opera 11.10+
+  background: -ms-linear-gradient(top, #ffffff 0%, #fbfbfb 100%); IE10+
+  background: linear-gradient(to bottom, #ffffff 0%, #fbfbfb 100%); W3C
+  line-height : 1.3em;
+  border-radius : 4px;
+  -moz-border-radius : 4px;
+  -webkit-border-radius : 4px;
+  position: relative;
+  box-shadow: 1px 1px 0px #ddd;
+}
+
+.org-add-button,
+.org-del-button,
+.org-confirm-del-button {
+  position: absolute;
+  font-size: 12px;
+}
+
+.org-add-button {
+  bottom: 3px;
+  left: 5px;
+  padding-left: 13px;
+  background: url(./add.png) no-repeat 0 3px;
+}
+
+.org-add-button:hover,
+.org-del-button:hover {
+  background-color: #eef;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.org-del-button {
+  background: url(./delete.png) no-repeat;
+  width: 12px;
+  height: 12px;
+  bottom: 7px;
+  right: 5px;
+}
+
+.org-input { width: 90px; }
+
+.org-confirm-del-button { display: none; }
+
+
+#jquery-script-menu {
+position: fixed;
+height: 90px;
+width: 100%;
+top: 0;
+left: 0;
+border-top: 5px solid #316594;
+background: #fff;
+-moz-box-shadow: 0 2px 3px 0px rgba(0, 0, 0, 0.16);
+-webkit-box-shadow: 0 2px 3px 0px rgba(0, 0, 0, 0.16);
+box-shadow: 0 2px 3px 0px rgba(0, 0, 0, 0.16);
+z-index: 999999;
+padding: 10px 0;
+-webkit-box-sizing:content-box;
+-moz-box-sizing:content-box;
+box-sizing:content-box;
+}
+
+.jquery-script-center {
+width: 960px;
+margin: 0 auto;
+}
+.jquery-script-center ul {
+width: 212px;
+float:left;
+line-height:45px;
+margin:0;
+padding:0;
+list-style:none;
+}
+.jquery-script-center a {
+	text-decoration:none;
+}
+.jquery-script-ads {
+width: 728px;
+height:90px;
+float:right;
+}
+.jquery-script-clear {
+clear:both;
+height:0;
+} */
+
+/******************************************** Exemple avec Bootstrap 3 *********************************/
+
+/* .wrapper {
+    text-align: center;
+    background: white;
+}
+
+Now the CSS
+* {margin: 0; padding: 0;}
+
+.tree ul {
+    padding-top: 20px; position: relative;
+	
+	transition: all 0.5s;
+	-webkit-transition: all 0.5s;
+	-moz-transition: all 0.5s;
+}
+
+.tree li {
+	float: left; text-align: center;
+	list-style-type: none;
+	position: relative;
+	padding: 20px 5px 0 5px;
+	
+	transition: all 0.5s;
+	-webkit-transition: all 0.5s;
+	-moz-transition: all 0.5s;
+}
+
+We will use ::before and ::after to draw the connectors
+
+.tree li::before, .tree li::after{
+	content: '';
+	position: absolute; top: 0; right: 50%;
+	border-top: 1px solid #ccc;
+	width: 50%; height: 20px;
+}
+.tree li::after{
+	right: auto; left: 50%;
+	border-left: 1px solid #ccc;
+}
+
+We need to remove left-right connectors from elements without 
+any siblings
+.tree li:only-child::after, .tree li:only-child::before {
+	display: none;
+}
+
+Remove space from the top of single children
+.tree li:only-child{ padding-top: 0;}
+
+Remove left connector from first child and 
+right connector from last child
+.tree li:first-child::before, .tree li:last-child::after{
+	border: 0 none;
+}
+Adding back the vertical connector to the last nodes
+.tree li:last-child::before{
+	border-right: 1px solid #ccc;
+	border-radius: 0 5px 0 0;
+	-webkit-border-radius: 0 5px 0 0;
+	-moz-border-radius: 0 5px 0 0;
+}
+.tree li:first-child::after{
+	border-radius: 5px 0 0 0;
+	-webkit-border-radius: 5px 0 0 0;
+	-moz-border-radius: 5px 0 0 0;
+}
+
+Time to add downward connectors from parents
+.tree ul ul::before{
+	content: '';
+	position: absolute; top: 0; left: 50%;
+	border-left: 1px solid #ccc;
+	width: 0; height: 20px;
+}
+
+.tree li a{
+	border: 1px solid #ccc;
+	padding: 5px 10px;
+	text-decoration: none;
+	color: #667;
+	font-family: arial, verdana, tahoma;
+	font-size: 11px;
+	display: inline-block;
+	
+	border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	
+	transition: all 0.5s;
+	-webkit-transition: all 0.5s;
+	-moz-transition: all 0.5s;
+}
+
+Time for some hover effects
+We will apply the hover effect the the lineage of the element also
+.tree li a:hover, .tree li a:hover+ul li a {
+	background: #c8e4f8; color: #000; border: 1px solid #94a0b4;
+}
+Connector styles on hover
+.tree li a:hover+ul li::after, 
+.tree li a:hover+ul li::before, 
+.tree li a:hover+ul::before, 
+.tree li a:hover+ul ul::before{
+	border-color:  #94a0b4;
+} */

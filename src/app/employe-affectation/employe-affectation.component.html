@@ -1,0 +1,123 @@
+<div class="container">
+	  <!-- <h3 class="box-title" *ngIf="employe">{{employe.nomEmploye}} - {{employe.prenomEmploye}}</h3> -->
+	  <ul class="nav nav-tabs">
+	    <li><a [routerLink] ="['/employe-detail',id]">Généralité</a></li>
+	    <li><a [routerLink]="['/employe-qualification', id]"><!-- <a [routerLink]="['/employe-qualification']"> -->Carrière</a></li>
+	    <li class="dropdown active">
+	      <a href="#"  class="dropdown-toggle" data-toggle="dropdown">Mobilité
+	      <span class="caret"></span></a>
+	      <ul class="dropdown-menu">
+	      	<li><a [routerLink]="['/employe-poste', id]">Poste en cours</a></li>
+	      	<li class="active"><a [routerLink]="['/employe-affectation', id]">Réaffectation</a></li>
+	      	<li><a [routerLink]="['/employe-transfert', id]">Transfert dans l'administration</a></li>
+	      	<li><a [routerLink]="['/employe-transfert', id]">Transfert dans une école</a></li>
+	      	<li><a [routerLink]="['/employe-detachement', id]">Détachement</a></li>
+	      	<li><a [routerLink]="['/employe-disponibilite', id]">Disponibilité</a></li>
+	      	<li><a [routerLink]="['/employe-suspension', id]">Suspension</a></li>
+	      	<li><a [routerLink]="['/employe-mutation', id]">Mutation</a></li>
+	        <li><a [routerLink]="['/conge-employe', id]">Congé</a></li>                   
+	      </ul>
+	    </li>
+	    <li class="dropdown">
+	      <a class="dropdown-toggle" data-toggle="dropdown">Fin de carrière
+	      <span class="caret"></span></a>
+	      <ul class="dropdown-menu">
+	      	<li><a [routerLink]="['/employe-retraite', id]">Retraite</a></li>
+	      	<li><a [routerLink]="['/employe-demission', id]">Démission</a></li>
+	      	<li><a [routerLink]="['/employe-revocation', id]">Révocation</a></li>
+	      	<li><a [routerLink]="['/employe-renvoi', id]">Renvoi</a></li>
+	      	<li><a [routerLink]="['/employe-deces', id]">Décès</a></li>              
+	      </ul>
+	    </li>
+	  </ul>
+	</div> <br>
+	
+	<div class="box" *ngIf="mode === 1 || mode === 2">
+            <div class="box-header">
+              <h3 class="box-title" *ngIf="employe"> Réaffecter l'employé  <span style="color: Turquoise; ">{{employe.nomEmploye}} {{employe.prenomEmploye}} </span> à un autre poste</h3>
+            </div>
+            <div class="box-body">
+            	<!-- <form name="editForm" novalidate (ngSubmit)="edit()"  #editForm="ngForm"> -->
+	            	<table class="table table-bordered table-striped">
+	                  <tr>
+	                  	<td>Représentation:</td>
+	                  	<td>
+	                  		<input type="text" class="form-control" name="code" />
+	                  	</td>
+	                  </tr>
+	                  <tr>
+	                  <tr>
+	                  	<td>Service:</td>
+	                  	<td>
+	                  		<select class="form-control" name="codeAdministration" [(ngModel)]="employeRepAdmin.id.codeAdministration">
+				                <option [ngValue]="null"></option>
+				                <option *ngFor="let adminOption of administrations" 
+				                [ngValue]="adminOption.codeAdministration" > {{adminOption.nomAdministration}} </option>
+				            </select>
+	                  	</td>
+	                  </tr>
+	                  <tr>
+	                  	<td>Poste:</td>
+	                  	<td>
+	                  		<select class="form-control" name="codePoste" [(ngModel)]="employePoste.id.codePoste" required>
+	                  		<!-- <select class="form-control" name="codePoste" [(ngModel)]="poste.codePoste" required> -->
+				                <option [ngValue]="null"></option>
+				                <option *ngFor="let p of poste" 
+				                [ngValue]="p.codePoste" > {{p.nomPoste}} </option>
+				            </select>
+	                  	</td>
+	                  </tr>
+	                  <tr>
+	                  	<td>Statut:</td>
+	                  	<td>
+	                  		<select class="form-control" name="codeTypeStatut" [(ngModel)]="employeStatut.id.codeTypeStatut">
+				                <option [ngValue]="null"></option>
+				                <option *ngFor="let typeStatutOption of typeStatuts" 
+				                 [ngValue]="typeStatutOption.codeTypeStatut"> {{typeStatutOption.libelleTypeStatut}} </option>
+				            </select>
+	                  	</td>
+	                  </tr>
+	                  <tr>
+	                  	<td>Date de début:</td>
+	                  	<td>
+	                  		<input type="date" class="form-control" name="dateEmployeAffectation"
+			                [(ngModel)]="employeAffectation.id.dateEmployeAffectation" required />
+	                  	</td>
+	                  </tr>
+	                  <tr>
+	                  	<td>Date de fin:</td>
+	                  	<td>
+	                  		<input type="date" class="form-control" name="dateFinEmployePoste"
+			                [(ngModel)]="employePoste.dateFinEmployePoste" />
+	                  	</td>
+	                  </tr>
+	                  <tr>
+	                  	<td>Reférence:</td>
+	                  	<td>
+	                  		<input type="text" class="form-control" name="refEmployeAffectation"
+			                [(ngModel)]="employeAffectation.refEmployeAffectation" />
+	                  	</td>
+	                  </tr>
+	                  <tr>
+	                  	<td>Commentaire:</td>
+	                  	<td>
+	                  		<textarea class="form-control" name="comEmployeAffectation" 
+	                  		[(ngModel)]="employeAffectation.comEmployeAffectation" > </textarea>
+	                  	</td>
+	                  </tr>
+	                  
+	    		</table>
+	    		<div style="text-align: center" >
+						<button *ngIf="mode === 1" class="btn btn-primary" type="button" (click)="save()">
+							<span class="fa fa-save"></span>&nbsp;<span>Enregister</span>
+						</button>
+						<button *ngIf="mode === 2" class="btn btn-primary" type="button" (click)="edit()">
+							<span class="fa fa-save"></span>&nbsp;<span>Enregister</span>
+						</button>
+	    			<!-- <button type="submit" class="btn btn-primary" [disabled]="editForm.form.invalid">
+						<span class="fa fa-save"></span>&nbsp;<span> Enregistrer </span>
+					</button> -->
+				</div>
+	    	<!-- </form> -->
+    	</div>
+    </div>

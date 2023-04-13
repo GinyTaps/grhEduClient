@@ -1,0 +1,206 @@
+<!-- Left side column. contains the logo and sidebar -->
+<aside class="main-sidebar">
+  <!-- sidebar: style can be found in sidebar.less -->
+  <section class="sidebar">
+    <!-- Sidebar user panel -->
+    <div class="user-panel">
+      <div class="pull-left image">
+        <img src="assets/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+      </div>
+      <div class="pull-left info">
+        <p>{{user}}</p>
+        <a *ngIf ="isAuthenticated()"><i class="fa fa-circle text-success"></i> Online</a>
+        <a *ngIf ="!isAuthenticated()"><i class="fa fa-circle text-fail"></i> offline</a>
+      </div>
+    </div>
+    <!-- search form -->
+    <form action="#" method="get" class="sidebar-form">
+      <div class="input-group">
+        <input type="text" name="q" class="form-control" placeholder="Recherche...">
+        <span class="input-group-btn">
+          <button type="submit" name="search" id="search-btn" class="btn btn-flat">
+            <i class="fa fa-search"></i>
+          </button>
+        </span>
+      </div>
+    </form>
+    <!-- /.search form -->
+    <!-- sidebar menu: : style can be found in sidebar.less -->
+
+    <ul class="sidebar-menu" data-widget="tree">
+      <li class="header">MAIN NAVIGATION</li>
+      <!-- ************** ADMINISTRATION *****************-->
+      <!-- <ng-template  ngxPermissionsOnly="{{roles}}"> -->
+      <li class="treeview">
+        <a  data-toggle="collapse" data-target="#f">
+          <i class="fa fa-cogs"></i> <span>Administration</span>
+          <span class="pull-right-container">
+            <i class="fa fa-angle-left pull-right"></i>
+          </span>
+        </a>
+        <ul class="treeview-menu" id="f">
+          <li *ngIf="show"><a routerLink="profils"><i class="fa fa-user-md"></i> Profils</a></li>
+          <li *ngIf="show"><a routerLink="page"><i class="fa fa-file-text"></i> Pages</a></li>
+          <li *ngIf="show"><a routerLink="groupePage"><i class="fa fa-circle-o"></i> Droits d'accès</a></li>
+          <li><a routerLink="user"><i class="fa fa-user"></i> Utilisateurs</a></li>
+          <li *ngIf="show"><a routerLink="home"><i class="fa fa-circle-o"></i> Paramètres globaux</a></li>
+          <li><a routerLink="home"><i class="fa fa-circle-o"></i> Années</a></li>
+          <li><a routerLink="home"><i class="fa fa-language"></i> Langues</a></li>
+        </ul>
+      </li>
+      <!-- </ng-template> -->
+      <li class="treeview" *ngIf ="isAuthenticated()">
+        <a data-toggle="collapse" data-target="#s">
+          <i class="fa fa-server"></i> <span>Organisation générale</span>
+          <span class="pull-right-container">
+            <i class="fa fa-angle-left pull-right"></i>
+          </span>
+        </a>
+        <ul class="treeview-menu" id="s">
+          <li><a routerLink="typeStructureEdu"><i class="fa fa-circle-o"></i> Type de structure éducative</a></li>
+          <li><a routerLink="structure-edu"><i class="fa fa-circle-o"></i> Structure éducative</a></li>
+          <!-- <li><a routerLink="administration"><i class="fa fa-circle-o"></i> Administration</a></li> -->
+          <li><a routerLink="etablissement"><i class="fa fa-circle-o"></i> Etablissements</a></li>
+        </ul>
+      </li>
+      <li *ngIf="show">
+        <a routerLink="organigramme" data-toggle="collapse" data-target="#t">
+          <i class="fa fa-sitemap"></i> Organigramme
+          <!-- <span class="pull-right-container">
+          <i class="fa fa-angle-left pull-right"></i>
+          </span> -->
+        </a>
+        <ul class="treeview-menu" id="t">
+          <li><a routerLink="organigramme"><i class="fa fa-circle-o"></i> Administrations</a></li>
+          <li><a routerLink="organigramme"><i class="fa fa-circle-o"></i> Etablissements</a></li>
+        </ul>
+      </li>
+      <li class="treeview" *ngIf ="isAuthenticated()">
+        <a data-toggle="collapse" data-target="#fo">
+          <i class="fa fa-reorder"></i> <span>Atlas</span>
+          <span class="pull-right-container">
+            <i class="fa fa-angle-left pull-right"></i>
+          </span>
+        </a>
+        <ul class="treeview-menu" id="fo">
+          <li> <a  routerLink="regroupement"> <i class="fa fa-circle-o"> </i> Localités</a> </li>
+          <li><a routerLink="organigramme"><i class="fa fa-circle-o"></i> Administrations</a></li>
+          <li><a routerLink="organigramme"><i class="fa fa-circle-o"></i> Etablissements</a></li>
+        </ul>
+      </li>
+      <li>
+        <a routerLink="typeCategorie" *ngIf ="isAuthenticated()">
+          <i class="fa fa-list-ul"></i> <span> Variables de nomenclature</span>
+        </a>
+      </li>
+      <li class="treeview" *ngIf ="isAuthenticated()">
+        <a data-toggle="collapse" data-target="#fi">
+          <i class="fa fa-plus"></i> <span>Ajout / Edition</span>
+          <span class="pull-right-container">
+            <i class="fa fa-angle-left pull-right"></i>
+          </span>
+        </a>
+        <ul class="treeview-menu" id="fi">
+          <li><a routerLink="administration"><i class="fa fa-circle-o"></i> Administrations</a></li>
+          <li><a routerLink="etablissement"><i class="fa fa-circle-o"></i> Etablissements</a></li>
+        </ul>
+      </li>
+      <li class="treeview" *ngIf ="isAuthenticated()">
+        <a data-toggle="collapse" data-target="#si">
+          <i class="fa fa-users"></i> <span>Personnel</span>
+          <span class="pull-right-container">
+            <i class="fa fa-angle-left pull-right"></i>
+          </span>
+        </a>
+        <ul class="treeview-menu" id="si">
+          <li><a routerLink="employe-rep-admin"><i class="fa fa-circle-o"></i> Administratif</a></li>
+          <li><a routerLink="chomeur"><i class="fa fa-circle-o"></i> Chomeurs</a></li>
+          <li><a routerLink="employe" *ngIf ="isAuthenticated()"><i class="fa fa-circle-o"></i> Employés</a></li>
+          <li><a routerLink="employe-etablissement"><i class="fa fa-circle-o"></i> Etablissement</a></li>
+        </ul>
+      </li>
+      <li class="treeview">
+        <a data-toggle="collapse" data-target="#se">
+          <i class="fa fa-search"></i> <span>Recherches</span>
+          <span class="pull-right-container">
+            <i class="fa fa-angle-left pull-right"></i>
+          </span>
+        </a>
+        <ul class="treeview-menu" id="se">
+          <li><a routerLink="employe-rg"><i class="fa fa-globe"></i> Globales</a></li>
+          <li><a routerLink="employe-rp"><i class="fa fa-circle-o"></i> Prédéfinies</a></li>
+          <li><a href=""><i class="fa fa-info"></i> Aide</a></li>
+          <li><a routerLink="home"><i class="fa fa-home"></i> Accueil</a></li>
+        </ul>
+      </li>
+      <!-- <li>
+        <a routerLink="chomeur">
+          <i class="fa fa-angle-right text-aqua"></i> <span>Chômeurs</span>
+        </a>
+      </li>
+      <li>
+        <a href="#">
+          <i class="fa fa-angle-right text-aqua"></i> <span>Aide</span>
+        </a>
+      </li>
+      <li>
+        <a href="#">
+          <i class="fa fa-angle-right text-aqua"></i> <span>Accueil</span>
+        </a>
+      </li> -->
+
+      <!--***************************** Ajout des modules ****************************-->
+      <!-- <li class="treeview" *ngIf ="isAuthenticated()">
+         <a href="#" routerLinkActive="active"> [routerLinkActiveOptions]="{exact: true}">
+           <i class="fa fa-th"></i>
+           <span> Modules </span>
+           <span class="pull-right-container">
+             <i class="fa fa-angle-left pull-right"></i>
+           </span>
+         </a>
+         <ul class="treeview-menu">
+           <li *ngIf="isAdmin()"> <a routerLink="employe"> <i class="fa fa-circle-o"> </i> Employé</a> </li>
+           <li *ngIf="isAdmin()"> <a routerLink="administration"> <i class="fa fa-circle-o"> </i> Administration</a> </li>
+           <li *ngIf="isAdmin()"> <a routerLink="poste"> <i class="fa fa-circle-o"> </i> Poste</a> </li>
+           <li *ngIf="isAdmin()"> <a routerLink="etablissement"> <i class="fa fa-circle-o"> </i> Etablissement</a> </li>
+           <li *ngIf="isUser()"> <a  routerLink="employe-conge"> <i class="fa fa-circle-o"> </i> Congé</a> </li>
+           <li> <a  routerLink="typeMotifConge"> <i class="fa fa-circle-o"> </i> Type congé</a> </li>
+           <li> <a  routerLink="typeNationalite"> <i class="fa fa-circle-o"> </i> Nationalité</a> </li>
+           <li> <a  routerLink="typeSexe"> <i class="fa fa-circle-o"> </i> Sexe</a> </li>
+           <li> <a  routerLink="typeEtatCivil"> <i class="fa fa-circle-o"> </i> Etat-civil</a> </li>
+           <li *ngIf="isAdmin()"> <a routerLink="chomeur"> <i class="fa fa-circle-o"> </i> Chomeur</a> </li>
+           <li> <a  routerLink="regroupement"> <i class="fa fa-circle-o"> </i> Regroupement</a> </li>
+           <li> <a  routerLink="typeRegroupement"> <i class="fa fa-circle-o"> </i> Type regroupement</a> </li>
+           <li> <a  routerLink="organigramme"> <i class="fa fa-circle-o"> </i> Organigramme</a> </li>
+         </ul>
+     </li>
+
+     <ng-container *ngIf ="isAuthenticated()">
+     li class="treeview" *ngIf="isUser()"
+     <li class="treeview">
+           <a routerLink="typeCategorie"> <a href="#" routerLinkActive="active">
+             <i class="fa fa-th"></i>
+             <span> Types </span>
+       </a>
+
+           <ul class="treeview-menu" *ngIf="isUser()">
+             <li> <a  routerLink="typeCategorie"> <i class="fa fa-circle-o"> </i> Catégorie</a> </li>
+             <li> <a  routerLink="typeChaineLoc"> <i class="fa fa-circle-o"> </i> Chaine localité</a> </li>
+             <li> <a  routerLink="typeDiplome"> <i class="fa fa-circle-o"> </i> Diplome</a> </li>
+             <li> <a  routerLink="typeEchelon"> <i class="fa fa-circle-o"> </i> Echelon</a> </li>
+             <li> <a  routerLink="typeEtablissement"> <i class="fa fa-circle-o"> </i> Etablissement</a> </li>
+             <li> <a  routerLink="typeEtatCivil"> <i class="fa fa-circle-o"> </i> Etat-civil</a> </li>
+             <li> <a  routerLink="typeFonction"> <i class="fa fa-circle-o"> </i> Fonction</a> </li>
+             <li> <a  routerLink="typeGrade"> <i class="fa fa-circle-o"> </i> Grade</a> </li>
+             <li> <a  routerLink="typeRegroupement"> <i class="fa fa-circle-o"> </i> Type regroupement</a> </li>
+             <li> <a  routerLink="administration"> <i class="fa fa-circle-o"> </i> Administration</a> </li>
+             <li> <a  routerLink="etablissement"> <i class="fa fa-circle-o"> </i> Etablissement</a> </li>
+             <li> <a  routerLink="poste"> <i class="fa fa-circle-o"> </i> Poste</a> </li>
+           </ul>
+       </li>
+   </ng-container> -->
+      <!-- *********************** Fin ajout ********************* -->
+    </ul>
+  </section>
+  <!-- /.sidebar -->
+</aside>

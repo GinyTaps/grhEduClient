@@ -1,0 +1,236 @@
+<div>
+
+	<!-- ******************************** Liste des types  **************************** -->
+	<div clas="row" *ngIf="typeChaineLoc && mode === 1" >
+		<div class="box">
+			<div class="box-header">
+				<h3 class="box-title">{{title}}</h3>
+			</div>
+			<!-- /.box-header -->
+			<div class="box-body">
+				<div class="row">
+					<div class="col-sm-6 float-right">
+						<div class="dataTables_filter">
+							<!-- <label>Search:<input type="search" class="form-control input-sm" placeholder="" aria-controls="example1">
+            				</label> -->
+							<button id="addToTable" class="btn btn-primary"
+								placement="bottom" (click)="createTypeChaineLoc()">
+								<i class="fa fa-plus"></i>
+							</button>
+						</div>
+					</div>
+				</div>
+				<table class="table table-bordered table-striped">
+					<tr>
+						<td><span>Libellé</span></td>
+						<td><span>Ordre </span></td>
+						<td>Actions</td>
+					</tr>
+					<tr *ngFor="let typ of typeChaineLocs[0] | paginate: { itemsPerPage: 10, currentPage: p }">
+						<td>{{typ.libelleTypeChaineLoc}}</td>
+						<td>{{typ.ordreTypeChaineLoc}}</td>
+						<td class="actions">
+							<a class="on-default" (click)="detailsTypeChaineLoc(typ.codeTypeChaineLoc)"> <i class="fa fa-eye"></i></a>&nbsp;
+							<a class="on-default edit-row" (click)="editTypeChaineLoc(typ.codeTypeChaineLoc)"> <i class="fa fa-pencil"></i></a>&nbsp;
+							<a [swal]="deleteSwal"> <i class="fa fa-trash-o"></i> </a>
+								<swal #deleteSwal title="Supprimer?" text="Confirmer la suppression de ce type"
+									type="question" icon="warning" [showCancelButton]="true"
+									[focusCancel]="true" (confirm)="deleteType(typ.codeTypeChaineLoc)">
+							  	</swal>
+						</td>
+					</tr>
+					<tr>
+						<td><span>Libellé</span></td>
+						<td><span>Ordre </span></td>
+						<td>Actions</td>
+					</tr>
+				</table>
+			</div>
+			<div class="row">
+				<pagination-controls (pageChange)="p = $event"></pagination-controls>
+			</div>
+		</div>
+	</div>
+	
+<!-- ************************************** Création ****************************** -->
+	<div class="row" *ngIf="mode === 2 || mode === 3">
+		<div class="box">
+			<!-- <form *ngIf="mode === 3" name="f" novalidate (ngSubmit)="save(f)" #f="ngForm" > -->
+			<!-- <form *ngIf="mode === 4" name="f" novalidate (ngSubmit)="edit(f.value)" #f="ngForm" > -->
+	
+			    <div class="box-header">
+			        <h4>{{header}} </h4>
+			        <button type="button" (click)="close()">&times;</button>
+			    </div>
+			    <div class="box-body">
+			    	<div class="form-group" [hidden]="!codeTypeChaineLoc" >
+			    		<label> ID </label>
+			    		<input class="form-control" name="codeTypeChaineLoc" type="number" readonly
+			    		[(ngModel)]="typeChaineLoc.codeTypeChaineLoc" readonly />
+			    	</div>
+			    	<div class="form-group">
+			            <label class="form-control-label">Libellé</label>
+			            <input type="text" class="form-control" name="libelleTypeChaineLoc"
+			            [(ngModel)]="typeChaineLoc.libelleTypeChaineLoc" />
+			        </div>
+			        <div class="form-group">
+			            <label class="form-control-label" >Ordre</label>
+			            <input type="number" class="form-control" name="ordreTypeChaineLoc"
+			                [(ngModel)]="typeChaineLoc.ordreTypeChaineLoc" />
+			        </div>
+			        <div class="form-group">
+			        	<label class="form-control-label"> Type de Secteur</label>
+				        <select  class="form-control" name="codeTypeSecteur" [(ngModel)]="typeChaineLoc.codeTypeSecteur">
+									<option [ngValue]="null"></option>
+									<option *ngFor="let typ of typeSecteurs" [ngValue]="typ.codeTypeSecteur">
+										{{typ.libelleTypeSecteur}}</option>
+						</select>
+					</div>
+			      </div> 
+			      <div>
+			        <button type="button" class="btn btn-secondary" (click)="close()" >
+			            <span class="fa fa-save"></span>&nbsp;<span>Retour</span>
+			        </button>
+			        
+			        <button *ngIf="mode === 2" type="button" class="btn btn-primary" (click)="save()" > 
+			            <span class="fa fa-save"></span>&nbsp;<span>Enregistrer</span>
+			        </button>
+			        
+			        <button *ngIf="mode === 3" type="button" class="btn btn-primary" (click)="edit()" > 
+			            <span class="fa fa-save"></span>&nbsp;<span>Enregistrer</span>
+			        </button>
+			    </div>
+			<!-- </form> -->
+		</div>
+	</div>
+	
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <div class="col-md-4">
+	<div class="row">
+		<div class="box">
+			<div class="box-header">
+				<h3 class="box-title">Sélection des types</h3>
+			</div>
+			<div class="box-body">
+				<table class="table table-bordered table-striped">
+					*ngIf="employeEtatCivil">
+					<tr>
+						<td>Secteur</td>
+						<td><input type="text"></td>
+					</tr>
+					<tr>
+						<td>Tables</td>
+						<td><select name="typesTable" [(ngModel)]="typeSelected" (change)="selectType()">
+								<option [ngValue]="null"></option>
+								<option *ngFor="let types of typesTable" [ngValue]="types[]">
+									{{types}}</option>
+						</select></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</div>
+
+******************************** Liste ********************************
+<div class="col-md-4">
+	<div class="row">
+		<div class="box">
+			<div class="box-header">
+				<h3 class="box-title">Chaine Localité</h3>
+			</div>
+			<div class="box-body">
+				<div class="row">
+					<div class="col-sm-6 float-right">
+						<div id="example1_filter" class="dataTables_filter">
+							<button *ngIf="mode === 1" class="btn btn-primary"
+								placement="bottom" (click)="createTypeChaineLoc()">
+								<i class="fa fa-plus"></i>
+							</button>
+							<button *ngIf="mode === 2 || mode === 3 || mode === 4"
+								class="btn btn-primary" placement="bottom" (click)="close()">
+								<i class="fa fa-close"></i>
+							</button>
+						</div>
+					</div>
+				</div>
+				<table class="table table-bordered table-striped"
+					*ngIf="mode === 1 || mode === 2 || mode === 3">
+					<tr>
+						<td class="delIcon"><span class="fa fa-remove"> </span></td>
+						<td><span>Libelle </span></td> 
+						<td><span>Ordre</span></td>
+						<td *ngIf="mode === 1"><span>Actions</span></td>
+					</tr>
+
+***************************************** Liste des chaines de localité ***********************************
+					<ng-container *ngIf="mode === 1">
+					<tr *ngFor="let typ of typeChaineLocs; trackBy: trackId">
+						<td><input type="checkbox"
+							(click)="deleteCheck(typ.codeTypeChaineLoc, $event)"
+							[checked]="false" /></td> 
+						<td>{{typ.libelleTypeChaineLoc}}</td>
+						<td>{{typ.ordreTypeChaineLoc}}</td>
+						<td class="actions">
+							<a class="on-default" (click)="detailsTypeChaineLoc(typ.codeTypeChaineLoc)">
+								<i class="fa fa-eye"></i>
+							</a> &nbsp;
+							<a class="on-default" (click)="editTypeChaineLoc(typ.codeTypeChaineLoc)">
+								<i class="fa fa-pencil"></i>
+							</a> 
+						</td>
+					</tr>
+					</ng-container>
+***************************************** Création et édition ***********************************
+					<tr *ngIf="mode === 2 || mode === 3">
+						<td><input type="checkbox" /></td>
+						<td><input type="text" name="libelleTypeChaineLoc" [(ngModel)]="typeChaineLoc.libelleTypeChaineLoc">
+						</td> 
+						<td><input type="number" name="ordreTypeChaineLoc" [(ngModel)]="typeChaineLoc.ordreTypeChaineLoc" />
+						</td>
+					</tr>
+					@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+					<tr *ngIf="mode === 3">
+						<td><input type="checkbox" /></td> &nbsp;
+						<td><input type="text" name="libelleTypeChaineLoc" [(ngModel)]="typeChaineLoc.libelleTypeChaineLoc">
+						</td> &nbsp;
+						<td><input type="number" name="ordreTypeChaineLoc" [(ngModel)]="typ.ordreTypeChaineLoc" />
+						</td>
+					</tr>
+				</table>
+				<div *ngIf="mode === 2" class="wrapper">
+					<button class="btn btn-primary" type="button" (click)="save()">
+						<span class="fa fa-save"></span>&nbsp;<span> </span>
+					</button>
+				</div>
+				<div *ngIf="mode === 3" class="wrapper">
+					<button class="btn btn-primary" type="button" (click)="edit()">
+						<span class="fa fa-save"></span>&nbsp;<span> </span>
+					</button>
+				</div>
+				***************************************** Suppression ***********************************
+				<div *ngIf="mode === 4 && employeEtatCivil">
+								<div>
+							        <p >Etes-vous sûr de vouloir supprimer ce état-civil ?</p>
+							    </div> <br>
+							    <button class="btn btn-primary" type="button" (click)="delete(employeEtatCivil.id.codeEmploye, employeEtatCivil.id.dateEmployeEtatCivil)"> [disabled]="crForm.form.invalid">
+									<span class="fa fa-check"></span>
+								</button>
+						</div>
+				&nbsp;
+				</form>
+			</div>
+		</div>
+	</div>
+</div> -->

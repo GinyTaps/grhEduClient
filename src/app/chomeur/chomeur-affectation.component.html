@@ -1,0 +1,135 @@
+<div class="container">
+	  <ul class="nav nav-tabs">
+	    <li><a [routerLink]="['/chomeur-detail', id]">Généralité</a></li>
+	    <li class="dropdown active">
+	      <a href="#"  class="dropdown-toggle" data-toggle="dropdown">Recrutement
+	      <span class="caret"></span></a>
+	      <ul class="dropdown-menu">
+	      	<li (click)="affAdmin()" [ngClass]="{'active': show}"><a [routerLink]="['/chomeur-affectation', id]">Affectation dans l'administration</a></li>
+	      	<li (click)="affEcole()" [ngClass]="{'active': hide}"><a [routerLink]="['/chomeur-affectationEco', id, 'E']">Affectation dans une école</a></li>         
+	      </ul>
+	    </li>
+	  </ul>
+	</div> <br>
+	
+	<div class="box">
+            <div class="box-header">
+              <h3 class="box-title" *ngIf="chomeur"> Effectuer une affectation de <span style="color: Red; ">{{chomeur.nomChomeur}} {{chomeur.prenomChomeur}}</span> {{panelTitle}}</h3>
+            </div>
+            <div class="box-body">
+            	<form name="editForm" novalidate (ngSubmit)="save()"  #editForm="ngForm">
+            	
+            		<label class="form-label">Secteur:</label>
+            		<select name="codePoste" [(ngModel)]="poste.codePoste">
+				                <option [ngValue]="null"></option>
+				                <option *ngFor="let posteOption of postes; trackBy: trackPosteById" 
+				                	[ngValue]="posteOption.codePoste"> {{posteOption.nomPoste}} 
+				                </option>
+				    </select>
+				    
+	            	<table class="table table-bordered table-striped" *ngIf="chomeur">
+	                  <tr [hidden] = "hide">
+	                  	<td>Représentation:</td>
+	                  	<td>
+	                  		<input type="text" name="code" readonly />
+	                  	</td>
+	                  </tr>
+	                  <tr [hidden] = "hide">
+	                  	<td>Service:</td>
+	                  	<td>
+	                  		<select name="codePoste" [(ngModel)]="poste.codePoste">
+				                <option [ngValue]="null"></option>
+				                <option *ngFor="let posteOption of postes; trackBy: trackPosteById" 
+				                [ngValue]="posteOption.codePoste"> {{posteOption.nomPoste}} </option>
+				            </select>
+	                  	</td>
+	                  </tr>
+	                  <tr [hidden] = "show">
+	                  	<td>Regroupement:</td>
+	                  	<td>
+	                  		<input type="text" name="code" readonly />
+	                  	</td>
+	                  </tr>
+	                  <tr [hidden] = "show">
+	                  	<td>Code établissement:</td>
+	                  	<td>
+	                  		<input type="text" name="code" readonly />
+	                  	</td>
+	                  </tr>
+	                  <tr>
+	                  	<td>Poste:</td>
+	                  	<td>
+	                  		<select name="codePoste" [(ngModel)]="poste.codePoste" >
+				                <option [ngValue]="null"></option>
+				                <option *ngFor="let posteOption of postes; trackBy: trackPosteById" 
+				                [ngValue]="posteOption.codePoste"> {{posteOption.nomPoste}} </option>
+				            </select>
+	                  	</td>
+	                  </tr>
+	                  <!-- <tr>
+	                  	<td>Fonction:</td>
+	                  	<td>
+	                  		<select name="codeTypeFonction">
+				                <option [ngValue]="null"></option>
+				                <option  [ngValue]="codeTypeFonction"> </option>
+				            </select>
+	                  		<select class="form-control" name="codeTypeFonction" [(ngModel)]="poste.codeTypeFonction" required >
+				                <option [ngValue]="null"></option>
+				                <option *ngFor="let posteOption of postes; trackBy: trackPosteById" 
+				                [ngValue]="posteOption.codeTypeFonction"> {{posteOption.libelleTypeFonction}} </option>
+				            </select>
+	                  	</td>
+	                  </tr> -->
+	                  <!-- <tr>
+	                  	<td>Statut:</td>
+	                  	<td>
+	                  		<select name="codeTypeStatutEntite">
+				                <option [ngValue]="null"></option>
+				                <option  [ngValue]="codeTypeStatutEntite"> </option>
+				            </select>
+	                  		<select class="form-control" name="codeTypeStatutEntite" [(ngModel)]="poste.codeTypeStatutEntite" required >
+				                <option [ngValue]="null"></option>
+				                <option *ngFor="let posteOption of postes; trackBy: trackPosteById" 
+				                [ngValue]="posteOption.codeTypeStatutEntite"> {{posteOption.libelleTypeStatutEntite}} </option>
+				            </select>
+	                  	</td>
+	                  </tr> -->
+	                  <tr>
+	                  	<td>Date de début:</td>
+	                  	<td>
+	                  		<input type="date" class="form-control" name="dateEmployeAffectation"
+			                [(ngModel)]="employeAffectation.id.dateEmployeAffectation" required />
+	                  	</td>
+	                  </tr>
+	                  <tr>
+	                  	<td>Date de fin:</td>
+	                  	<td>
+	                  		<!-- <input type="date" name="dateAffectation"  /> -->
+	                  		<input type="date" class="form-control" name="dateFinEmployePoste"
+			                [(ngModel)]="employePoste.dateFinEmployePoste" />
+	                  	</td>
+	                  </tr>
+	                  <tr>
+	                  	<td>Reférence:</td>
+	                  	<td>
+	                  		<input type="text" class="form-control" name="refEmployeAffectation"
+			                [(ngModel)]="employeAffectation.refEmployeAffectation" />
+	                  	</td>
+	                  </tr>
+	                  <tr>
+	                  	<td>Commentaire:</td>
+	                  	<td>
+	                  		<textarea class="form-control" name="comEmployeAffectation" 
+	                  		[(ngModel)]="employeAffectation.comEmployeAffectation" > </textarea>
+	                  	</td>
+	                  </tr>
+	                  
+	    		</table>
+	    		<div style="text-align: center">
+	    			<button type="submit" class="btn btn-primary" [disabled]="editForm.form.invalid">
+						<span class="fa fa-save"></span>&nbsp;<span> Enregistrer </span>
+					</button>
+				</div>
+	    	</form>
+    	</div>
+    </div>

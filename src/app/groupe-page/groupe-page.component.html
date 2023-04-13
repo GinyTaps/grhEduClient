@@ -1,0 +1,133 @@
+<div>
+	<!-- ******************************** Exemple avec Admin LTE data tables template ******************* -->
+	<div class="box" *ngIf="mode === 1">
+            <div class="box-header">
+              <h3 class="box-title">Droits d'accès des pages aux groupes</h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+            	<div class="row">
+            		<div class="col-sm-6 right">
+						  <button id="addToTable" class="btn btn-primary"  placement="bottom" (click)="saveGroupePage()"> 
+								<i class="fa fa-plus"></i>
+							</button> &nbsp;
+							<!-- <label> Groupe: </label> -->
+							<select name="idGroupe" [(ngModel)]="groupe.idGroupe" (ngModelChange)="getGroupePage($event)">
+			                	<option value="" disabled selected>Choisissez le groupe</option>
+			                	<option *ngFor="let g of groupes" [ngValue]="g"> {{g.nomGroupe}} </option> 
+			            	</select> 
+									
+					</div>
+				</div>
+              <table id="example1" class="table table-bordered table-striped">
+                <thead>
+                <tr>
+                  <th>Groupes</th>
+                  <th>Pages</th>
+                  <th>Privillèges</th>
+				  <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+	                <tr *ngFor ="let gp of groupePages | paginate: { itemsPerPage: 10, currentPage: p }"> 
+						<td>
+							<select name="idGroupe" [(ngModel)]="gp.id.idGroupe" disabled>
+								<option *ngFor="let g of groupes" [ngValue]="g.idGroupe"> {{g.nomGroupe}} </option>
+							</select>
+	            		</td>
+						<td>
+							<select name="idPage" [(ngModel)]="gp.id.idPage" disabled>
+								<option *ngFor="let p of pages" [ngValue]="p.idPage"> {{p.nomPage}} </option>
+							</select>
+	            		</td>
+						<td> <div *ngIf="gp.id.idTypeMethodeAutorise === 2;else nonprivilege">En lecture</div> 
+							<ng-template #nonprivilege> En écriture </ng-template>
+							<!-- <select name="idTypeMethodeAutorise" [(ngModel)]="gp.id.idTypeMethodeAutorise" disabled>
+								<option *ngFor="let t of typeMethodeAutorises" [ngValue]="t.idTypeMethodeAutorise"> {{t.nomTypeMethodeAutorise}} </option>
+							</select> -->
+	            		</td>
+						<td class="actions">
+							<!-- <a class="on-default edit-row" (click)="editGroupePage(gp.groupe.idGroupe, gp.page.idPage, gp.typeMethodeAutorise.idTypeMethodeAutorise)" > -->
+							<a class="on-default edit-row" (click)="editGroupePage(gp)" >
+								<i class="fa fa-pencil"></i>
+							</a> &nbsp;
+							
+							<a [swal]="deleteSwal"> <i class="fa fa-trash-o"></i> </a>
+							  <swal #deleteSwal title="Supprimer ce droit d'accès" type="question"
+							   icon="warning" [showCancelButton]="true" [focusCancel]="true" (confirm)="deleteGroupePage(gp)">
+							  </swal>
+						</td>
+	                </tr>
+                </tbody>
+                <tfoot>
+                <tr>
+                  <th>Groupes</th>
+                  <th>Pages</th>
+                  <th>Privillèges</th>
+				  <th>Actions</th>
+                </tr>
+                </tfoot>
+              </table>
+            </div>
+			<div class="row">
+				<div class="col-sm-7" style="text-align: center">
+					<!-- pagination -->
+					<pagination-controls (pageChange)="p = $event"></pagination-controls>
+				</div>
+			</div>
+		
+		</div>
+	<!-- ******************************** Création et édition ********************************** -->	
+		<div class="box" *ngIf="mode === 2 || mode === 3">
+				<!-- <form name="editForm" novalidate (ngSubmit)="save()" #editForm="ngForm"> --> 
+		
+		    <div class="box-header">
+		        <h4 class="modal-title" id="employeLabel"> {{header}} </h4>
+		        <button type="button" (click)="close()">&times;</button>
+		    </div>
+		    <div class="box-body">
+		        <div class="form-group">
+		            <label class="form-control-label">Groupes</label>
+		            <select class="form-control" name="idGroupe" [(ngModel)]="groupePage.id.idGroupe">
+	                	<option [ngValue] = "null"></option>
+	                	<option *ngFor="let g of groupes" [ngValue]="g.idGroupe"> {{g.nomGroupe}} </option> 
+	            	</select>
+		        </div>
+		        <div class="form-group">
+		            <label class="form-control-label">Pages</label>
+		            <select class="form-control" name="idPage" [(ngModel)]="groupePage.id.idPage">
+		            	<option [ngValue] = "null"></option>
+	                	<option *ngFor="let p of pages" [ngValue]="p.idPage"> {{p.nomPage}} </option> 
+	            	</select>
+		        </div>
+		        <!-- <div>
+		        	<label class="form-control-label">Privilège</label>
+		        	<select class="form-control" name="idTypeMethodeAutorise" [(ngModel)]="groupePage.id.idTypeMethodeAutorise" disabled>
+	                	<option [ngValue] = "groupePage.page.privilege"></option>
+	                	<option *ngFor="let t of typeMethodeAutorises" [ngValue]="t.idTypeMethodeAutorise"> {{t.nomTypeMethodeAutorise}} </option> 
+	            	</select>
+		        </div> -->
+		
+		      </div>
+		      <div>
+		        <button class="btn btn-secondary" type="button" (click)="close()">
+			    	<span class="fa fa-ban"></span>&nbsp;<span>Retour</span>
+			   	</button>
+			    <button *ngIf="mode === 2" type="button" class="btn btn-primary" (click)="save()" >
+			    	<span class="fa fa-save"></span>&nbsp;<span>Enregistrer</span>
+			   	</button>
+			    <button *ngIf="mode === 3" type="button" class="btn btn-primary" (click)="edit()" > 
+			    	<span class="fa fa-save"></span>&nbsp;<span>Enregistrer</span>
+			   	</button>
+		        <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
+		            <span class="fa fa-ban"></span>&nbsp;<span>Retour</span>
+		        </button>
+		        <button type="submit"class="btn btn-primary" [disabled]="editForm.form.invalid" *ngIf="mode === 2" > 
+		            <span class="fa fa-save"></span>&nbsp;<span>Enregistrer</span>
+		        </button>
+		        <button type="button" class="btn fa fa-save" *ngIf="mode === 3" (click)="edit()"></button> -->
+		    </div>
+		<!-- </form> -->
+		
+	</div>
+</div>

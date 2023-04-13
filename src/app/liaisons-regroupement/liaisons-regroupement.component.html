@@ -1,0 +1,71 @@
+<div class="row">
+	<ul class="nav nav-tabs">
+		<li class="dropdown">
+			<a class="dropdown-toggle" data-toggle="dropdown" [routerLink] = "['/regroupement']" >Localités</a>
+		</li>
+		<li class="dropdown">
+		  <a class="dropdown-toggle" data-toggle="dropdown" [routerLink] = "['/chaine']">Chaines</a>
+		</li>
+		<li class="active">
+		  	<a>Liaisons</a>
+		</li>
+	</ul> <br>
+	
+	<div class="row">
+		<div class="col-md-8 right">
+			<label> Secteur: </label>
+			<select [(ngModel)]="codeTypeSecteur" 
+				(ngModelChange)="getChaineBySecteur($event)">
+					<option [ngValue]="null"></option>
+					<option *ngFor="let t of typeSecteurs" [ngValue]="t.codeTypeSecteur">
+						{{t.libelleTypeSecteur}}
+					</option>
+			</select> &nbsp;
+			<label> Chaine: </label>
+			<select [(ngModel)]="codeTypeChaineLoc" 
+				(ngModelChange)="getChaine($event)">
+					<option [ngValue]="null"></option>
+					<option *ngFor="let t of typeChaineLocs" [ngValue]="t.codeTypeChaineLoc">
+						{{t.libelleTypeChaineLoc}}
+					</option>
+			</select> &nbsp;
+			<div class="control_wrapper" *ngIf="typeChaineLocs" id="myTreeT" style="width:400px;border: 1px solid;left">
+				<ejs-treeview  #tree [showCheckBox]="true" [fields]="treeF" (nodeSelected)="nodeSelected($event)"
+				 (nodeDragStart)="nodeDragStart($event)" (nodeDropped)="nodeDropped($event)"
+				 [allowDragAndDrop]="true">  &nbsp; <!-- (nodeChecked)="nodeChecked($event)" (nodeClicked)="nodeClick($event)" [allowEditing]="false">  --> 
+					
+					<ng-template #nodeTemplate="" let-data="">
+		              <div [swal]="deleteAd" class="delBranch" style="display:inline-block"  (click)="iconClick($event)" (keyPress)="iconClick($event)">  
+		              	<a> <li  class="fa fa-trash-o" style="font-size:14px;color:red"></li></a>
+		              </div>
+		              <swal #deleteAd title="Supprimer {{data.regroupement?.libelleRegroupement}}?" text="Confirmer la suppression de ce noeud"
+							type="question" icon="warning" [showCancelButton]="true" [focusCancel]="true" (confirm)="deleteNode(data)">
+					  </swal>
+		              <div style="display:inline-block;text-align:left;float:left;">
+		              	 <span class="treeName">{{data.regroupement?.libelleRegroupement}}</span>
+		              </div>
+		            </ng-template>
+				</ejs-treeview>
+			</div>
+		</div> <br>
+	
+		<div class="col-md-4 left" *ngIf="typeCodeLoc">
+			<label> Types de localité: </label>
+			<select name="codeTypeRegroupement" [(ngModel)]="typeCodeLoc"  
+				(ngModelChange)="getRegByType($event)"> 
+					<!-- <option [ngValue]="null"> </option> -->
+					<option *ngFor="let t of typeRegroupements" [ngValue]="t.codeTypeRegroupement">
+						{{t.libelleTypeRegroupement}}
+					</option>
+			</select> &nbsp;
+			<div style="border: 1px solid" *ngIf="regroupements">
+				<form [formGroup]="form" (ngSubmit)="addToTree()" novalidate>
+				   <div *ngFor="let r of regroupements">
+				      <input type="checkbox" name="codeRegroupement" [value]="r" (change)="getRegroupement($event, r)"> {{r.libelleRegroupement}}
+				   </div> <br>
+				   <button style="float:right" type="submit"> OK </button>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>

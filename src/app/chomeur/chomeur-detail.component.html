@@ -1,0 +1,99 @@
+<div class="container">
+	  <ul class="nav nav-tabs">
+	    <li class="active"><a>Généralité</a></li>
+	    <li class="dropdown">
+	      <a href="#"  class="dropdown-toggle" data-toggle="dropdown">Recrutement
+	      <span class="caret"></span></a>
+	      <ul class="dropdown-menu">
+	      	<li><a [routerLink]="['/chomeur-affectation', id]">Affectation dans l'administration</a></li>
+	      	<li><a [routerLink]="['/chomeur-affectation', id]">Affectation dans une école</a></li>         
+	      </ul>
+	    </li>
+	  </ul>
+	</div> <br>
+	
+	<div class="box">
+            <div class="box-header">
+              	<h3 class="box-title" *ngIf="chomeur">{{chomeur.nomChomeur}} - {{chomeur.prenomChomeur}}</h3>
+	            <div>
+					<input type="image" value="photo">
+				</div>
+            </div>
+    <div class="box-body">
+            	<table class="table table-bordered table-striped" *ngIf="chomeur">
+                 <!--  <tr>
+                  	<td>ID:</td>
+                  	<td>{{chomeur.codeChomeur}}</td>
+                  </tr> -->
+                  <tr>
+                  	<td> <strong> Origine: </strong> </td>
+                  	<td>{{chomeur.codeRegroupement}}</td>
+                  </tr>
+                  <tr>
+                  	<td> <strong> Résidence: </strong> </td>
+                  	<td>{{chomeur.codeRegroupement}}</td>
+                  </tr>
+                  <tr>
+                  	<td> <strong> Date de naissance: </strong> </td>
+                  	<td>{{chomeur.dateNaissChomeur| date:'dd-MM-yyyy'}}</td>
+                  </tr>
+                  <tr>
+                  	<td> <strong> Année du diplôme: </strong> </td>
+                  	<td>{{chomeur.anneeDipChomeur}}</td>
+                  </tr>
+                  <tr>
+                  	<td> <strong> Carte d'identification nationale(CIN): </strong> </td>
+                  	<td>{{chomeur.cinChomeur}}</td>
+                  </tr>
+                  <tr>
+				  	<td> <strong> Date CIN: </strong> </td>
+				  	<td>{{chomeur.dateCinChomeur | date:'dd/MM/yyyy'}}</td>
+				  </tr>
+				  <tr>
+                  	<td> <strong> Téléphone: </strong> </td>
+                  	<td>{{chomeur.telChomeur}}</td>
+                  </tr>
+                  <tr>
+                  	<td> <strong> Email: </strong> </td>
+                  	<td>{{chomeur.emailChomeur}}</td>
+                  </tr>
+                  <tr>
+				  	<td> <strong> Sexe: </strong> </td>
+				  	<td>
+				  		<div *ngIf="typeSexe">
+                			<span>{{typeSexe.libelleTypeSexe}}</span>
+                		</div>
+				  	</td>
+				  </tr>
+                  <tr>
+                  	<td> <strong> Regroupement: </strong> </td>
+                  	<td>
+                  		<div *ngIf="regroupement">
+                			<span>{{regroupement.libelleRegroupement}}</span>
+                		</div>
+                  	</td>
+                  </tr>
+                  <tr>
+                  	<td> <strong> Etat-civil: </strong> </td>
+                  	<td>
+                  		<div *ngIf="typeEtatCivil">
+                			<span>{{typeEtatCivil.libelleTypeEtatCivil}}</span>
+                		</div>
+                  	</td>
+                  </tr>
+                  <tr>
+				  	<td> <strong> Nationalité: </strong> </td>
+				  	<td>
+				  		<div *ngIf="typeNationalite">
+                			<span>{{typeNationalite.libelleTypeNationalite}}</span>
+                		</div>
+				  	</td>
+				  </tr>
+				  <tr>
+				    <button type="submit" (click)="previousState()" class="btn btn-info">
+				        <span class="fa fa-arrow-left"></span>&nbsp;<span> Retour </span>
+				    </button>
+    			</tr>
+    		</table>
+    	</div>
+</div>

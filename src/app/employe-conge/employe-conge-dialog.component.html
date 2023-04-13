@@ -1,0 +1,225 @@
+<!-- <div> -->
+	<!-- <div class="row justify-content-center">
+        	<div class="col-md-8">
+	
+	            <div class="alert alert-success" *ngIf="success">
+	                <strong>Enregistrement réussi!</strong>
+	            </div>
+	
+	            <div class="alert alert-danger" *ngIf="error">
+	                <strong>Enregistrement échoué!</strong> SVP veuillez réessayer plutard.
+	            </div>
+	
+	            <div class="alert alert-danger" *ngIf="errorEmpExists">
+	                <strong>Cet employé a déjà un congé enregistré!</strong> SVP choisissez un autre employé.
+	            </div>
+	
+	            <div class="alert alert-danger" *ngIf="errorDateExists">
+	                <strong>Cette date est déjà utilisée par cet employé!</strong> SVP choisissez une autre date.
+	            </div>
+	
+	            <div class="alert alert-danger" *ngIf="doNotMatch">
+	                La période choisie est invalide pour le congé de cet employé!
+	            </div>
+        	</div>
+    </div>
+	<div class="row justify-content-center">
+        <div class="col-md-8"> -->
+        
+        <div class="box">
+	            <div class="box-header">
+	              <h3 class="box-title" *ngIf="employe">Créer un congé à l'employé {{employe.nomEmploye}} {{employe.prenomEmploye}}</h3>
+	            </div>
+	            <!-- /.box-header -->
+	            <div class="box-body">
+					<form name="editForm" novalidate (ngSubmit)="save()"  #editForm="ngForm"> <!-- *ngIf="success" > -->
+					    <div class="alert alert-danger" *ngIf="errorEmpExists == 1">
+			                <strong>Cet employé a déjà un congé enregistré à cette date!</strong> Veuillez choisir un autre employé ou changer de date début.
+			            </div>
+			            <div class="alert alert-danger" *ngIf="errorEmpExists == 2">
+			                <strong>La date n'est pas valide!</strong> Veuillez changer les dates.
+			            </div>
+			            <div class="alert alert-danger" *ngIf="errorDureeExists == 1">
+			            	<strong>La durée ne peut pas être supérieure au nombre de jours!</strong> Veuillez la changer.
+			            </div>
+					        <!-- <div class="form-group"> Employé <br>
+					        	<label class="form-control-label" >Nom - prénom </label>
+					        	<select class="form-control" name="codeEmploye" [(ngModel)]="employeConge.id.codeEmploye" [disabled]="hide">
+					                <option *ngFor="let employeOption of employes; trackBy: trackEmployeById" [value]="employeOption.codeEmploye" > {{employeOption.nomEmploye}} - {{employeOption.prenomEmploye}} </option>
+					            </select>
+					            <small class="alert alert-danger" *ngIf="errorEmpExists == 1">
+			                		SVP choisissez un autre employé.
+					            </small>
+					        </div> -->
+					        <div class="form-group">
+					            <label class="form-control-label" >Type de congé</label>
+					            <select class="form-control" name="codeTypeMotifConge" [(ngModel)]="employeConge.id.codeTypeMotifConge" required >
+					                <option [ngValue]="null"></option>
+					                <option *ngFor="let typeMotifCongeOption of typeMotifConges; trackBy: trackTypeMotifCongeById" 
+					                [ngValue]="typeMotifCongeOption.codeTypeMotifConge" > {{typeMotifCongeOption.libelleTypeMotifConge}} </option>
+					            </select>
+					        </div>
+					        <div class="form-group">
+					            <label class="form-control-label">Début de congé</label>
+					            <input type="date" class="form-control" name="dateDebutConge" #dateDebutCongeInput="ngModel"
+					                [(ngModel)]="employeConge.id.dateDebutConge" required />
+					            <small class="alert alert-danger" *ngIf="errorDateExists == 1">
+			                		SVP choisissez une autre date.
+					            </small>
+					            <small class="alert alert-danger" *ngIf="errorDateExists == 2">
+					            	 SVP changer la date de début.
+					            </small>
+					        </div>
+					        <div class="form-group">
+					            <label class="form-control-label">Fin de congé</label>
+					            <input type="date" class="form-control" name="dateFinConge"
+					                [(ngModel)]="employeConge.dateFinConge" />
+					         	<small class="alert alert-danger" *ngIf="errorDateExists == 2">
+					            	 SVP changer la date de fin.
+					            </small>
+					        </div>
+					        <div class="form-group">
+					            <label class="form-control-label" >Durée</label>
+					            <input type="number" class="form-control" name="dureeConge"
+					                [(ngModel)]="employeConge.dureeConge"  />
+					          	<small class="alert alert-danger" *ngIf="errorDureeExists == 1">
+					            	 SVP changez la durée.
+					            </small>
+					        </div>
+					        <div class="form-group">
+					            <label class="form-control-label" >Reférence du début</label>
+					            <input type="text" class="form-control" name="refDebutConge"
+					                [(ngModel)]="employeConge.refDebutConge"  />
+					        </div>
+					        <div class="form-group">
+					            <label class="form-control-label" >Reférence de fin</label>
+					            <input type="text" class="form-control" name="refFinConge"
+					                [(ngModel)]="employeConge.refFinConge"  />
+					        </div>
+					        <div class="form-group">
+					            <label class="form-control-label" >Commentaire de début</label>
+					            <textarea class="form-control" name="comDebutConge" [(ngModel)]="employeConge.comDebutConge" > </textarea>
+					        </div>
+					        <div class="form-group">
+					            <label class="form-control-label" >Commentaire de fin de congé</label>
+					            <textarea class="form-control" name="comFinConge" [(ngModel)]="employeConge.comFinConge" > </textarea>
+					        </div>
+					        <div>
+						        <button type="button" class="btn btn-secondary" (click)="clear()">
+						            <span class="fa fa-ban"></span>&nbsp;<span>Retour</span>
+						        </button>
+						        <button type="submit" class="btn btn-primary" [disabled]="editForm.form.invalid" > 
+						            <span class="fa fa-save"></span>&nbsp;<span>Enregistrer</span>
+						        </button>
+					        </div>
+					</form>
+				</div>
+			</div>
+
+	<!-- ***************************** Formulaire de modification ********************************** -->		
+	
+	<!-- <form name="editForm" novalidate (ngSubmit)=edit()  #editForm="ngForm" *ngIf="!success" >
+			
+			    <div class="modal-header">
+			        <h4 class="modal-title" id="employeCongeLabel" >Modifier un congé</h4>
+			        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+			                (click)="clear()">&times;</button>
+			    </div>
+			    <div class="alert alert-danger" *ngIf="errorEmpExists == 1">
+	                <strong>Cet employé a déjà un congé enregistré à cette date!</strong> Veuillez choisir un autre employé ou changer de date début.
+	            </div>
+	            <div class="alert alert-danger" *ngIf="errorEmpExists == 2">
+	                <strong>La date n'est pas valide!</strong> Veuillez changer les dates.
+	            </div>
+	            <div class="alert alert-danger" *ngIf="errorDureeExists == 1">
+	            	<strong>La durée ne peut pas être supérieure au nombre de jours!</strong> Veuillez la changer.
+	            </div>
+			    <div class="modal-body">
+			        <div class="form-group"> Employé <br>
+			            <label class="form-control-label" >Nom - prénom </label>
+			            <select class="form-control" name="codeEmploye" #codeEmployeInput="ngModel" [(ngModel)]="employeConge.id.codeEmploye" [disabled]="hide" >
+			                <option [ngValue]="null"></option>
+			                <option *ngFor="let employeOption of employes; trackBy: trackEmployeById" [ngValue]="employeOption.codeEmploye" > {{employeOption.nomEmploye}} - {{employeOption.prenomEmploye}} </option>
+			            </select>
+			        </div>
+			      
+**************************** Test de filtre sur la recherche **************************
+					<div>
+				        <input class="form-control" type="text" name="nom" [(ngModel)]="nom" list="employes">
+				        <datalist id="employes">
+				        	<option [ngValue]="null"></option>
+			                <option *ngFor="let employeOption of employes | filter:nom | orderBy: ['nomEmploye'] trackBy: trackEmployeById" 
+			                [ngValue]="employeOption.codeEmploye" > {{employeOption.nomEmploye}} - {{employeOption.prenomEmploye}} </option>
+				        </datalist>
+				        <div *ngFor = "let employeOption of employes |filter:nom trackBy: trackEmployeById" >
+				          <p>
+				            {{employeOption.nomEmploye}} - {{employeOption.prenomEmploye}}
+				          </p>
+				        </div>
+				    </div> <br>
+			        
+**************************** fin test *****************************************
+			        
+			        <div class="form-group">
+			            <label class="form-control-label" >Type de congé</label>
+			            <select class="form-control" name="codeTypeMotifConge" [(ngModel)]="employeConge.id.codeTypeMotifConge" required >
+			                <option [ngValue]="null"></option>
+			                <option *ngFor="let typeMotifCongeOption of typeMotifConges; trackBy: trackTypeMotifCongeById" [ngValue]="typeMotifCongeOption.codeTypeMotifConge" > {{typeMotifCongeOption.libelleTypeMotifConge}} </option>
+			            </select>
+			        </div>
+			        <div class="form-group">
+			            <label class="form-control-label">Début de congé</label>
+			            <input type="date" class="form-control" name="dateDebutConge" #dateDebutCongeInput="ngModel"
+			                [(ngModel)]="employeConge.id.dateDebutConge" required />
+			            <small class="alert alert-danger" *ngIf="errorDateExists == 1">
+	                		SVP choisissez une autre date.
+			            </small>
+			            <small class="alert alert-danger" *ngIf="errorDateExists == 2">
+			            	 SVP changer la date de début.
+			            </small>
+			        </div>
+			        <div class="form-group">
+			            <label class="form-control-label">Fin de congé</label>
+			            <input type="date" class="form-control" name="dateFinConge"
+			                [(ngModel)]="employeConge.dateFinConge" />
+			         	<small class="alert alert-danger" *ngIf="errorDateExists == 2">
+			            	 SVP changer la date de fin.
+			            </small>
+			        </div>
+			        <div class="form-group">
+			            <label class="form-control-label" >Durée</label>
+			            <input type="number" class="form-control" name="dureeConge"
+			                [(ngModel)]="employeConge.dureeConge"  />
+			          	<small class="alert alert-danger" *ngIf="errorDureeExists == 1">
+			            	 SVP changez la durée.
+			            </small>
+			        </div>
+			        <div class="form-group">
+			            <label class="form-control-label" >Reférence du début</label>
+			            <input type="text" class="form-control" name="refDebutConge"
+			                [(ngModel)]="employeConge.refDebutConge"  />
+			        </div>
+			        <div class="form-group">
+			            <label class="form-control-label" >Reférence de fin</label>
+			            <input type="text" class="form-control" name="refFinConge"
+			                [(ngModel)]="employeConge.refFinConge"  />
+			        </div>
+			        <div class="form-group">
+			            <label class="form-control-label" >Commentaire de début</label>
+			            <textarea class="form-control" name="comDebutConge" [(ngModel)]="employeConge.comDebutConge" > </textarea>
+			        </div>
+			        <div class="form-group">
+			            <label class="form-control-label" >Commentaire de fin de congé</label>
+			            <textarea class="form-control" name="comFinConge" [(ngModel)]="employeConge.comFinConge" > </textarea>
+			        </div>
+			      </div>
+			      <div class="modal-footer">
+			        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
+			            <span class="fa fa-ban"></span>&nbsp;<span>Retour</span>
+			        </button>
+			        <button type="submit" class="btn btn-primary" [disabled]="editForm.form.invalid" > 
+			            <span class="fa fa-save"></span>&nbsp;<span>Enregistrer</span>
+			        </button>
+			    </div>
+			</form> -->
+	

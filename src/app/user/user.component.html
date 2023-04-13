@@ -1,0 +1,135 @@
+<div class="row">
+
+  <div class="box" *ngIf="mode === 2 || mode === 3">
+	  	<div class="box-header">
+	  		<h3>{{header}}</h3>
+	  		<button type="button" (click)="close()">&times;</button>
+	  	</div>
+	  	<div class="box-body">
+	  		<div class="col-sm-6">
+		  		<label>Nom d'utilisateur</label>
+				<input type="text" class="form-control" name="username" [(ngModel)]="user.username" required>
+		    </div>
+		    <div class="col-sm-6">
+				<label>Mot de passe</label>
+				<input type="password" class="form-control" name="password" [(ngModel)]="user.password"  required>
+			</div>
+			<div class="col-sm-6">
+				<label>Email</label>
+				<input type="text" class="form-control" name="email" [(ngModel)]="user.email" required>
+				<font class="col-sm-12 text-danger" *ngIf="this.user_form.controls.email.touched && !this.user_form.controls.email.valid">Adresse non valide!!!</font>
+			</div>
+			<div class="col-sm-6">
+				<label>Confirmer</label>
+				<input type="password" class="form-control" name="passwordConfirmed" [(ngModel)]="user.passwordConfirmed" required>
+				<font class="col-sm-12 text-danger" *ngIf="invalid_pass">Les mots de passe ne correspondent pas!!!</font>
+			</div>
+			<div class="col-sm-6">
+				<label>Groupe</label>
+				<select *ngIf="mode === 2" class="form-control" name="groupes" [(ngModel)]="user.groupes" required>
+		        	<option [ngValue] = "null"></option>
+		        	<option *ngFor="let g of groupes" [ngValue]="g.idGroupe"> {{g.nomGroupe}} </option>
+		       	</select>
+		       	<select *ngIf="mode === 3" class="form-control" name="idGroupe" [(ngModel)]="user.groupes[0].idGroupe" required>
+		        	<option [ngValue] = "null"></option>
+		        	<option *ngFor="let g of groupes" [ngValue]="g.idGroupe"> {{g.nomGroupe}} </option>
+		       	</select>
+			</div>
+		</div>
+	  	<div>
+		  	<button type="button" class="btn btn-secondary" (click)="close()" >
+			            <span class="fa fa-save"></span>&nbsp;<span>Retour</span>
+			        </button>
+
+			        <button *ngIf="mode === 2" type="button" class="btn btn-primary" (click)="save()" >
+			            <span class="fa fa-save"></span>&nbsp;<span>Enregistrer</span>
+			        </button>
+
+			        <button *ngIf="mode === 3" type="button" class="btn btn-primary" (click)="edit()" >
+			            <span class="fa fa-save"></span>
+			        </button>
+		</div>
+	</div>
+
+	<div class="box" *ngIf="mode === 4" class="col-md-8 col-md-offset-2 col-sm-12">
+		  <div class="col-sm-12" style="text-align: center;">
+			<h3>Détails de l'utilisateur</h3>
+		  </div>
+		  <!-- <div class="col-sm-12 detailitem"><font class="col-sm-4 caption">Nom:</font> {{ user.nom }}</div>
+		  <div class="col-sm-12 detailitem"><font class="col-sm-4 caption">Prénom:</font> {{ user.prenom }}</div> -->
+		  <div class="col-sm-12 detailitem"><font class="col-sm-4 caption">ID:</font> {{ user.idUser }}</div>
+		  <div class="col-sm-12 detailitem"><font class="col-sm-4 caption">Email:</font> {{ user.email }}</div>
+		  <div class="col-sm-12 detailitem"><font class="col-sm-4 caption">Nom d'utilisateur:</font> {{ user.username }}</div>
+		  <div class="col-sm-12 detailitem">
+		  	<font class="col-sm-4 caption">Profile:</font>
+		  		<select class="form-control" name="groupes" [(ngModel)]="users.groupes" >
+	            	<option *ngFor="let g of groupes" [ngValue]="g.idGroupe" > {{g.nomGroupe}} </option>
+	            </select>
+	       </div>
+		  <div class="col-sm-12 detail_item"><button type="button" (click)="u_detail=false;" class="btn">Retour</button></div>
+	  </div>
+
+
+	<div class="box" *ngIf="mode === 1">
+            <div class="box-header">
+              <h3 class="box-title">Utilisateurs</h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+            	<div class="row" *ngIf="permitted">
+            		<div class="col-sm-6 right">
+						  <button id="addToTable" class="btn btn-primary"  placement="bottom" (click)="create()">
+								<i class="fa fa-plus"></i>
+							</button>
+					</div>
+                <!-- <div class="col-sm-4 right">
+                  <div fxLayout fxLayoutAlign="center center">
+                    <button id="addToTable" (click)="create()" class="btn btn-primary" placement="bottom">
+                      <i class="fa fa-plus"></i>
+                    </button>
+                  </div>
+                </div> -->
+              </div>
+          <table id="example1" class="table table-bordered table-striped">
+            <thead>
+            <tr>
+              <th> Nom d'utilisateur </th>
+			        <th> Email </th>
+			        <th> Groupe </th>
+              <th> Actions </th>
+            </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor ="let u of users | paginate: { itemsPerPage: 10, currentPage: p }">
+                  <td>{{ u.username }}</td>
+				  <td>{{ u.email }}</td>
+				  <!-- <td *ngFor ="let g of u.groupes; let i = index"> {{u.groupes[i].nomGroupe}} -->
+				  <td *ngFor ="let g of u?.groupes; let i = index"> {{g?.nomGroupe}} </td>
+                  <td>
+					<!-- <a class="on-default" (click)="detailUser(u)"><i class="fa fa-eye"></i></a> &nbsp; -->
+                    <a class="on-default edit-row" (click)="editUser(u)"><i class="fa fa-pencil"></i></a> &nbsp;
+					<a *ngIf="permitted" [swal]="deleteSwal"> <i class="fa fa-trash-o"></i> </a>
+					<swal #deleteSwal title="Supprimer l'utilisateur {{u.username}}?" type="question"
+						icon="warning" [showCancelButton]="true" [focusCancel]="true" (confirm)="deleteUser(u)">
+					</swal>
+                  </td>
+                </tr>
+              </tbody>
+              <!-- <tfoot>
+                <tr>
+					<th> Nom d'utilisateur </th>
+					<th> Email </th>
+					<th> Groupe </th>
+		            <th> Actions </th>
+                </tr>
+                </tfoot> -->
+              </table>
+            </div>
+            <div class="row">
+				<div class="col-sm-7" style="text-align: center">
+					<pagination-controls (pageChange)="p = $event"></pagination-controls>
+				</div>
+			</div>
+	</div>
+
+</div>

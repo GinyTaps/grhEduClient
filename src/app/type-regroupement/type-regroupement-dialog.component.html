@@ -1,0 +1,33 @@
+<form name="editForm" novalidate (ngSubmit)="save()" #editForm="ngForm" >
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="typeNationaliteLabel" >Créer ou modifier un type de regroupement</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+    	<div class="form-group" [hidden]="!typeRegroupement.codeTypeRegroupement" >
+    		<label> ID </label>
+    		<input class="form-control" name="codeTypeRegroupement" type="number"
+    		[(ngModel)]="typeRegroupement.codeTypeRegroupement" readonly />
+    	</div>
+    	<div class="form-group">
+            <label class="form-control-label">Libellé</label>
+            <input type="text" class="form-control" name="libelleTypeRegroupement"
+                [(ngModel)]="typeRegroupement.libelleTypeRegroupement" />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" >Ordre</label>
+            <input type="number" class="form-control" name="ordreTypeRegroupement"
+                [(ngModel)]="typeRegroupement.ordreTypeRegroupement"  />
+        </div>
+      </div> 
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span>Retour</span>
+        </button>
+        <button type="submit"class="btn btn-primary" [disabled]="editForm.form.invalid" > 
+            <span class="fa fa-save"></span>&nbsp;<span>Enregistrer</span>
+        </button>
+    </div>
+</form>

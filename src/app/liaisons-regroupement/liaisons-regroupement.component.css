@@ -1,0 +1,52 @@
+/************** Drag and drop ***************/
+.control_wrapper {
+        max-width: 320px;
+        margin: auto;
+        border: 1px solid #dddddd;
+        border-radius: 4px;
+}
+.e-treeview .e-list-text {
+        width: 100%;
+}
+.treeCount.e-badge {
+        padding: 0.4em;
+        vertical-align: text-bottom;
+}
+.material .treeCount.e-badge {
+        vertical-align: middle;
+}
+/*To hide the sibling shown while performing drag and drop*/
+.custom  .e-sibling {
+        display: none !important;
+}
+
+/*To change the background color applied for the cloned node*/
+.e-treeview.custom.e-drag-item{
+        background-color: transparent;
+
+}
+/*To hide the drop indicator in the cloned node*/
+.e-treeview.custom.e-drag-item .e-icons.e-drop-out::before,.e-treeview.custom.e-drag-item .e-icons.e-drop-in::before,.e-treeview.custom.e-drag-item .e-icons.e-drop-next::before{
+        content: '';
+}
+
+/* To remove the icon padding */
+.e-treeview .e-custom .e-text-content > .e-list-text {
+  margin-left: -25px;
+}
+
+
+
+/************ Remove *************/
+.mdi.mdi-delete-forever {
+    background-image: url(https://js.syncfusion.com/demos/web/content/images/treeview/remove-icon.png);
+    background-position: -6px -10px;
+    background-repeat: no-repeat;
+    float: right;
+    height: 16px;
+    width: 16px;
+    cursor: pointer;
+}
+#myTreeT .e-treeview.e-fullrow-wrap .e-text-content .delBranch {
+  pointer-events: auto;
+}

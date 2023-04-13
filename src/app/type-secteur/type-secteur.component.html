@@ -1,0 +1,41 @@
+<div>
+<!-- ************************************** Création ****************************** -->
+	<div class="row" *ngIf="mode === 2 || mode === 3">
+		<div class="box">
+			    <div class="box-header">
+			        <h4>{{header}} </h4>
+			        <button type="button" (click)="close()">&times;</button>
+			    </div>
+			    <div class="box-body">
+			    	<div class="form-group" [hidden]="!codeTypeSecteur" >
+			    		<label> ID </label>
+			    		<input class="form-control" name="codeTypeSecteur" type="number" readonly
+			    		[(ngModel)]="typeSecteur.codeTypeSecteur" readonly />
+			    	</div>
+			    	<div class="form-group">
+			            <label class="form-control-label">Libellé</label>
+			            <input type="text" class="form-control" name="libelleTypeSecteur"
+			            [(ngModel)]="typeSecteur.libelleTypeSecteur" />
+			        </div>
+			        <div class="form-group">
+			            <label class="form-control-label" >Ordre</label>
+			            <input type="number" class="form-control" name="ordreTypeSecteur"
+			                [(ngModel)]="typeSecteur.ordreTypeSecteur"  />
+			        </div>
+			      </div> 
+			      <div>
+			        <button type="button" class="btn btn-secondary" (click)="close()" >
+			            <span class="fa fa-save"></span>&nbsp;<span>Retour</span>
+			        </button>
+			        
+			        <button *ngIf="mode === 2" type="button" class="btn btn-primary" (click)="save()" > 
+			            <span class="fa fa-save"></span>&nbsp;<span>Enregistrer</span>
+			        </button>
+			        
+			        <button *ngIf="mode === 3" type="button" class="btn btn-primary" (click)="edit()" > 
+			            <span class="fa fa-save"></span>&nbsp;<span>Enregistrer</span>
+			        </button>
+			    </div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,16 @@
+<!-- <app-navbar [hidden] = "!isAuthenticated()"></app-navbar>
+<app-menu [hidden]= "!isAuthenticated()"></app-menu> -->
+<app-navbar *ngIf = "isAuthenticated()"></app-navbar>
+<app-menu *ngIf= "isAuthenticated()"></app-menu>
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper" style="min-height: 1080px; background: #fff;">
+	<!-- Main content -->
+	<section class="content" style="background: #fff;">
+    <!--<app-login *ngIf= "!isAuthenticated()"></app-login>-->
+		<router-outlet></router-outlet>
+		<router-outlet name="popup"> </router-outlet>
+
+	</section>
+</div>
+<app-footer></app-footer>

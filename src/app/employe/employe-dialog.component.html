@@ -1,0 +1,250 @@
+<form name="editForm" novalidate (ngSubmit)="save()" #editForm="ngForm" *ngIf="mode"> <!-- role="form" novalidate (ngSubmit)="save()" #editForm="ngForm"> -->
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="employeLabel" >Créer un employé</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <div class="form-group" [hidden]="!employe.codeEmploye">
+            <label >ID</label>
+            <input type="number" class="form-control" name="codeEmploye"
+                   [(ngModel)]="employe.codeEmploye" readonly />
+
+            <!-- <label for="codeEmploye">ID</label>
+            <input type="number" class="form-control" id="field_codeEmploye" name="codeEmploye"
+                   [(ngModel)]="employe.codeEmploye" readonly /> -->
+           <!--  <input type="number" class="form-control" id="codeEmploye" name="codeEmploye"
+                   [ngModel]="employe?.codeEmploye" readonly /> -->
+        </div>
+        <div class="form-group">
+            <label class="form-control-label">Matricule</label>
+            <input type="text" class="form-control" ngModel name="matriculeEmploye"
+                [(ngModel)]="employe.matriculeEmploye" />
+                <!-- [ngModel]="employe?.matriculeEmploye" /> -->
+        </div>
+        <div class="form-group">
+            <label class="form-control-label">Nom</label>
+            <input type="text" class="form-control" ngModel name="nomEmploye"
+                [(ngModel)]="employe.nomEmploye" />
+                <!-- [ngModel]="employe?.nomEmploye"  /> -->
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" >Prénom</label>
+            <input type="text" class="form-control" ngModel name="prenomEmploye"
+                [(ngModel)]="employe.prenomEmploye"  />
+                <!-- [ngModel]="employe?.prenomEmploye"  /> -->
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" >Enseigné?</label>
+            <input type="checkbox" ngModel name="enseigneYN"
+                [(ngModel)]="employe.enseigneYN"  /> 
+                <!-- [ngModel]="employe?.enseigneYN"  /> --> 
+
+            <label class="form-control-label" >Confirmé?</label>
+            <input type="checkbox" ngModel name="confirmeYN" 
+                [(ngModel)]="employe.confirmeYN"  />
+                <!-- [ngModel]="employe?.confirmeYN"  /> -->
+        </div>
+<!--         <div class="form-group">
+            <label class="form-control-label" for="field_confirmeEmploye">Confirmé?</label>
+            <input type="checkbox" class="form-control" name="confirmeYN" id="field_confirmeEmploye"
+                [(ngModel)]="employe.confirmeYN"  />
+        </div> -->
+        <div class="form-group">
+            <label class="form-control-label">Date naissance</label>
+            <input type="date" class="form-control" ngModel name="dateNaissEmploye"
+                [(ngModel)]="employe.dateNaissEmploye"  />
+                <!-- [ngModel]="employe?.dateNaissEmploye"  /> -->
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" >Carte d'identification nationale (CIN)</label>
+            <input type="text" class="form-control" ngModel name="cinEmploye"
+                [(ngModel)]="employe.cinEmploye"  />
+                <!-- [ngModel]="employe?.cinEmploye"  /> -->
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" >Date de la CIN</label>
+            <input type="date" class="form-control" ngModel name="dateCinEmploye" 
+                [(ngModel)]="employe.dateCinEmploye"  />
+                <!-- [ngModel]="employe?.dateCinEmploye"  /> -->
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" >Téléphone</label>
+            <input type="tel" class="form-control" ngModel name="telEmploye" 
+                [(ngModel)]="employe.telEmploye"  />
+                <!-- [ngModel]="employe?.telEmploye"  /> -->
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" >Adresse</label>
+            <input type="text" class="form-control" ngModel name="adresseEmploye" 
+                [(ngModel)]="employe.adresseEmploye"  />
+                <!-- [ngModel]="employe?.adresseEmploye"  /> -->
+        </div>
+        <div class="form-group">
+            <label class="form-control-label">Email</label>
+            <input type="email" class="form-control" ngModel name="emailEmploye" placeholder="bonjour@gmail.com"
+                [(ngModel)]="employe.emailEmploye" #emailEmploye = "ngModel" required email />
+                <!-- [ngModel]="employe?.emailEmploye" #emailEmploye = "ngModel" required email /> -->
+        </div>
+
+        <!-- Vérification de l'email valide ou pas-->
+        <div *ngIf="emailEmploye.dirty && emailEmploye.invalid">
+            <small class="form-text text-danger"> <!-- *ngIf="emailEmploye.errors.required"> -->
+                Ce champ ne doit pas être vide et l'email doit être valide </small>
+        </div>
+
+        <div class="form-group">
+            <label class="form-control-label" >Date d'Engagement</label>
+            <input type="date" class="form-control" ngModel name="dateEngEmploye" 
+                [(ngModel)]="employe.dateEngEmploye"  />
+                <!-- [ngModel]="employe?.dateEngEmploye"  /> -->
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" >Date de Titularisation</label>
+            <input type="date" class="form-control" ngModel name="dateTitEmploye"
+                [(ngModel)]="employe.dateTitEmploye"  />
+                <!-- [ngModel]="employe?.dateTitEmploye"  /> -->
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" >Sexe</label>
+            <select class="form-control" ngModel name="codeTypeSexe" [(ngModel)]="employe.codeTypeSexe">
+                <!-- [ngModel]="employe?.codeTypeSexe" > -->
+                <option [ngValue]="null"></option>
+                <option *ngFor="let typeSexeOption of typeSexes; trackBy: trackTypeSexeById" [ngValue]="typeSexeOption.codeTypeSexe" > {{typeSexeOption.libelleTypeSexe}} </option> 
+                <!-- <option [ngValue]="typeSexeOption.codeTypeSexe === employe.codeTypeSexe?.codeTypeSexe ? employe.codeTypeSexe : typeSexeOption" *ngFor="let typeSexeOption of typeSexe; trackBy: trackTypeSexeById"> {{typeSexeOption.libelleTypeSexe}} </option>  -->
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" >Nationalité</label>
+            <!-- <select [compareWith]="equals" class="form-control" name="codeTypeNationalite" [(ngModel)]="employe.codeTypeNationalite" > -->
+            <select class="form-control" ngModel name="codeTypeNationalite" [(ngModel)]="employe.codeTypeNationalite" >
+                <option [ngValue]="null"></option>
+                <option *ngFor="let typeNationaliteOption of typeNationalites; trackBy: trackTypeNationaliteById" [ngValue]="typeNationaliteOption.codeTypeNationalite" > {{typeNationaliteOption.libelleTypeNationalite}} </option> 
+                <!-- <option [ngValue]="typeNationaliteOption.codeTypeNationalite === employe.codeTypeNationalite?.codeTypeNationalite ? employe.codeTypeNationalite : typeNationaliteOption" *ngFor="let typeNationaliteOption of typeNationalites; trackBy: trackTypeNationaliteById"> {{typeNationaliteOption.libelleTypeNationalite}} </option>  -->
+                <!-- <option [ngValue]="employe.codeTypeNationalite" *ngFor="let codeTypeNationalite of typeNationalites; trackBy: trackTypeNationaliteById"> {{codeTypeNationalite.libelleTypeNationalite}} </option>  -->
+            </select>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span>Retour</span>
+        </button>
+        <button type="submit"class="btn btn-primary" [disabled]="editForm.form.invalid" > <!-- (click)="ajouterEmp()" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary"> -->
+            <span class="fa fa-save"></span>&nbsp;<span>Enregistrer</span>
+        </button>
+    </div>
+</form>
+
+<!-- ******************************* Formulaire de modification ************************************* -->
+
+<form name="editForm" novalidate (ngSubmit)="edit()" #editForm="ngForm" *ngIf="!mode"> <!-- role="form" novalidate (ngSubmit)="save()" #editForm="ngForm"> -->
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="employeLabel" >Modifier les informations d'un employé</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <div class="form-group" [hidden]="!employe.codeEmploye">
+            <label >ID</label>
+            <input type="number" class="form-control" name="codeEmploye"
+                   [(ngModel)]="employe.codeEmploye" readonly />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label">Matricule</label>
+            <input type="text" class="form-control" ngModel name="matriculeEmploye"
+                [(ngModel)]="employe.matriculeEmploye" />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label">Nom</label>
+            <input type="text" class="form-control" ngModel name="nomEmploye"
+                [(ngModel)]="employe.nomEmploye" />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" >Prénom</label>
+            <input type="text" class="form-control" ngModel name="prenomEmploye"
+                [(ngModel)]="employe.prenomEmploye"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" >Enseigné?</label>
+            <input type="checkbox" ngModel name="enseigneYN"
+                [(ngModel)]="employe.enseigneYN"  /> 
+
+            <label class="form-control-label" >Confirmé?</label>
+            <input type="checkbox" ngModel name="confirmeYN" 
+                [(ngModel)]="employe.confirmeYN"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label">Date naissance</label>
+            <input type="date" class="form-control" ngModel name="dateNaissEmploye"
+                [(ngModel)]="employe.dateNaissEmploye"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" >Carte d'identification nationale (CIN)</label>
+            <input type="text" class="form-control" ngModel name="cinEmploye"
+                [(ngModel)]="employe.cinEmploye"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" >Date de la CIN</label>
+            <input type="date" class="form-control" ngModel name="dateCinEmploye" 
+                [(ngModel)]="employe.dateCinEmploye"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" >Téléphone</label>
+            <input type="tel" class="form-control" ngModel name="telEmploye" 
+                [(ngModel)]="employe.telEmploye"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" >Adresse</label>
+            <input type="text" class="form-control" ngModel name="adresseEmploye" 
+                [(ngModel)]="employe.adresseEmploye"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label">Email</label>
+            <input type="email" class="form-control" ngModel name="emailEmploye" placeholder="bonjour@gmail.com"
+                [(ngModel)]="employe.emailEmploye" #emailEmploye = "ngModel" required email />
+        </div>
+
+        <!-- Vérification de l'email valide ou pas-->
+        <div *ngIf="emailEmploye.dirty && emailEmploye.invalid">
+            <small class="form-text text-danger"> <!-- *ngIf="emailEmploye.errors.required"> -->
+                Ce champ ne doit pas être vide et l'email doit être valide </small>
+        </div>
+
+        <div class="form-group">
+            <label class="form-control-label" >Date_Eng</label>
+            <input type="date" class="form-control" ngModel name="dateEngEmploye" 
+                [(ngModel)]="employe.dateEngEmploye"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" >Date_Tit</label>
+            <input type="date" class="form-control" ngModel name="dateTitEmploye"
+                [(ngModel)]="employe.dateTitEmploye"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" >Sexe</label>
+            <select class="form-control" ngModel name="codeTypeSexe" [(ngModel)]="employe.codeTypeSexe" >
+                <option [ngValue]="null"></option>
+                <option *ngFor="let typeSexeOption of typeSexes; trackBy: trackTypeSexeById" [ngValue]="typeSexeOption.codeTypeSexe" > {{typeSexeOption.libelleTypeSexe}} </option> 
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" >Nationalité</label>
+            <select class="form-control" ngModel name="codeTypeNationalite" [(ngModel)]="employe.codeTypeNationalite" >
+                <option [ngValue]="null"></option>
+                <option *ngFor="let typeNationaliteOption of typeNationalites; trackBy: trackTypeNationaliteById" [ngValue]="typeNationaliteOption.codeTypeNationalite" > {{typeNationaliteOption.libelleTypeNationalite}} </option> 
+            </select>
+        </div>
+
+      </div>
+      <div>
+        <button type="button" class="btn btn-secondary" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span>Retour</span>
+        </button>
+        <button type="submit"class="btn btn-primary" [disabled]="editForm.form.invalid" > <!-- (click)="ajouterEmp()" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary"> -->
+            <span class="fa fa-save"></span>&nbsp;<span>Enregistrer</span>
+        </button>
+    </div>
+</form>

@@ -1,0 +1,372 @@
+<!-- ************************ Exemple avec Google charts ***************************** -->
+
+<!-- <google-chart [data]="orgChart"></google-chart>
+<input type="button" value="Toggle collapse" (click)="collapseOrgChart()"> -->
+
+
+
+<!-- ************************ Exemple avec Jquery editable chart ***************************** -->
+	
+	<!-- <div>
+		<div class="jquery-script-center">
+			<div class="jquery-script-ads">
+				<script type="text/javascript">
+				</script>
+				<script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+				</script>
+			</div>
+			<div class="jquery-script-clear">
+			</div>
+		</div>
+	</div> -->
+    <!-- <div id="orgChartContainer">
+      <div id="orgChart">
+      </div>
+    </div>
+    <div id="consoleOutput">
+    </div> -->
+    
+    <!-- <script type="text/javascript">
+	    var testData = [
+	        //{id: 1, name: 'My Organization', parent: 0},
+	        {id: 1, name: 'My Organization', description: 'Bonjour', localite: 'My Organization', poste: 'My Organization', parent: 0},
+	        {id: 2, name: 'CEO Office', description: 'Salut', localite: 'Office', poste: 'Office', parent: 1},
+	        {id: 3, name: 'Division 1', description: 'Bienvenue', localite: 'Division 1', poste: 'Division 1', parent: 1},
+	        {id: 4, name: 'Division 2', description: 'Bonjour', localite: 'Division 2', poste: 'Division 2', parent: 1},
+	        {id: 6, name: 'Division 3', description: 'Salut', localite: 'Division 3', poste: 'Division 3', parent: 1},
+	        {id: 7, name: 'Division 4', description: 'Bienvenue', localite: 'Division 4', poste: 'Division 4', parent: 1},
+	        {id: 8, name: 'Division 5', description: 'Bonjour', localite: 'Division 5', poste: 'Division 5', parent: 1},
+	        {id: 5, name: 'Sub Division', description: 'Bienvenue', localite: 'Sub Division', poste: 'Sub Division', parent: 3},
+	        
+	    ];
+	    /* $(function(){
+	        org_chart = $('#orgChart').orgChart({
+	            data: testData,
+	            showControls: true,
+	            allowEdit: true,
+	            onAddNode: function(node){ 
+	                org_chart.newNode(node.data.id); 
+	            },
+	            onDeleteNode: function(node){
+	                org_chart.deleteNode(node.data.id); 
+	            },
+	            onClickNode: function(node){
+	            }
+	
+	        });
+	    }); */
+	    
+	    $(function(){
+	    	  org_chart = $('#orgChart').orgChart({
+	    	    data: testData, // your data
+	    	    showControls: true, // display add or remove node button.
+	    	    allowEdit: true, // click the node's title to edit
+	    	    onAddNode: function(node){},
+	    	    onDeleteNode: function(node){},
+	    	    onClickNode: function(node){},
+	    	    newNodeText: 'Add Child' // text of add button
+	    	});
+	    });
+
+	
+    </script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+	<script src="jquery.orgchart.js"></script> -->
+    
+    
+<!-- ######################## Exemple avec ng-organization-chart ###################### -->
+
+
+
+<!--ng-organization-chart-list [ngClass]="'ng-organization-chart-list'" [nodeList]="data" (onClickNode)="onClickDeepNode($event)" (onDragNode)="onDragDeepNode($event)" ></ng-organization-chart-list>
+
+<div class="container" (click)="clickNode()" draggable droppable [dragData]="node" (onDrop)="dropNode($event)">{{ node.id}}</div>
+<div class="expand-button-container" *ngIf="node.children.length > 0"-->
+    <!--
+    <div class="expand-button" (click)="changeChildrenStyleToHorizontal()" *ngIf="childrenStyleClass == 'vertical'">V</div>
+    <div class="expand-button" (click)="changeChildrenStyleToVertical()" *ngIf="childrenStyleClass != 'vertical'">H</div>
+    -->
+<!--/div>
+<ng-organization-chart-list [ngClass]="'ng-organization-chart-list'" [nodeList]="node.children" (onClickNode)="onClickDeepNode($event)" (onDragNode)="onDragDeepNode($event)" *ngIf="isChildrenVisible && node.children.length > 0"
+    [class]="childrenStyleClass"></ng-organization-chart-list>
+
+<ng-organization-chart-node [ngClass]="'ng-organization-chart-node'" *ngFor="let node of nodeList" [node]="node" (onClickNode)="onClickDeepNode($event)" (onDragNode)="onDragDeepNode($event)"></ng-organization-chart-node-->
+
+
+
+<!-- <ng-organization-chart [data]="data" (onClickNode)="clickNode($event)" (onDragNode)="dragNode($event)"></ng-organization-chart> -->
+
+<!-- <div class="container" (click)="clickNode()" draggable droppable (onDrop)="dropNode($event)">{{node.id}}</div>
+<div class="expand-button-container" *ngIf="node.employes.length > 0">
+<ng-organization-chart [ngClass]="'ng-organization-chart-node'" [data]="employes" (onClickNode)="clickNode($event)" (onDragNode)="dragNode($event)" *ngIf="isChildrenVisible && node.employes.length > 0"
+    [class]="childrenStyleClass"></ng-organization-chart> -->
+
+<!-- /*********************************** Exemple avec Bootstrap 3 **************************************/ -->
+
+<!-- ************************************ Détails *********************************** -->
+<!-- <div class="col-md-4" *ngIf="details">
+	<div class="wrapper">
+		<button class="wrapper" (click)="close()">
+			<span class="fa fa-close"></span>
+		</button>
+	</div>
+	<div class="box">
+			<div class="box-header">
+				<h3 class="box-title">
+					<span style="color: Turquoise;">{{employes.nomEmploye}}
+						{{employes.prenomEmploye}} </span>
+				</h3>
+				<div>
+					<input type="image" value="photo">
+				</div>
+			</div>
+			<div class="box-body">
+				<table class="table table-bordered table-striped">
+					<tr>
+						<td> <strong>ID: </strong> </td>
+						<td>{{employes.codeEmploye}}</td>
+					</tr>
+					<tr>
+						<td> <strong>Matricule: </strong> </td>
+						<td>{{employes.matriculeEmploye}}</td>
+					</tr>
+					<tr>
+						<td> <strong>Téléphone: </strong> </td>
+						<td>{{employes.telEmploye}}</td>
+					</tr>
+					<tr>
+						<td> <strong>Email: </strong> </td>
+						<td>{{employes.emailEmploye}}</td>
+					</tr>
+					<tr>
+						<td> <strong>Date de naissance: </strong> </td>
+						<td>{{employes.dateNaissEmploye| date:'dd/MM/yyyy'}}</td>
+					</tr>
+					<tr>
+						<td> <strong>Enseigné?: </strong> </td>
+						<td>
+							<div *ngIf="employes.enseigneYN;else nonenseigneYN">Oui</div> <ng-template
+								#nonenseigneYN> Non </ng-template>
+						</td>
+					</tr>
+					<tr>
+						<td> <strong>Confirmé?: </strong> </td>
+						<td>
+							<div *ngIf="employes.confirmeYN;else nonconfirmeYN">Oui</div> <ng-template
+								#nonconfirmeYN> Non </ng-template>
+						</td>
+					</tr>
+					<tr>
+						<td> <strong>Carte d'identification nationale(CIN): </strong> </td>
+						<td>{{employes.cinEmploye}}</td>
+					</tr>
+					<tr>
+						<td>Date CIN:</td>
+						<td>{{employes.dateCinEmploye | date:'dd/MM/yyyy'}}</td>
+					</tr>
+					<tr>
+						<td> <strong>Adresse: </strong> </td>
+						<td>{{employes.adresseEmploye}}</td>
+					</tr>
+					<tr>
+						<td> <strong>Date d'engagement: </strong> </td>
+						<td>{{employes.dateEngEmploye | date:'dd/MM/yyyy'}}</td>
+					</tr>
+					<tr>
+						<td> <strong>Date CIN: </strong> </td>
+						<td>{{employes.dateCinEmploye | date:'dd/MM/yyyy'}}</td>
+					</tr>
+					<tr>
+						<td> <strong>Date de titularisation: </strong> </td>
+						<td>{{employes.dateTitEmploye | date:'dd/MM/yyyy'}}</td>
+					</tr>
+					<tr>
+						<td> <strong>Nationalité: </strong> </td>
+						<td>
+							<div *ngIf="typeNationalite">
+								<span>{{typeNationalite.libelleTypeNationalite}}</span>
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td> <strong>sexe: </strong> </td>
+						<td>
+							<div *ngIf="typeSexe">
+								<span>{{typeSexe.libelleTypeSexe}}</span>
+							</div>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</div>
+
+################################ Organigramme ########################
+<div class="tree">
+    <ul>
+		<li *ngIf="employes">
+			<a>
+				<label>Matricule: {{employes.matriculeEmploye}}</label> <br>
+				<label>Nom: {{employes.nomEmploye}}</label> <br>
+				<label>Prénom: {{employes.prenomEmploye}}</label> <br>
+				<label>Sexe: </label>
+				<select name="codeTypeSexe" [(ngModel)]="employes.codeTypeSexe" disabled>
+                	<option *ngFor="let typeSexeOption of typeSexes; trackBy: trackTypeSexeById" [ngValue]="typeSexeOption.codeTypeSexe"> 
+                		{{typeSexeOption.libelleTypeSexe}}</option>
+				</select> <br>
+				<label>Nationalité: </label>
+				<select name="codeTypeNationalite" [(ngModel)]="employes.codeTypeNationalite" disabled>
+                	<option *ngFor="let typeNationaliteOption of typeNationalites; trackBy: trackTypeNationaliteById" [ngValue]="typeNationaliteOption.codeTypeNationalite"> 
+                		{{typeNationaliteOption.libelleTypeNationalite}}</option>
+				</select>
+			</a> <br>
+			<button class="fa fa-plus" style="text-align: right;" (click)="add()"></button> &nbsp;
+			<button class="fa fa-eye" style="text-align: right;" (click)="showDetails(employes.codeEmploye)"></button> &nbsp;
+			<button class="fa fa-minus" style="text-align: left;" (click)="remove()"></button>
+			<ng-container>
+			<ul *ngIf="niveau === 1"> -->
+	<!-- ******************************@@@@@@@@@@@@@@@ Enfants @@@@@@@@@@@@@@@@************************* -->
+				<!-- <li>
+					<a>
+						<label>Nom</label>
+						<input type="text" name="nomEmploye" [(ngModel)]="employe.nomEmploye" /> <br>
+						<label>Prénom</label>
+						<input type="text"name="prenomEmploye" [(ngModel)]="employe.prenomEmploye" /> <br>
+						<label>Sexe</label>
+						<select name="codeTypeSexe" [(ngModel)]="employe.codeTypeSexe">
+                			<option [ngValue]="null"></option>
+                			<option *ngFor="let typeSexeOption of typeSexes; trackBy: trackTypeSexeById" [ngValue]="typeSexeOption.codeTypeSexe" > 
+                				{{typeSexeOption.libelleTypeSexe}}</option>
+						</select> <br>
+						<label>Nationalité</label>
+						<select name="codeTypeNationalite" [(ngModel)]="employe.codeTypeNationalite">
+                			<option [ngValue]="null"></option>
+                			<option *ngFor="let typeNationaliteOption of typeNationalites; trackBy: trackTypeNationaliteById" [ngValue]="typeNationaliteOption.codeTypeNationalite" > 
+                				{{typeNationaliteOption.libelleTypeNationalite}}</option>
+						</select>
+					</a> <br>
+					<button class="fa fa-plus" style="text-align: right;" (click)="add()"></button> &nbsp;
+					<button class="fa fa-minus" style="text-align: left;" (click)="remove()"></button>
+					<ul *ngIf="niveau === 2">
+			@@@@@@@@@@@@@@@ Sous-enfants @@@@@@@@@@@@@@@@
+						<li>
+							<a>
+								<label>Nom</label>
+								<input type="text"/> <br>
+								<label>Prénom</label>
+								<input type="text"/> <br>
+								<label>Structure</label>
+								<select>
+									<option [ngValue] = "structure"></option>
+									<option></option>
+								</select>
+							</a> <br>
+							<button class="fa fa-plus" style="text-align: right;" (click)="add()"></button> &nbsp;
+							<button class="fa fa-minus" style="text-align: left;" (click)="remove()"></button>
+						</li>
+					</ul>
+				</li> -->
+				
+	<!-- ******************************@@@@@@@@@@@@@@@ Enfants @@@@@@@@@@@@@@@@************************* -->
+				<!-- <li *ngIf="niveau === 1">
+					<a>
+						<label>Nom</label>
+						<input type="text" name="nomEmploye" [(ngModel)]="employe.nomEmploye" /> <br>
+						<label>Prénom</label>
+						<input type="text"name="prenomEmploye" [(ngModel)]="employe.prenomEmploye" /> <br>
+						<label>Sexe</label>
+						<select name="codeTypeSexe" [(ngModel)]="employe.codeTypeSexe">
+                			<option [ngValue]="null"></option>
+                			<option *ngFor="let typeSexeOption of typeSexes; trackBy: trackTypeSexeById" [ngValue]="typeSexeOption.codeTypeSexe" > 
+                				{{typeSexeOption.libelleTypeSexe}}</option>
+						</select> <br>
+						<label>Nationalité</label>
+						<select name="codeTypeNationalite" [(ngModel)]="employe.codeTypeNationalite">
+                			<option [ngValue]="null"></option>
+                			<option *ngFor="let typeNationaliteOption of typeNationalites; trackBy: trackTypeNationaliteById" [ngValue]="typeNationaliteOption.codeTypeNationalite" > 
+                				{{typeNationaliteOption.libelleTypeNationalite}}</option>
+						</select>
+					</a> <br>
+					<button class="fa fa-plus" style="text-align: right;" (click)="add()"></button> &nbsp;
+					<button class="fa fa-eye" style="text-align: right;" (click)="showDetails(employes.codeEmploye)"></button> &nbsp;
+					<button class="fa fa-minus" style="text-align: left;" (click)="remove()"></button>
+					<ul>
+				@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Sous-enfants @@@@@@@@@@@@@@@@@@@@@@@@
+						<li *ngIf="niveau === 2">
+							<a>Grand Child</a> <br>
+							<button class="fa fa-plus" style="text-align: right;" (click)="add()"></button> &nbsp;
+							<button class="fa fa-eye" style="text-align: right;" (click)="showDetails(employes.codeEmploye)"></button> &nbsp;
+							<button class="fa fa-minus" style="text-align: left;" (click)="remove()"></button>
+						</li>
+						<li *ngIf="niveau === 2">
+							<a>Grand Child</a> <br>
+							<button class="fa fa-plus" style="text-align: right;" (click)="add()"></button> &nbsp;
+							<button class="fa fa-minus" style="text-align: left;" (click)="remove()"></button>
+							<ul>
+						####@@@@@@@@@@@@@@@ Sous sous-enfants @@@@@@@@@@@@@@@@####
+								<li *ngIf="show">
+									<a href="#">Great Grand Child</a> <br>
+									<button class="fa fa-plus" style="text-align: right;" (click)="add()"></button> &nbsp;
+									<button class="fa fa-minus" style="text-align: left;" (click)="remove()"></button>
+								</li>
+								<li *ngIf="niveau === 3">
+									<a href="#">Great Grand Child</a> <br>
+									<button class="fa fa-plus" style="text-align: right;" (click)="add()"></button> &nbsp;
+									<button class="fa fa-minus" style="text-align: left;" (click)="remove()"></button>
+									<ul>
+										<li *ngIf="show">
+											<a href="#">Great Great Grand Child</a>
+										</li>
+										<li *ngIf="show">
+											<a href="#">Great Great Grand Child</a>
+										</li>
+										<li *ngIf="show">
+											<a href="#">Great Great Grand Child</a>
+										</li>
+									</ul>
+								</li>
+								<li *ngIf="show">
+									<a>Great Grand Child</a> <br>
+									<button class="fa fa-plus" style="text-align: right;" (click)="add()"></button> &nbsp;
+									<button class="fa fa-minus" style="text-align: left;" (click)="remove()"></button>
+								</li>
+							</ul>
+						</li> -->
+				<!-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Sous-enfants @@@@@@@@@@@@@@@@@@@@@@@@ -->
+						<!-- <li *ngIf="show"> 
+							<a>Grand Child</a> <br>
+							<button class="fa fa-plus" style="text-align: right;" (click)="add()"></button> &nbsp;
+							<button class="fa fa-minus" style="text-align: left;" (click)="remove()"></button>
+						</li> -->
+					<!-- </ul>
+				</li> -->
+				
+<!-- ******************************@@@@@@@@@@@@@@@ Enfants @@@@@@@@@@@@@@@@************************* -->
+				<!-- <li *ngIf="niveau && !fst">
+					<a>
+						<label>Nom</label>
+						<input type="text"/> <br>
+						<label>Prénom</label>
+						<input type="text"/> <br>
+						<label>Structure</label>
+						<select>
+							<option [ngValue] = "structure"></option>
+							<option></option>
+						</select>
+					</a> <br>
+					<button class="fa fa-plus" style="text-align: right;" (click)="add()"></button> &nbsp;
+					<button class="fa fa-minus" style="text-align: left;" (click)="remove()"></button>
+					<ul>
+				@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Sous-enfants @@@@@@@@@@@@@@@@@@@@@@@@
+						<li *ngIf="show">
+							<a>Grand Child</a> <br>
+							<button class="fa fa-plus" style="text-align: right;" (click)="add()"></button> &nbsp;
+							<button class="fa fa-minus" style="text-align: left;" (click)="remove()"></button>
+						</li>
+					</ul>
+				</li> -->
+			<!-- </ul>
+			</ng-container>
+		</li>
+	</ul>
+</div> -->

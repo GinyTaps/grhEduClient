@@ -1,0 +1,100 @@
+
+<body *ngIf="!isAuthenticated()">
+<div class="container left">
+	<section id="content" *ngIf="!recover_key">
+		<form action="" #f="ngForm" (ngSubmit)="onLogin(f.value)">
+			<h1>Login</h1>
+			<div>
+				<input type="text" placeholder="Username" name="username" [(ngModel)] = "username" required />
+			</div>
+			<div>
+				<input type="password" placeholder="Password" name="password" [(ngModel)] = "password" required />
+			</div>
+			<div>
+				<input type="submit" value="Login" />
+				<a href="#" (click)="RecoverKey();">Mot de passe oublié ?</a>
+				<!-- <a href="#">Lost your password?</a> -->
+				<!-- <a [routerLink] = "['/register']">Register</a> -->
+			</div>
+		</form>
+	</section><!-- content -->
+
+	<section id="content" *ngIf="recover_key">
+		<form (ngSubmit)="changePass();" [formGroup]="keyForm">
+			<h3>Récupération du mot de passe</h3>
+			<div>
+				<div>
+					<input type="email" id="email" name="email" [(ngModel)]= "user.email"  placeholder="Entrer l'adresse email" formControlName="email" required>
+				</div>
+				<button type="button" (click)="SendEmail()" >Continuer</button>
+				<font class="text-danger col-sm-12" *ngIf="keyForm.controls.email.touched && !email_valid">Entrer votre adresse email</font>
+			</div>
+			<div  *ngIf="email_sent">
+				<div >
+					<input type="number" id="code" name="renewPasswordCode" [(ngModel)]= "user.renewPasswordCode"  placeholder="Entrez le code à 6 chiffres" formControlName="code" required>
+				</div>
+				<button type="button" (click)="KeyStep()" >Continuer</button>
+				<font class="text-danger col-sm-12" *ngIf="keyForm.controls.code.touched && !key_step">Code incorrecte</font>
+			</div>
+			<div  style="text-align: center">
+
+			</div>
+			<div *ngIf="key_step">
+				<input type="password" id="newpass" name="password" [(ngModel)]= "user.password"  placeholder="Entrer le nouveau mot de passe" formControlName="newpass" required>
+				<font class="text-danger col-sm-12" *ngIf="keyForm.controls.newpass.invalid && keyForm.controls.newpass.touched">Au moins 8 caractères!</font>
+			</div>
+			<div *ngIf="key_step">
+				<input type="password" formControlName="confpass" id="confPass" placeholder="Confirmer le mot de passe" required>
+				<font class="text-danger col-sm-12" *ngIf="keyForm.controls.confpass.invalid && keyForm.controls.confpass.touched">Longueur invalide</font>
+			</div>
+			<div style="text-align: center" *ngIf="key_step">
+				<button type="submit" >Valider</button>
+			</div>
+		</form>
+		<div  style="text-align: center"><a href="#" (click)="RecoverKey()">Retour</a></div>
+
+	</section>
+
+	<!-- <div class="row" *ngIf="recover_key">
+		<form (ngSubmit)="changePass();" [formGroup]="keyForm" class="col-md-6 col-md-offset-3">
+			<h3>Récupération du mot de passe</h3>
+			<div class="col-sm-12 form-group">
+				<Label for="email">Adresse mail</Label>
+				<div class="col-sm-10">
+					<input type="email" id="email" name="email" [(ngModel)]= "user.email" class="form-control left" placeholder="email" formControlName="email" required>
+				</div>
+				<button type="button" (click)="SendEmail()" class="btn col-sm-2">Continuer</button>
+				<font class="text-danger col-sm-12" *ngIf="keyForm.controls.email.touched && !email_valid">Entrer votre adresse email</font>
+			</div>
+			<div class="col-sm-12 form-group" *ngIf="email_sent">
+				<Label for="code">Entrez le code à 6 chiffres</Label>
+				<div class="col-sm-10">
+					<input type="number" id="code" name="renewPasswordCode" [(ngModel)]= "user.renewPasswordCode"  class="form-control left" placeholder="code" formControlName="code" required>
+				</div>
+				<button type="button" (click)="KeyStep();" class="btn col-sm-2">Continuer</button>
+				<font class="text-danger col-sm-12" *ngIf="keyForm.controls.code.touched && !key_step">Code incorrecte</font>
+			</div>
+			<div class="col-sm-12 form-group" style="text-align: center;">
+
+			</div>
+			<div class="col-sm-12 form-group" *ngIf="key_step">
+				<label for="newpass">Nouveau mot de passe</label>
+				input type="password" formControlName="newpass" id="newpass" class="form-control" placeholder="Nouveau mot de passe" required
+				<input type="password" id="newpass" name="password" [(ngModel)]= "user.password" class="form-control left" placeholder="Nouveau mot de passe" formControlName="newpass" required>
+				<font class="text-danger col-sm-12" *ngIf="keyForm.controls.newpass.invalid && keyForm.controls.newpass.touched">Au moins 8 caractères!</font>
+			</div>
+			<div class="col-sm-12 form-group" *ngIf="key_step">
+				<label for="confPass">Confirmer le mot de passe</label>
+				<input type="password" formControlName="confpass" id="confPass" class="form-control" placeholder="Confirmer" required>
+				<font class="text-danger col-sm-12" *ngIf="keyForm.controls.confpass.invalid && keyForm.controls.confpass.touched">Longueur invalide</font>
+			</div>
+			<div class="col-sm-12 form-group" style="text-align: center;" *ngIf="key_step">
+				<button type="submit" class="btn btn-primary">Valider</button>
+			</div>
+		</form>
+		<div class="col-sm-12" style="text-align: center;"><a href="#" (click)="RecoverKey();">Retour</a></div>
+
+	</div> -->
+</div><!-- container -->
+</body>
+

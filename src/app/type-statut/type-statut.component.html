@@ -1,0 +1,123 @@
+<div class="col-md-4">
+	<div class="row">
+		<div class="box"> <!-- *ngIf="mode === 1 || mode === 2 || mode === 3 || mode === 4"> -->
+			<div class="box-header">
+				<h3 class="box-title">Sélection des types</h3>
+			</div>
+			<div class="box-body">
+				<table class="table table-bordered table-striped">
+					<!-- *ngIf="employeEtatCivil"> -->
+					<tr>
+						<td>Tables</td>
+						<td><select name="typesTable" [(ngModel)]="typeSelected" (change)="selectType()">
+								<option [ngValue]="null"></option>
+								<option *ngFor="let types of typesTable" [ngValue]="types" [selected]="this[typeSelected]">
+									{{types}}</option>
+						</select></td>
+					</tr>
+					<tr *ngIf="typeStatut.codeTypeStatutParent">
+						<td>ID Parent</td>
+						<td>{{typeStatut.codeTypeStatutParent}}</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</div>
+
+	<!-- ******************************** Liste des types  **************************** -->
+	<div clas="row" *ngIf="typeStatut && mode === 1" >
+		<div class="box">
+			<div class="box-header">
+				<h3 class="box-title">{{title}}</h3>
+			</div>
+			<!-- /.box-header -->
+			<div class="box-body">
+				<div class="row">
+					<div class="col-sm-6 float-right">
+						<div class="dataTables_filter">
+							<!-- <label>Search:<input type="search" class="form-control input-sm" placeholder="" aria-controls="example1">
+            				</label> -->
+							<button id="addToTable" class="btn btn-primary"
+								placement="bottom" (click)="createTypeStatut()">
+								<i class="fa fa-plus"></i>
+							</button>
+						</div>
+					</div>
+				</div>
+				<table class="table table-bordered table-striped">
+					<tr>
+						<td><span>Libellé</span></td>
+						<td><span>Ordre </span></td>
+						<td>Actions</td>
+					</tr>
+					<tr *ngFor="let typ of typeStatuts[0] | paginate: { itemsPerPage: 10, currentPage: p }">
+						<td>{{typ.libelleTypeStatut}}</td>
+						<td>{{typ.ordreTypeStatut}}</td>
+						<td class="actions">
+							<!-- <a class="on-default" (click)="detailsTypeStatut(typ.codeTypeStatut)"> <i class="fa fa-eye"></i></a>&nbsp; -->
+							<a class="on-default edit-row" (click)="editTypeStatut(typ.codeTypeStatut)"> <i class="fa fa-pencil"></i></a>&nbsp;
+							<a [swal]="deleteSwal"> <i class="fa fa-trash-o"></i> </a>
+								<swal #deleteSwal title="Supprimer?" text="Confirmer la suppression de ce type"
+									type="question" icon="warning" [showCancelButton]="true"
+									[focusCancel]="true" (confirm)="deleteType(typ.codeTypeStatut)">
+							  	</swal>
+						</td>
+					</tr>
+					<tr>
+						<td><span>Libellé</span></td>
+						<td><span>Ordre </span></td>
+						<td>Actions</td>
+					</tr>
+				</table>
+			</div>
+			<div class="row">
+				<pagination-controls (pageChange)="p = $event"></pagination-controls>
+			</div>
+		</div>
+	</div>
+	
+<!-- ************************************** Création ****************************** -->
+	<div class="row" *ngIf="mode === 2 || mode === 3">
+		<div class="box">
+			<!-- <form *ngIf="mode === 3" name="f" novalidate (ngSubmit)="save(f)" #f="ngForm" > -->
+			<!-- <form *ngIf="mode === 4" name="f" novalidate (ngSubmit)="edit(f.value)" #f="ngForm" > -->
+	
+			    <div class="box-header">
+			        <h4>{{header}} </h4>
+			        <button type="button" (click)="close()">&times;</button>
+			    </div>
+			    <div class="box-body">
+			    	<div class="form-group" [hidden]="!codeTypeStatut" >
+			    		<label> ID </label>
+			    		<input class="form-control" name="codeTypeStatut" type="number" readonly
+			    		[(ngModel)]="typeStatut.codeTypeStatut" readonly />
+			    	</div>
+			    	<div class="form-group">
+			            <label class="form-control-label">Libellé</label>
+			            <input type="text" class="form-control" name="libelleTypeStatut"
+			            [(ngModel)]="typeStatut.libelleTypeStatut" />
+			        </div>
+			        <div class="form-group">
+			            <label class="form-control-label" >Ordre</label>
+			            <input type="number" class="form-control" name="ordreTypeStatut"
+			                [(ngModel)]="typeStatut.ordreTypeStatut"  />
+			        </div>
+			      </div> 
+			      <div>
+			        <button type="button" class="btn btn-secondary" (click)="close()" >
+			            <span class="fa fa-save"></span>&nbsp;<span>Retour</span>
+			        </button>
+			        
+			        <button *ngIf="mode === 2" type="button" class="btn btn-primary" (click)="save()" > 
+			            <span class="fa fa-save"></span>&nbsp;<span>Enregistrer</span>
+			        </button>
+			        
+			        <button *ngIf="mode === 3" type="button" class="btn btn-primary" (click)="edit()" > 
+			            <span class="fa fa-save"></span>
+			        </button>
+			    </div>
+			<!-- </form> -->
+		</div>
+	</div>
+	
+</div>

@@ -1,0 +1,191 @@
+<div class="col-md-4">
+	<div class="row">
+		<div class="box">
+			<div class="box-header">
+				<h3 class="box-title">Sélection des types</h3>
+			</div>
+			<div class="box-body">
+				<table class="table table-bordered table-striped">
+					<!-- *ngIf="employeEtatCivil"> -->
+					<tr>
+						<td>Tables</td>
+						<td><select name="typesTable" [(ngModel)]="typeSelected" (change)="selectType()">
+								<option [ngValue]="null"></option>
+								<option *ngFor="let types of typesTable" [ngValue]="types" [selected]="this[typeSelected]">
+									{{types}}</option>
+						</select></td>
+					</tr>
+					<tr *ngIf="typePathologie.codeTypePathologieParent">
+						<td>ID Parent</td>
+						<td>{{typePathologie.codeTypePathologieParent}}</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</div>
+
+	<!-- ******************************** Liste des types  **************************** -->
+	<div clas="row" *ngIf="typePathologie && mode === 1" >
+		<div class="box">
+			<div class="box-header">
+				<h3 class="box-title">{{title}}</h3>
+			</div>
+			<!-- /.box-header -->
+			<div class="box-body">
+				<div class="row">
+					<div class="col-sm-6 float-right">
+						<div class="dataTables_filter">
+							<!-- <label>Search:<input type="search" class="form-control input-sm" placeholder="" aria-controls="example1">
+            				</label> -->
+							<button id="addToTable" class="btn btn-primary"
+								placement="bottom" (click)="createTypePathologie()">
+								<i class="fa fa-plus"></i>
+							</button>
+						</div>
+					</div>
+				</div>
+				<table class="table table-bordered table-striped">
+					<tr>
+						<td><span>Libellé</span></td>
+						<td><span>Ordre </span></td>
+						<td>Actions</td>
+					</tr>
+					<tr *ngFor="let typ of typePathologies[0] | paginate: { itemsPerPage: 10, currentPage: p }">
+						<td>{{typ.libelleTypePathologie}}</td>
+						<td>{{typ.ordreTypePathologie}}</td>
+						<td class="actions">
+							<!-- <a class="on-default" (click)="detailsTypePathologie(typ.codeTypePathologie)"> <i class="fa fa-eye"></i></a>&nbsp; -->
+							<a class="on-default edit-row" (click)="editTypePathologie(typ.codeTypePathologie)"> <i class="fa fa-pencil"></i></a>&nbsp;
+							<a [swal]="deleteSwal"> <i class="fa fa-trash-o"></i> </a>
+								<swal #deleteSwal title="Supprimer?" text="Confirmer la suppression de ce type"
+									type="question" icon="warning" [showCancelButton]="true"
+									[focusCancel]="true" (confirm)="deleteType(typ.codeTypePathologie)">
+							  	</swal>
+						</td>
+					</tr>
+					<tr>
+						<td><span>Libellé</span></td>
+						<td><span>Ordre </span></td>
+						<td>Actions</td>
+					</tr>
+				</table>
+			</div>
+			<div class="row">
+				<pagination-controls (pageChange)="p = $event"></pagination-controls>
+			</div>
+		</div>
+	</div>
+	
+<!-- ************************************** Création ****************************** -->
+	<div class="row" *ngIf="mode === 2 || mode === 3">
+		<div class="box">
+			    <div class="box-header">
+			        <h4>{{header}} </h4>
+			        <button type="button" (click)="close()">&times;</button>
+			    </div>
+			    <div class="box-body">
+			    	<div class="form-group" [hidden]="!codeTypePathologie" >
+			    		<label> ID </label>
+			    		<input class="form-control" name="codeTypePathologien" type="number" readonly
+			    		[(ngModel)]="typePathologie.codeTypePathologie" readonly />
+			    	</div>
+			    	<div class="form-group">
+			            <label class="form-control-label">Libellé</label>
+			            <input type="text" class="form-control" name="libelleTypePathologie"
+			            [(ngModel)]="typePathologie.libelleTypePathologie" />
+			        </div>
+			        <div class="form-group">
+			            <label class="form-control-label" >Ordre</label>
+			            <input type="number" class="form-control" name="ordreTypePathologie"
+			                [(ngModel)]="typePathologie.ordreTypePathologie"  />
+			        </div>
+			      </div> 
+			      <div>
+			        <button type="button" class="btn btn-secondary" (click)="close()" >
+			            <span class="fa fa-save"></span>&nbsp;<span>Retour</span>
+			        </button>
+			        
+			        <button *ngIf="mode === 2" type="button" class="btn btn-primary" (click)="save()" > 
+			            <span class="fa fa-save"></span>&nbsp;<span>Enregistrer</span>
+			        </button>
+			        
+			        <button *ngIf="mode === 3" type="button" class="btn btn-primary" (click)="edit()" > 
+			            <span class="fa fa-save"></span>
+			        </button>
+			    </div>
+		</div>
+	</div>
+	
+</div>
+
+
+
+<!-- <div></div>
+    <div class="row">
+        <div class="col-sm-8"> 
+            <h2> Nationalités </h2>
+        </div>
+        <div class="col-sm-4 text-right">
+            <button class="btn btn-primary float-right create-points" [ngbTooltip]="addTooltip" placement="bottom" [routerLink]="['/typePathologie-dialog']">  [routerLink]="['/', { outlets: { popup: ['typePathologie-dialog'] } }]"> 
+                <span class="fa fa-plus"></span>
+                <span class="hidden-md-down"></span>
+				<ng-template #addTooltip> <span>Créer une nouvelle nationalité </span> </ng-template>
+            </button>
+        
+            <form #fs ="ngForm" (ngSubmit) = "onSearch(motCle)" class="form-inline">
+                <div class="input-group w-100 mr-1">
+                    <input class="form-control" type="text" [(ngModel)]="motCle" name="motCle" required placeholder="Mot clé" >
+                    <button type="submit" class="btn btn-primary">chercher</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <br/>
+
+<div class="table-responsive" *ngIf="typePathologies" > *ngIf="pageTypePathologies" > 
+        <table class="table table-striped">
+            <thead>
+            <tr (predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
+            <tr>
+            <th><span>Libellé</span></th>
+            <th><span>Ordre de la nationalité</span></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor ="let typ of typePathologies ;trackBy: trackId">  <tr *ngFor ="let typ of pageTypePathologies ;trackBy: trackId">
+                <td>
+                    {{typ.libelleTypePathologie}}
+               	</td>
+                <td>
+                    {{typ.ordreTypePathologie}}
+                </td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit" class="btn btn-info btn-sm" [routerLink] ="['/typePathologie-detail', typ.codeTypePathologie]" >
+                            <span class="fa fa-eye"></span>
+                            <span class="hidden-md-down" >View</span>
+                        </button>
+                        <button type="submit" replaceUrl="true" class="btn btn-primary btn-sm" [routerLink]="['/', { outlets: { popup: 'typePathologie-dialog/'+ typ.codeTypePathologie} }]" >
+                        <button type="submit" replaceUrl="true" class="btn btn-primary btn-sm" [routerLink]="['/typePathologie-dialog', typ.codeTypePathologie]">
+                            <span class="fa fa-pencil"></span>
+                            <span class="hidden-md-down">Edit</span>
+                        </button>
+                        <button type="submit" replaceUrl="true" class="btn btn-primary btn-sm" [routerLink]="['/typePathologie-delete', typ.codeTypePathologie]">
+                        <button type="submit" replaceUrl="true" class="btn btn-danger btn-sm" [routerLink]="['/', { outlets: { popup: 'typePathologie-delete/'+ typ.codeTypePathologie} }]" > 
+                            <span class="fa fa-remove"></span>
+                            <span class="hidden-md-down" >Delete</span>
+                        </button>
+                    </div>
+                </td>
+              </tr>
+        </tbody>
+    </table>
+    <div class="container">
+        <ul class="nav nav-pills">
+            <li [ngClass]="{'active': i== currentPage}" *ngFor= "let p of pages; let i=index"> 
+                <a (click)= "goToPage(i)"> {{i}} </a>
+            </li>
+        </ul>
+    </div>
+</div>
+ -->

@@ -1,0 +1,26 @@
+<div *ngIf="typeRegroupement">
+    <h2><span >Motif congé</span> {{typeRegroupement.libelleTypeRegroupement}}</h2>
+    <hr>
+    <dl class="row-md jh-entity-details">
+        <dt><span>ID: </span></dt>
+        <dd>
+            <span> {{typeRegroupement.codeTypeRegroupement}}
+            </span>
+        </dd>
+
+        <dt><span>Libellé: </span> </dt>
+        <dd>
+            <span>{{typeRegroupement.libelleTypeRegroupement}}</span>
+        </dd>
+
+        <dt><span>Ordre: </span> </dt>  
+        <dd>
+            <span>{{typeRegroupement.ordreTypeRegroupement}}</span>
+        </dd>
+    </dl>
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span> Retour </span>
+    </button>
+</div>

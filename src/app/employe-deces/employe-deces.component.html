@@ -1,0 +1,83 @@
+<div class="container">
+	  <!-- <h3 class="box-title" *ngIf="employe">{{employe.nomEmploye}} - {{employe.prenomEmploye}}</h3> -->
+	  <ul class="nav nav-tabs">
+	    <li><a [routerLink] ="['/employe-detail',id]">Généralités</a></li>
+	    <li><a [routerLink]="['/employe-qualification', id]"><!-- <a [routerLink]="['/employe-qualification']"> -->Carrière</a></li>
+	    <li class="dropdown">
+	      <a href="#"  class="dropdown-toggle" data-toggle="dropdown">Mobilité
+	      <span class="caret"></span></a>
+	      <ul class="dropdown-menu">
+	      	<li><a [routerLink]="['/employe-poste', id]">Poste en cours</a></li>
+	      	<li><a [routerLink]="['/employe-affectation', id]">Réaffectation</a></li>
+	      	<li><a [routerLink]="['/employe-transfert', id]">Transfert dans l'administration</a></li>
+	      	<li><a [routerLink]="['/employe-transfert', id]">Transfert dans une école</a></li>
+	      	<li><a [routerLink]="['/employe-detachement', id]">Détachement</a></li>
+	      	<li><a [routerLink]="['/employe-disponibilite', id]">Disponibilité</a></li>
+	      	<li><a [routerLink]="['/employe-suspension', id]">Suspension</a></li>
+	      	<li><a [routerLink]="['/employe-mutation', id]">Mutation</a></li>
+	        <li><a [routerLink]="['/conge-employe', id]">Congé</a></li>                   
+	      </ul>
+	    </li>
+	    <li class="dropdown active">
+	      <a class="dropdown-toggle" data-toggle="dropdown">Fin de carrière
+	      <span class="caret"></span></a>
+	      <ul class="dropdown-menu">
+	      	<li><a [routerLink]="['/employe-retraite', id]">Retraite</a></li>
+	      	<li><a [routerLink]="['/employe-demission', id]">Démission</a></li>
+	      	<li><a [routerLink]="['/employe-revocation', id]">Révocation</a></li>
+	      	<li><a [routerLink]="['/employe-renvoi', id]">Renvoi</a></li>
+	      	<li class="active"><a [routerLink]="['/employe-deces', id]">Décès</a></li>              
+	      </ul>
+	    </li>
+	  </ul>
+	</div> <br>
+	
+	<div class="box">
+            <div class="box-header">
+              <h3 class="box-title" *ngIf="employe"> Enregistrer le décès de l'employé <span style="color: Turquoise; "> {{employe.nomEmploye}}  {{employe.prenomEmploye}} </span> </h3>
+            </div>
+            <div class="box-body">
+            	<form name="editForm" novalidate (ngSubmit)="save()"  #editForm="ngForm">
+	            	<table class="table table-bordered table-striped">
+	            		<tr>
+	            			<td>Motif:</td>
+	            			<td>
+	            				<div class="form-group">
+						            <select class="form-control" name="codeTypeMotifDeces" [(ngModel)]="employeDeces.id.codeTypeMotifDeces" required >
+						                <option [ngValue]="null"></option>
+						                <option *ngFor="let t of typeMotifDeces" 
+						                [ngValue]="t.codeTypeMotifDeces" > {{t.libelleTypeMotifDeces}} </option>
+						            </select>
+						        </div>
+	            			</td>
+	            		</tr>
+	            		<tr>
+		                  	<td>Date:</td>
+		                  	<td>
+		                  		<input type="date" class="form-control" name="dateDeces"
+				                [(ngModel)]="employeDeces.id.dateDeces" required />
+		                  	</td>
+		                  </tr>
+		                  <tr>
+		                  	<td>Reférence:</td>
+		                  	<td>
+		                  		<input type="text" class="form-control" name="refDeces"
+				                [(ngModel)]="employeDeces.refDeces" />
+		                  	</td>
+		                  </tr>
+		                  <tr>
+		                  	<td>Commentaire:</td>
+		                  	<td>
+		                  		<textarea class="form-control" name="comDeces" 
+		                  		[(ngModel)]="employeDeces.comDeces" > </textarea>
+		                  	</td>
+		                  </tr>
+		            </table>
+	    		<div style="text-align: center" [hidden]="show">
+	    			<button type="submit" class="btn btn-primary" [disabled]="editForm.form.invalid">
+						<span class="fa fa-save"></span>&nbsp;<span> Enregistrer </span>
+					</button>
+				</div>
+	    	</form>
+    	</div>
+    </div>
